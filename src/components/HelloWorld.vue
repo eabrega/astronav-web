@@ -1,18 +1,18 @@
 <template>
     <div class="hello">
-        <p>{{msg}}</p>
+        <p>{{ msg }}</p>
     </div>
 </template>
 
 <script lang="ts">
-import store from '@/store';
+import store from "@/store";
 import { Component, Prop, Vue } from "vue-property-decorator";
 
 @Component
 export default class HelloWorld extends Vue {
     @Prop() private msg!: string;
-    get t(){
-        return store.state.condition
+    get t() {
+        return store.state.condition;
     }
 }
 </script>
