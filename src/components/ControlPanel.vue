@@ -41,7 +41,7 @@
 
 <script lang='ts'>
 import { Component, Vue } from "vue-property-decorator";
-import { BootstrapVue, IconsPlugin } from "bootstrap-vue";
+import { BAlert, BButton, BootstrapVue, IconsPlugin } from "bootstrap-vue";
 import { BProgress } from "bootstrap-vue";
 
 @Component
@@ -61,8 +61,10 @@ export default class ControlPanel extends Vue {
     constructor() {
         super();
         Vue.component("b-progress", BProgress);
-        Vue.use(BootstrapVue);
-        Vue.use(IconsPlugin);
+        Vue.component("b-alert", BAlert);
+        Vue.component("b-button", BButton)
+        //Vue.use(BootstrapVue);
+        // Vue.use(IconsPlugin);
     }
 }
 </script>
