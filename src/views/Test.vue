@@ -17,6 +17,7 @@ import store from '@/store';
 export default class Test extends Vue {
   constructor(){
     super()
+    store.dispatch('initStore')  
   }
 }
 </script>

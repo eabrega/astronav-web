@@ -16,8 +16,7 @@ import store from '@/store';
 })
 export default class Home extends Vue {
   constructor(){
-    super()
-    store.dispatch('initStore')
+    super() 
   }
 }
 </script>
