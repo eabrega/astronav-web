@@ -1,75 +1,94 @@
 <template>
-    <div>
-        <b-alert show>Default Alert</b-alert>
-        <b-alert variant="success" show>Success Alert</b-alert>
-        <b-alert v-model="showDismissibleAlert" variant="danger" dismissible>
-            Dismissible Alert!
-        </b-alert>
-        <b-alert
-            :show="dismissCountDown"
-            dismissible
-            variant="warning"
-            @dismissed="dismissCountDown = 0"
-            @dismiss-count-down="countDownChanged"
-        >
-            <p>
-                This alert will dismiss after {{ dismissCountDown }} seconds...
-            </p>
-            <!-- <b-progress :value="dismissCountDown" :max="dismissSecs" show-progress animated></b-progress> -->
-            <b-progress
-                variant="warning"
-                :max="dismissSecs"
-                :value="dismissCountDown"
-                height="4px"
-            ></b-progress>
-        </b-alert>
-
-        <b-button @click="showAlert" variant="info" class="m-1">
-            Show alert with count-down timer
-        </b-button>
-        <b-button
-            @click="showDismissibleAlert = true"
-            variant="info"
-            class="m-1"
-        >
-            Show dismissible alert ({{
-                showDismissibleAlert ? "visible" : "hidden"
-            }})
-        </b-button>
+    <div class="input-parameters">
+        <b-input-group size="sm" prepend="Широта и долгота" class="mb-2">
+            <b-form-input
+                v-model.number="LAT"
+                :state="isLatValid"
+                type="number"
+                aria-describedby="input-live-feedback-lat"
+                aria-label="First name"
+                trim
+            ></b-form-input>
+            <b-form-input
+                v-model="lon"
+                :state="isLonValid"
+                type="number"
+                aria-describedby="input-live-feedback-lon"
+                aria-label="Last name"
+                trim
+            ></b-form-input>
+            <b-form-invalid-feedback id="input-live-feedback-lat">
+                Долгота не может быть больше 90<br />
+                Широта не может быть больше 180
+            </b-form-invalid-feedback>
+        </b-input-group>
     </div>
 </template>
 
 <script lang='ts'>
-import { Component, Vue } from "vue-property-decorator";
-import { BAlert, BButton, BootstrapVue, IconsPlugin } from "bootstrap-vue";
-import { BProgress } from "bootstrap-vue";
+    import { Component, Vue } from "vue-property-decorator";
+    import store from "@/store";
+    import {
+        BAlert,
+        BButton,
+        BCard,
+        BFormGroup,
+        BFormInput,
+        BFormInvalidFeedback,
+        BInputGroup,
+        BProgress,
+    } from "bootstrap-vue";
 
-@Component
-export default class ControlPanel extends Vue {
-    dismissSecs = 10;
-    dismissCountDown = 0;
-    showDismissibleAlert = false;
+    @Component
+    export default class ControlPanel extends Vue {
+        private lat = store.state.lat;
+        private lon = 33;
 
-    countDownChanged(dismissCountDown: number) {
-        this.dismissCountDown = dismissCountDown;
+        get isLatValid(): boolean {
+            return this.lat < 90;
+        }
+
+        get isLonValid(): boolean {
+            return this.lon < 180;
+        }
+
+        set LAT(val: number) {
+            this.lat = val;
+            if (this.isLatValid) {
+                store.dispatch("setLat", val);
+            }
+        }
+
+        get LAT() {
+            return this.lat;
+        }
+
+        constructor() {
+            super();
+            Vue.component("b-card", BCard);
+            Vue.component("b-form-input", BFormInput);
+            Vue.component("b-input-group", BInputGroup);
+            Vue.component("b-form-group", BFormGroup);
+            Vue.component("b-form-invalid-feedback", BFormInvalidFeedback);
+        }
     }
-
-    showAlert() {
-        this.dismissCountDown = this.dismissSecs;
-    }
-
-    constructor() {
-        super();
-        Vue.component("b-progress", BProgress);
-        Vue.component("b-alert", BAlert);
-        Vue.component("b-button", BButton)
-        //Vue.use(BootstrapVue);
-        // Vue.use(IconsPlugin);
-    }
-}
 </script>
 
 <style lang="scss">
 @import "node_modules/bootstrap/scss/bootstrap.scss";
 @import "node_modules/bootstrap-vue/src/index.scss";
+
+.input-parameters {
+    padding-left: 20px;
+    display: flex;
+    flex-direction: row;
+    .card {
+        width: 320px;
+        margin-left: 20px;
+    }
+
+    .input-group {
+        width: 350px;
+    }
+}
 </style>
