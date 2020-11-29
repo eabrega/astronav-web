@@ -1,4 +1,5 @@
 // import { LayoutPlugin } from 'bootstrap-vue';
+import { DateParser } from '@/components/DateParser'
 import Vue from 'vue'
 import Vuex from 'vuex'
 
@@ -6,7 +7,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-        date: Date.now(),
+        date: new Date().toISOString(),
         lon: 33,
         lat: 55,
         condition: {}
@@ -26,20 +27,21 @@ export default new Vuex.Store({
         }
     },
     actions: {
-        initStore: ({state, commit }) => {
-            fetch(`https://astronav.ru/condition/date/22-06-1985/latitude/${state.lat}/longitude/${state.lat}`)
+        updateCondition: ({ state, commit }) => {
+            const date = new DateParser(state.date).toApiString();
+            fetch(`https://astronav.ru/condition/date/${date}/latitude/${state.lat}/longitude/${state.lat}`)
                 .then(response => response.json())
                 .then(data => {
                     commit('SET_STORE', data)
                 });
         },
-        setLat: ({commit}, val) =>{
+        setLat: ({ commit }, val) => {
             commit('SET_LAT', val)
         },
-        setLon: ({commit}, val) =>{
+        setLon: ({ commit }, val) => {
             commit('SET_LON', val)
         },
-        setDate: ({commit}, val) =>{
+        setDate: ({ commit }, val) => {
             commit('SET_DATE', val)
         }
     },
