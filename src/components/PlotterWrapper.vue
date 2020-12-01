@@ -7,7 +7,7 @@
 <script lang="ts">
 import store from "@/store";
 import { Component, Vue, Watch } from "vue-property-decorator";
-import { IPlotterOptions, Plotter } from "aaaa-plotter3/dist";
+import { IPlotterOptions, Plotter } from "canvas-chart-ts/dist";
 
 @Component
 export default class PlotterWrapper extends Vue {
