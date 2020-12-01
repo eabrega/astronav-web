@@ -1,22 +1,38 @@
 <template>
-  <div class="home">
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
-  </div>
+    <div class="home">
+        <ControlPanel />
+        <PlotterWrapper />
+        <TimeLine />
+    </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import HelloWorld from '@/components/HelloWorld.vue';
-import store from '@/store';
+import { Component, Vue } from "vue-property-decorator";
+import ControlPanel from "@/components/ControlPanel.vue";
+import PlotterWrapper from "@/components/PlotterWrapper.vue";
+import TimeLine from '@/components/TimeLine.vue'
+import store from "@/store";
 
 @Component({
-  components: {
-    HelloWorld
-  },
+    components: {
+        PlotterWrapper,
+        ControlPanel,
+        TimeLine
+    },
 })
 export default class Home extends Vue {
-  constructor(){
-    super() 
-  }
+    constructor() {
+        super();
+    }
 }
 </script>
+
+<style lang="scss" scoped>
+    .home{
+        margin-left: 50px;
+        display: block;
+        width: 1200px;
+        flex-direction: column;
+        justify-self: center;
+    }
+</style>

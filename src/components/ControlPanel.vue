@@ -1,12 +1,7 @@
 <template>
     <div class="input-parameters">
         <b-input-group size="sm" prepend="Широта">
-            <b-form-input
-                v-model.number="Lat"
-                :state="isLatValid"
-                type="number"
-                debounce="500"
-            ></b-form-input>
+            <b-form-input v-model="Lat" type="number"></b-form-input>
             <b-input-group-prepend is-text>Долгота</b-input-group-prepend>
             <b-form-input
                 v-model.number="Lon"
@@ -30,7 +25,7 @@
 
 <script lang='ts'>
 import { Component, Vue } from "vue-property-decorator";
-import { DateParser } from "./DateParser";
+import DateParser from "./DateParser";
 import store from "@/store";
 import {
     BAlert,
@@ -58,7 +53,7 @@ export default class ControlPanel extends Vue {
         return new DateParser(this.date).toString();
     }
 
-    set CurrentDate(date: string) {
+    set CurrentDate(date: any) {
         store.dispatch("setDate", date);
     }
 
@@ -92,7 +87,7 @@ export default class ControlPanel extends Vue {
         return this.lon;
     }
 
-    update(){
+    update() {
         store.dispatch("updateCondition");
     }
 
@@ -116,7 +111,6 @@ export default class ControlPanel extends Vue {
 @import "node_modules/bootstrap-vue/src/index.scss";
 
 .input-parameters {
-    padding-left: 20px;
     display: flex;
     flex-direction: row;
     .card {
@@ -126,7 +120,7 @@ export default class ControlPanel extends Vue {
     .input-group {
         width: 500px;
     }
-    .w-25{
+    .w-25 {
         width: 19% !important;
     }
 }

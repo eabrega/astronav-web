@@ -3,7 +3,7 @@ interface IDate{
     month:string;
     year:string;
 }
-export class DateParser {
+export default class DateParser {
     private readonly date: Date;
     constructor(date?: string) {
         this.date = new Date(date ?? "");
