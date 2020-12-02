@@ -8,9 +8,14 @@ on:
 jobs:
    build:
     runs-on: ubuntu-latest
-    steps:     
-    - uses: actions/checkout@v2
-    - name: docker build
-      run: |
-        docker build -t eabrega/astronav-web .
-        docker push eabrega/astronav-web:latest
+    steps:  
+      - name: Login
+        uses: docker/login-action@v1.6.0
+        with:
+          username: ${{ secrets.DOCKER_LOGIN }}
+          password: ${{ secrets.DOCKER_PASS }}
+      - uses: actions/checkout@v2
+      - name: docker build
+        run: |
+          docker build -t eabrega/astronav-web .
+          docker push eabrega/astronav-web:latest
