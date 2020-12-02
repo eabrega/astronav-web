@@ -18,4 +18,4 @@ jobs:
       - name: docker build
         run: |
           docker build -t eabrega/astronav-web .
-          docker push eabrega/astronav-web:latest
+          docker push eabrega/astronav-web:${{ GITHUB_RUN_NUMBER }}
