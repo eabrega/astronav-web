@@ -6,7 +6,7 @@ COPY . .
 RUN npm run build
 
 FROM nginx:stable-alpine as production-stage
-RUN --from=build-stage ls -al
+RUN ls -al
 #COPY --from=build-stage /app/docs/ /usr/share/nginx/html
 #COPY default.conf /etc/nginx/conf.d
 #EXPOSE 80
