@@ -1,8 +1,7 @@
-//import { LayoutPlugin } from 'bootstrap-vue';
 import DateParser from '@/components/DateParser'
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { IDrawObjects } from "aaaa-plotter3/dist/drawObjectsFrame";
+import { IDrawObjects } from "canvas-chart-ts/dist/drawObjectsFrame";
 
 Vue.use(Vuex)
 
