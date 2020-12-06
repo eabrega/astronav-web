@@ -33,7 +33,7 @@ export default new Vuex.Store({
     actions: {
         updateCondition: ({ state, commit }) => {
             const date = new DateParser(state.date).toApiString();
-            fetch(`https://astronav.ru/condition/date/${date}/latitude/${state.lat}/longitude/${state.lat}`)
+            fetch(`https://api.starnav.ru/condition/date/${date}/latitude/${state.lat}/longitude/${state.lat}`)
                 .then(response => response.json())
                 .then(data => {
                     commit('SET_STORE', data )
