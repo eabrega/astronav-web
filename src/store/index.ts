@@ -7,15 +7,19 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-        date: new Date().toString(),
+        date: new Date(),
         currentFrameIndex: 0,
         lon: 33,
         lat: 55,
-        condition: Array<IDrawObjects>()
+        condition: Array<IDrawObjects>(),
+        preload: Array<IDrawObjects>(),
     },
     mutations: {
         'SET_STORE'(state, val) {
             state.condition = val
+        },
+        'PRELOAD_STORE'(state, val) {
+            state.preload = val;
         },
         'SET_CURRENT_FRAME_ID'(state, val) {
             state.currentFrameIndex = val
@@ -31,15 +35,13 @@ export default new Vuex.Store({
         }
     },
     actions: {
-        updateCondition: ({ state, commit }) => {
-            const date = new DateParser(state.date).toApiString();
-            fetch(`https://api.starnav.ru/condition/date/${date}/latitude/${state.lat}/longitude/${state.lat}`)
-                .then(response => response.json())
-                .then(data => {
-                    commit('SET_STORE', data )
-                });
+        updateCondition: async ({ state, commit }) => {
+            const objects = await Load(state.date, state.lat, state.lon).then();
+            commit('SET_STORE', objects)
+            const id = state.condition.map(x => timeToString(new Date(x.time)).substring(0, 4)).indexOf(timeToString(new Date()).substring(0, 4));
+            commit('SET_CURRENT_FRAME_ID', id);
         },
-        setCurrentFrameId: ({ commit }, val) => { 
+        setCurrentFrameId: ({ state, commit }, val) => {
             commit('SET_CURRENT_FRAME_ID', val)
         },
         setLat: ({ commit }, val) => {
@@ -56,9 +58,28 @@ export default new Vuex.Store({
     },
     getters: {
         date: state => state.date,
+        timeZone: state => state.date.getTimezoneOffset() / -60,
         currentFrameId: state => state.currentFrameIndex,
         condition: state => state.condition,
         lat: state => state.lat,
-        lon: state => state.lon
+        lon: state => state.lon,
+        displayTime: state => {
+            let time = new Date(state.condition[state.currentFrameIndex].time);
+            return timeToString(time);
+        },
+        preload: state => state.preload
     }
 })
+
+function timeToString(date: Date, GMT: number = 0) {
+    let hoursStr = date.getHours() + GMT >= 10 ? date.getHours() + GMT : `0${date.getHours() + GMT}`
+    let minuteStr = date.getMinutes() >= 10 ? date.getMinutes() : `0${+date.getMinutes()}`
+
+    return `${hoursStr}:${minuteStr}`;
+}
+
+async function Load(date: Date, lat: number, lon: number) {
+    const dateAsString = new DateParser(date).toApiString();
+    let resp = await fetch(`https://api.starnav.ru/condition/date/${dateAsString}/latitude/${lat}/longitude/${lon}`);
+    return resp.json()
+}

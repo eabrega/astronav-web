@@ -31,6 +31,7 @@ export default class PlotterWrapper extends Vue {
         this.plotter!.UpdateDataset = this.CONDITION;
         this.plotter?.DataFrameSelect(this.CURRENT_FRAME_ID);
     }
+    
     @Watch("CURRENT_FRAME_ID")
     frameIdUpdated(value: string, oldValue: string) {
         this.plotter?.DataFrameSelect(this.CURRENT_FRAME_ID);

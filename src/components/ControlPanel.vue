@@ -1,8 +1,12 @@
 <template>
     <div class="input-parameters">
-        <b-input-group size="sm" prepend="Широта">
-            <b-form-input v-model="Lat" type="number"></b-form-input>
-            <b-input-group-prepend is-text>Долгота</b-input-group-prepend>
+        <b-input-group size="sm" prepend="Широта:">
+            <b-form-input 
+                v-model="Lat" 
+                :state="isLatValid"
+                type="number"
+            ></b-form-input>
+            <b-input-group-prepend is-text>Долгота:</b-input-group-prepend>
             <b-form-input
                 v-model.number="Lon"
                 :state="isLonValid"
@@ -58,11 +62,11 @@ export default class ControlPanel extends Vue {
     }
 
     get isLatValid(): boolean {
-        return this.lat < 90;
+        return this.lat <= 90;
     }
 
     get isLonValid(): boolean {
-        return this.lon < 180;
+        return this.lon <= 180;
     }
 
     set Lat(val: number) {

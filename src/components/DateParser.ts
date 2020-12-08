@@ -3,10 +3,11 @@ interface IDate{
     month:string;
     year:string;
 }
+
 export default class DateParser {
     private readonly date: Date;
-    constructor(date?: string) {
-        this.date = new Date(date ?? "");
+    constructor(date?: Date) {
+        this.date = date ?? new Date();
     }
 
     public toString(): string {
@@ -20,8 +21,8 @@ export default class DateParser {
     }
 
     private parse():IDate{
-        let month = this.date.getMonth() >= 9 ? (this.date.getMonth() + 1).toString() : `0${this.date.getMonth() + 1}`
-        let date = this.date.getDate() >= 9 ? this.date.getDate().toString() : `0${this.date.getDate()}`
+        let month = this.date.getMonth() >= 10 ? (this.date.getMonth() + 1).toString() : `0${this.date.getMonth() + 1}`
+        let date = this.date.getDate() >= 10 ? this.date.getDate().toString() : `0${this.date.getDate()}`
         let year = this.date.getFullYear().toString();
         
         return {
