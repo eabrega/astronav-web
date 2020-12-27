@@ -24,7 +24,7 @@ jobs:
       - name: SSH Remote Commands
         uses: appleboy/ssh-action@v0.1.4
         env:
-          TAG: '${GITHUB_RUN_NUMBER}'
+          TAG: '${{github.run_number}}'
           LAG: ${{ secrets.DEPLOY_SERVER_PORT }}
           MAG: '$GITHUB_RUN_NUMBER'
         with:
