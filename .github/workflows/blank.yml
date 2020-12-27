@@ -15,25 +15,21 @@ jobs:
           username: ${{ secrets.DOCKER_LOGIN }}
           password: ${{ secrets.DOCKER_PASS }}
       - uses: actions/checkout@v2
-      #- name: docker build
-      #  run: |
-      #    docker build -t eabrega/astronav-web:$GITHUB_RUN_NUMBER .
-      #    docker push eabrega/astronav-web:$GITHUB_RUN_NUMBER
-      #    git tag b$GITHUB_RUN_NUMBER
-      #    git push origin --tags
+      - name: docker build
+        run: |
+          docker build -t eabrega/astronav-web:$GITHUB_RUN_NUMBER .
+          docker push eabrega/astronav-web:$GITHUB_RUN_NUMBER
+          git tag b$GITHUB_RUN_NUMBER
+          git push origin --tags
       - name: SSH Remote Commands
         uses: appleboy/ssh-action@v0.1.4
         env:
-          TAG: '${{github.run_number}}'
-          LAG: ${{ secrets.DEPLOY_SERVER_PORT }}
-          MAG: '$GITHUB_RUN_NUMBER'
+          TAG: '${{ github.run_number }}'
         with:
-          envs: TAG,LAG,MAG
+          envs: TAG
           host: ${{ secrets.DEPLOY_SERVER_IP }}
           port: ${{ secrets.DEPLOY_SERVER_PORT }}
           username: ${{ secrets.USER_NAME }}
           key: ${{ secrets.KEY }}
           script: |
-            env
-            echo "$TAG,$LAG,$MAG"
             docker run -id -p 7010:80 --name astronav-web-1 eabrega/astronav-web:$TAG
