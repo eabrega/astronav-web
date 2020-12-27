@@ -24,7 +24,7 @@ jobs:
       - name: SSH Remote Commands
         uses: appleboy/ssh-action@v0.1.4
         env:
-          TAG: ${GITHUB_RUN_NUMBER}
+          TAG: ${{GITHUB_RUN_NUMBER}}
           LAG: "LAG" 
           MAG: $GITHUB_RUN_NUMBER
         with:
@@ -34,7 +34,7 @@ jobs:
           username: ${{ secrets.USER_NAME }}
           key: ${{ secrets.KEY }}
           script: |
-            echo "$TAG $LAG $MAG"
+            echo $GITHUB_RUN_NUMBER
             echo $TAG
             echo $MAG
             echo $LAG
