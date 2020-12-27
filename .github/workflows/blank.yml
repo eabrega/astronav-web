@@ -34,8 +34,5 @@ jobs:
           username: ${{ secrets.USER_NAME }}
           key: ${{ secrets.KEY }}
           script: |
-            echo $GITHUB_RUN_NUMBER
-            echo $TAG
-            echo $MAG
-            echo $LAG
+            echo $TAG $LAG $MAG
             docker run -id -p 7010:80 --name astronav-web-1 eabrega/astronav-web:$TAG
