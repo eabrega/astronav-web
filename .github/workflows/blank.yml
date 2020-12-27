@@ -15,12 +15,12 @@ jobs:
           username: ${{ secrets.DOCKER_LOGIN }}
           password: ${{ secrets.DOCKER_PASS }}
       - uses: actions/checkout@v2
-      - name: docker build
-        run: |
-          docker build -t eabrega/astronav-web:$GITHUB_RUN_NUMBER .
-          docker push eabrega/astronav-web:$GITHUB_RUN_NUMBER
-          git tag b$GITHUB_RUN_NUMBER
-          git push origin --tags
+      #- name: docker build
+      #  run: |
+      #    docker build -t eabrega/astronav-web:$GITHUB_RUN_NUMBER .
+      #    docker push eabrega/astronav-web:$GITHUB_RUN_NUMBER
+      #    git tag b$GITHUB_RUN_NUMBER
+      #    git push origin --tags
       - name: SSH Remote Commands
         uses: appleboy/ssh-action@v0.1.4
         env:
