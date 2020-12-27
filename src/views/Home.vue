@@ -1,8 +1,9 @@
 <template>
     <div class="home">
         <ControlPanel />
-        <PlotterWrapper />
         <TimeLine />
+        <PlotterWrapper />
+        <PlotterWrapper />
     </div>
 </template>
 
@@ -10,14 +11,14 @@
 import { Component, Vue } from "vue-property-decorator";
 import ControlPanel from "@/components/ControlPanel.vue";
 import PlotterWrapper from "@/components/PlotterWrapper.vue";
-import TimeLine from '@/components/TimeLine/TimeLine.vue'
+import TimeLine from "@/components/TimeLine/TimeLine.vue";
 import store from "@/store";
 
 @Component({
     components: {
         PlotterWrapper,
         ControlPanel,
-        TimeLine
+        TimeLine,
     },
 })
 export default class Home extends Vue {
@@ -28,11 +29,11 @@ export default class Home extends Vue {
 </script>
 
 <style lang="scss" scoped>
-    .home{
-        margin-left: 50px;
-        display: block;
-        width: 1200px;
-        flex-direction: column;
-        justify-self: center;
-    }
+.home {
+    margin-left: 50px;
+    display: block;
+    width: 1200px;
+    flex-direction: column;
+    justify-self: center;
+}
 </style>

@@ -7,7 +7,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-        date: new Date(),
+        date: new Date().toString(),
         currentFrameIndex: 0,
         lon: 33,
         lat: 55,
@@ -58,7 +58,7 @@ export default new Vuex.Store({
     },
     getters: {
         date: state => state.date,
-        timeZone: state => state.date.getTimezoneOffset() / -60,
+        timeZone: state => new Date(state.date).getTimezoneOffset() / -60,
         currentFrameId: state => state.currentFrameIndex,
         condition: state => state.condition,
         lat: state => state.lat,
@@ -78,8 +78,8 @@ function timeToString(date: Date, GMT: number = 0) {
     return `${hoursStr}:${minuteStr}`;
 }
 
-async function Load(date: Date, lat: number, lon: number) {
+async function Load(date: string, lat: number, lon: number) {
     const dateAsString = new DateParser(date).toApiString();
-    let resp = await fetch(`https://api.starnav.ru/condition/date/${dateAsString}/latitude/${lat}/longitude/${lon}`);
+    let resp = await fetch(`http://api.astronav.ru/condition/date/${dateAsString}/latitude/${lat}/longitude/${lon}`);
     return resp.json()
 }

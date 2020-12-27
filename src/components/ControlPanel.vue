@@ -122,7 +122,7 @@ export default class ControlPanel extends Vue {
     }
 
     .input-group {
-        width: 500px;
+        width: 600px;
     }
     .w-25 {
         width: 19% !important;
