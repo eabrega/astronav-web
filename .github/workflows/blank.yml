@@ -21,3 +21,10 @@ jobs:
           docker push eabrega/astronav-web:$GITHUB_RUN_NUMBER
           git tag b$GITHUB_RUN_NUMBER
           git push origin --tags
+      - name: SSH Remote Commands
+        uses: appleboy/ssh-action@v0.1.4
+        with:
+          host: ${{ secrets.DEPLOY_SERVER_IP }}
+          port: ${{ secrets.DEPLOY_SERVER_PORT }}
+          key: ${{ secrets.KEY }}
+          script: docker run -id -p 7010:80 --name astronav-web-1 eabrega/astronav-web:$GITHUB_RUN_NUMBER
