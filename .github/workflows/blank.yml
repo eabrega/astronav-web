@@ -24,13 +24,15 @@ jobs:
       - name: SSH Remote Commands
         uses: appleboy/ssh-action@v0.1.4
         env:
-          TAG: $GITHUB_RUN_NUMBER
+          TAG: ${{ GITHUB_RUN_NUMBER }}
+          LAG: "LAG" 
+          MAG: $GITHUB_RUN_NUMBER
         with:
-          envs: TAG 
+          envs: TAG, LAG, MAG
           host: ${{ secrets.DEPLOY_SERVER_IP }}
           port: ${{ secrets.DEPLOY_SERVER_PORT }}
           username: ${{ secrets.USER_NAME }}
           key: ${{ secrets.KEY }}
           script: |
-            echo $TAG
+            echo "$TAG $LAG $MAG"
             docker run -id -p 7010:80 --name astronav-web-1 eabrega/astronav-web:$TAG
