@@ -26,5 +26,6 @@ jobs:
         with:
           host: ${{ secrets.DEPLOY_SERVER_IP }}
           port: ${{ secrets.DEPLOY_SERVER_PORT }}
+          username: ${{ secrets.USER_NAME }}
           key: ${{ secrets.KEY }}
           script: docker run -id -p 7010:80 --name astronav-web-1 eabrega/astronav-web:$GITHUB_RUN_NUMBER
