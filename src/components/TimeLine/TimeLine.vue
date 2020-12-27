@@ -2,7 +2,7 @@
     <div>
         <div class="time-line">
             <b-button size="sm" variant="secondary">Вчера</b-button>
-            <b-input-group size="sm" :prepend="'GMT+0 ' + DISPLAY_TIME" class="range">
+            <b-input-group size="sm" :prepend="DISPLAY_TIME" class="range">
                 <b-form-input
                     size="sm"
                     type="range"
@@ -20,7 +20,7 @@
 import store from "@/store";
 import { Component, Vue, Watch } from "vue-property-decorator";
 import DateParser from "../DateParser";
-import { BFormInput } from "bootstrap-vue";
+import { BFormInput, BAlert } from "bootstrap-vue";
 
 @Component
 export default class TimeLine extends Vue {
@@ -28,6 +28,7 @@ export default class TimeLine extends Vue {
     constructor() {
         super();
         Vue.component("b-form-input", BFormInput);
+        Vue.component("b-alert", BAlert);
     }
 
     get FRAME_ID() {
@@ -60,6 +61,7 @@ export default class TimeLine extends Vue {
 </script>
 <style scoped lang="scss">
 .time-line {
+    width: 600px;
     margin-top: 20px;
     display: flex;
 

@@ -6,8 +6,8 @@ interface IDate{
 
 export default class DateParser {
     private readonly date: Date;
-    constructor(date?: Date) {
-        this.date = date ?? new Date();
+    constructor(date: string) {
+        this.date = new Date(date);
     }
 
     public toString(): string {
