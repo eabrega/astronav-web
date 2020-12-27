@@ -32,4 +32,5 @@ jobs:
           username: ${{ secrets.USER_NAME }}
           key: ${{ secrets.KEY }}
           script: |
+            docker rm -f astronav-web-1
             docker run -id -p 7010:80 --name astronav-web-1 eabrega/astronav-web:$TAG
