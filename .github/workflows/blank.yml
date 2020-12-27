@@ -35,4 +35,5 @@ jobs:
           key: ${{ secrets.KEY }}
           script: |
             env
+            echo "$TAG,$LAG,$MAG"
             docker run -id -p 7010:80 --name astronav-web-1 eabrega/astronav-web:$TAG
