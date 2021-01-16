@@ -1,13 +1,19 @@
-interface IDate{
-    date:string;
-    month:string;
-    year:string;
+interface IDate {
+    date: string;
+    month: string;
+    year: string;
 }
 
 export default class DateParser {
     private readonly date: Date;
-    constructor(date: string) {
-        this.date = new Date(date);
+    constructor(date: Date | String) {
+        typeof(date) === 'string'
+            ? this.date = new Date(date)
+            : this.date = <Date>date;
+    }
+
+    get Date() { 
+        return this.date;
     }
 
     public toString(): string {
@@ -20,11 +26,19 @@ export default class DateParser {
         return `${parsedDate.date}-${parsedDate.month}-${parsedDate.year}`;
     }
 
-    private parse():IDate{
-        let month = this.date.getMonth() >= 10 ? (this.date.getMonth() + 1).toString() : `0${this.date.getMonth() + 1}`
-        let date = this.date.getDate() >= 10 ? this.date.getDate().toString() : `0${this.date.getDate()}`
+    private parse(): IDate {
+        let month =
+            this.date.getMonth() >= 9
+                ? (this.date.getMonth() + 1).toString()
+                : `0${this.date.getMonth() + 1}`
+
+        let date =
+            this.date.getDate() >= 10
+                ? this.date.getDate().toString()
+                : `0${this.date.getDate()}`
+
         let year = this.date.getFullYear().toString();
-        
+
         return {
             date: date,
             month: month,

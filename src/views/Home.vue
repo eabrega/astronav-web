@@ -3,7 +3,6 @@
         <ControlPanel />
         <TimeLine />
         <PlotterWrapper />
-        <PlotterWrapper />
     </div>
 </template>
 

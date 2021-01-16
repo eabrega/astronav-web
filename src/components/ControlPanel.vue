@@ -1,8 +1,8 @@
 <template>
     <div class="input-parameters">
         <b-input-group size="sm" prepend="Широта:">
-            <b-form-input 
-                v-model="Lat" 
+            <b-form-input
+                v-model="Lat"
                 :state="isLatValid"
                 type="number"
             ></b-form-input>
@@ -27,7 +27,7 @@
     </div>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import DateParser from "./DateParser";
 import store from "@/store";
@@ -51,14 +51,13 @@ import {
 export default class ControlPanel extends Vue {
     private lat = store.state.lat;
     private lon = store.state.lon;
-    private date = store.state.date;
 
-    get CurrentDate() {
-        return new DateParser(this.date).toString();
+    get CurrentDate(): string {
+        return new DateParser(store.state.date).toString();
     }
 
-    set CurrentDate(date: any) {
-        store.dispatch("setDate", date);
+    set CurrentDate(date: string) {
+        store.dispatch("setDate", new DateParser(date).Date);
     }
 
     get isLatValid(): boolean {

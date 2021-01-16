@@ -1,7 +1,9 @@
 <template>
     <div>
         <div class="time-line">
-            <b-button size="sm" variant="secondary">Вчера</b-button>
+            <b-button size="sm" @click="yesterday" variant="secondary">
+                Вчера
+            </b-button>
             <b-input-group size="sm" :prepend="DISPLAY_TIME" class="range">
                 <b-form-input
                     size="sm"
@@ -11,7 +13,7 @@
                     :max="MAX_LENGTH"
                 ></b-form-input>
             </b-input-group>
-            <b-button size="sm" variant="secondary">Завтра</b-button>
+            <b-button size="sm" @click="tomorrow" variant="secondary">Завтра</b-button>
         </div>
     </div>
 </template>
@@ -31,6 +33,18 @@ export default class TimeLine extends Vue {
         Vue.component("b-alert", BAlert);
     }
 
+    yesterday() {
+        let newDate = new Date(store.state.date);
+        newDate.setDate(newDate.getDate() - 1);
+        store.dispatch("setDate", newDate);
+    }
+
+    tomorrow() {
+        let newDate = new Date(store.state.date);
+        newDate.setDate(newDate.getDate() + 1);
+        store.dispatch("setDate", newDate);
+    }
+
     get FRAME_ID() {
         return store.state.currentFrameIndex;
     }
@@ -43,11 +57,6 @@ export default class TimeLine extends Vue {
         store.dispatch("setCurrentFrameId", Number(val));
     }
 
-    @Watch("FRAME_ID")
-    conditionsUpdated(value: string, oldValue: string) {
-        this.conditionIsLoaded = true;
-    }
-
     get DISPLAY_TIME() {
         return this.conditionIsLoaded == true
             ? store.getters.displayTime
@@ -56,6 +65,11 @@ export default class TimeLine extends Vue {
 
     get TIME_ZONE() {
         return store.getters.timeZone;
+    }
+
+    @Watch("FRAME_ID")
+    conditionsUpdated(value: string, oldValue: string) {
+        this.conditionIsLoaded = true;
     }
 }
 </script>
