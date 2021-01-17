@@ -32,7 +32,7 @@ export default new Vuex.Store({
     },
     actions: {
         updateCondition: async ({ state, commit }) => {
-            const objects = await Load(new DateParser(state.date).toString(), state.lat, state.lon).then();
+            const objects = await Load(new DateParser(state.date).toString(), state.lat, state.lon, state.date.getTimezoneOffset()).then();
             commit("SET_STORE", objects);
             const id = state.condition
                 .map((x) => timeToString(new Date(x.time)).substring(0, 4))
@@ -49,7 +49,7 @@ export default new Vuex.Store({
             commit("SET_LON", val);
         },
         setDate: async ({ state, commit }, val) => {
-            const objects = await Load(new DateParser(state.date).toString(), state.lat, state.lon).then();
+            const objects = await Load(new DateParser(state.date).toString(), state.lat, state.lon, state.date.getTimezoneOffset()).then();
             commit("SET_STORE", objects);
             commit("SET_CURRENT_FRAME_ID", state.currentFrameIndex);
             commit("SET_DATE", val);
@@ -58,7 +58,10 @@ export default new Vuex.Store({
     modules: {},
     getters: {
         date: (state) => state.date,
-        timeZone: (state) => state.date.getTimezoneOffset() / -60,
+        timeZone: (state) =>
+            state.date.getTimezoneOffset() < 0
+                ? '+' + state.date.getTimezoneOffset() / -60
+                : '-' + state.date.getTimezoneOffset() / 60,
         currentFrameId: (state) => state.currentFrameIndex,
         condition: (state) => state.condition,
         lat: (state) => state.lat,
@@ -70,11 +73,11 @@ export default new Vuex.Store({
     }
 });
 
-function timeToString(date: Date, GMT: number = 0) {
+function timeToString(date: Date) {
     let hoursStr =
-        date.getHours() + GMT >= 10
-            ? date.getHours() + GMT
-            : `0${date.getHours() + GMT}`;
+        date.getHours() >= 10
+            ? date.getHours() 
+            : `0${date.getHours() }`;
     let minuteStr =
         date.getMinutes() >= 10
             ? date.getMinutes()
@@ -83,10 +86,10 @@ function timeToString(date: Date, GMT: number = 0) {
     return `${hoursStr}:${minuteStr}`;
 }
 
-async function Load(date: string, lat: number, lon: number) {
+async function Load(date: string, lat: number, lon: number, gmtCorrector: number) {
     const dateAsString = new DateParser(date).toApiString();
     let resp = await fetch(
-        `http://api.astronav.ru/condition/date/${dateAsString}/latitude/${lat}/longitude/${lon}`
+        `http://api.astronav.ru/condition/date/${dateAsString}/gmt/${gmtCorrector}/latitude/${lat}/longitude/${lon}`
     );
     return resp.json();
 }

@@ -4,7 +4,8 @@
             <b-button size="sm" @click="yesterday" variant="secondary">
                 Вчера
             </b-button>
-            <b-input-group size="sm" :prepend="DISPLAY_TIME" class="range">
+            <b-input-group size="sm" :prepend="`UTC${TIME_ZONE}`" class="range">
+                <b-input-group-prepend is-text>{{DISPLAY_TIME}}</b-input-group-prepend>
                 <b-form-input
                     size="sm"
                     type="range"
@@ -21,7 +22,6 @@
 <script lang="ts">
 import store from "@/store";
 import { Component, Vue, Watch } from "vue-property-decorator";
-import DateParser from "../DateParser";
 import { BFormInput, BAlert } from "bootstrap-vue";
 
 @Component

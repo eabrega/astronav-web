@@ -2,7 +2,7 @@
     <div class="input-parameters">
         <b-input-group size="sm" prepend="Широта:">
             <b-form-input
-                v-model="Lat"
+                v-model.number="Lat"
                 :state="isLatValid"
                 type="number"
             ></b-form-input>
