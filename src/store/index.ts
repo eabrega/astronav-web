@@ -90,7 +90,7 @@ function timeToString(date: Date) {
 async function Load(date: string, lat: number, lon: number, gmtCorrector: number) {
     const dateAsString = new DateParser(date).toApiString();
     let resp = await fetch(
-        `http://api.astronav.ru/condition/date/${dateAsString}/gmt/${gmtCorrector}/latitude/${lat}/longitude/${lon}`
+        `https://api.astronav.ru/condition/date/${dateAsString}/gmt/${gmtCorrector}/latitude/${lat}/longitude/${lon}`
     );
     return resp.json();
 }
