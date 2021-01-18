@@ -1,29 +1,32 @@
 <template>
     <div id="app">
         <div id="nav">
-            <router-link to="/">Home</router-link> |
-            <router-link to="/about">About</router-link>
+            <router-link to="/">Карта</router-link>
+            <router-link to="/about">О проекте</router-link>
         </div>
+        <hr>
         <router-view />
     </div>
 </template>
 
 <style lang="scss">
+@import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500&display=swap");
 #app {
-    font-family: Avenir, Helvetica, Arial, sans-serif;
+    font-family: "Ubuntu", sans-serif;
+    font-weight: 400;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    text-align: center;
     color: #2c3e50;
 }
 
 #nav {
-    padding: 30px;
-
+    padding-top: 20px;
+    padding-left: 50px;
     a {
         font-weight: bold;
+        font-size: 1.5em;
         color: #2c3e50;
-
+        padding-right: 40px;
         &.router-link-exact-active {
             color: #42b983;
         }

@@ -64,6 +64,7 @@ export default new Vuex.Store({
                 : '-' + state.date.getTimezoneOffset() / 60,
         currentFrameId: (state) => state.currentFrameIndex,
         condition: (state) => state.condition,
+        currentCondition: (state) => state.condition[state.currentFrameIndex]?.skyObject ?? null,
         lat: (state) => state.lat,
         lon: (state) => state.lon,
         displayTime: (state) => {
