@@ -32,19 +32,15 @@ import { Component, Vue } from "vue-property-decorator";
 import DateParser from "./DateParser";
 import store from "@/store";
 import {
-    BAlert,
     BButton,
-    BButtonGroup,
     BCard,
     BFormGroup,
     BFormInput,
     BFormInvalidFeedback,
-    BIcon,
     BInputGroup,
     BInputGroupAppend,
     BInputGroupPrepend,
     BInputGroupText,
-    BProgress,
 } from "bootstrap-vue";
 
 @Component

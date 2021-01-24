@@ -1,21 +1,35 @@
-import DateParser from "@/components/DateParser";
 import Vue from "vue";
 import Vuex from "vuex";
 import { IDrawObjects } from "canvas-chart-ts/dist/drawObjectsFrame";
+import { ISkyInfo, ISkyInfoItem } from "@/store/ISkyInfo"
+import DateParser from "@/components/DateParser";
 
 Vue.use(Vuex);
+
+export interface IState {
+    date: Date;
+    condition: Array<IDrawObjects>;
+    info: Array<ISkyInfoItem>;
+    currentFrameIndex: number,
+    lon: number,
+    lat: number,
+}
 
 export default new Vuex.Store({
     state: {
         date: new Date(),
+        condition: Array<IDrawObjects>(),
+        info: Array<ISkyInfoItem>(),
         currentFrameIndex: 0,
         lon: 33,
         lat: 55,
-        condition: Array<IDrawObjects>(),
-    },
+    } as IState,
     mutations: {
         SET_STORE(state, val) {
             state.condition = val;
+        },
+        SET_INFO(state, val) {
+            state.info = val;
         },
         SET_CURRENT_FRAME_ID(state, val) {
             state.currentFrameIndex = val;
@@ -33,7 +47,9 @@ export default new Vuex.Store({
     actions: {
         updateCondition: async ({ state, commit }) => {
             const objects = await Load(new DateParser(state.date).toString(), state.lat, state.lon, state.date.getTimezoneOffset()).then();
+            const info = await LoadInfo(new DateParser(state.date).toString(), state.lat, state.lon, state.date.getTimezoneOffset()).then();
             commit("SET_STORE", objects);
+            commit("SET_INFO", info.objects);
             const id = state.condition
                 .map((x) => timeToString(new Date(x.time)).substring(0, 4))
                 .indexOf(timeToString(new Date()).substring(0, 4));
@@ -50,7 +66,9 @@ export default new Vuex.Store({
         },
         setDate: async ({ state, commit }, val) => {
             const objects = await Load(new DateParser(state.date).toString(), state.lat, state.lon, state.date.getTimezoneOffset()).then();
+            const info = await LoadInfo(new DateParser(state.date).toString(), state.lat, state.lon, state.date.getTimezoneOffset()).then();
             commit("SET_STORE", objects);
+            commit("SET_INFO", info.objects);
             commit("SET_CURRENT_FRAME_ID", state.currentFrameIndex);
             commit("SET_DATE", val);
         },
@@ -64,7 +82,8 @@ export default new Vuex.Store({
                 : '-' + state.date.getTimezoneOffset() / 60,
         currentFrameId: (state) => state.currentFrameIndex,
         condition: (state) => state.condition,
-        currentCondition: (state) => state.condition[state.currentFrameIndex]?.skyObject ?? null,
+        info: (state) => state.info,
+        currentCondition: (state) => state.condition[state.currentFrameIndex]?.objects ?? null,
         lat: (state) => state.lat,
         lon: (state) => state.lon,
         displayTime: (state) => {
@@ -77,8 +96,8 @@ export default new Vuex.Store({
 function timeToString(date: Date) {
     let hoursStr =
         date.getHours() >= 10
-            ? date.getHours() 
-            : `0${date.getHours() }`;
+            ? date.getHours()
+            : `0${date.getHours()}`;
     let minuteStr =
         date.getMinutes() >= 10
             ? date.getMinutes()
@@ -90,7 +109,15 @@ function timeToString(date: Date) {
 async function Load(date: string, lat: number, lon: number, gmtCorrector: number) {
     const dateAsString = new DateParser(date).toApiString();
     let resp = await fetch(
-        `https://api.astronav.ru/condition/date/${dateAsString}/gmt/${gmtCorrector}/latitude/${lat}/longitude/${lon}`
+        `https://api.astronav.ru/sky/condition/date/${dateAsString}/gmt/${gmtCorrector}/latitude/${lat}/longitude/${lon}`
+    );
+    return resp.json();
+}
+
+async function LoadInfo(date: string, lat: number, lon: number, gmtCorrector: number): Promise<ISkyInfo> {
+    const dateAsString = new DateParser(date).toApiString();
+    let resp = await fetch(
+        `https://api.astronav.ru/sky/info/date/${dateAsString}/gmt/${gmtCorrector}/latitude/${lat}/longitude/${lon}`
     );
     return resp.json();
 }
