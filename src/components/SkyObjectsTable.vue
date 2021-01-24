@@ -23,6 +23,12 @@
             <template #cell(name)="data">
                 {{ SINONIMS.get(data.item.name) }}
             </template>
+            <template #cell(phase)="data">
+                {{ getF(data.item.name) }}
+            </template>
+             <template #cell(diametr)="data">
+                {{ getD(data.item.name) }}
+            </template>
         </b-table>
     </div>
 </template>
@@ -31,10 +37,9 @@
 import store from "@/store";
 import { Component, Vue, Watch } from "vue-property-decorator";
 import { BTable, BootstrapVueIcons } from "bootstrap-vue";
-
+import { ISkyInfo } from "@/store/ISkyInfo";
 @Component
 export default class SkyObjectsTable extends Vue {
-    private conditionIsLoaded: boolean = false;
     private readonly sinonims = new Map([
         ["Mercury", "Меркурий"],
         ["Venus", "Венера"],
@@ -56,8 +61,11 @@ export default class SkyObjectsTable extends Vue {
     }
 
     get ITEMS() {
-        let table = store.getters.currentCondition;
-        return table;
+        return store.getters.currentCondition;
+    }
+
+    get INFO(): Array<ISkyInfo> {
+        return store.getters.info;
     }
 
     get FIELDS() {
@@ -65,12 +73,11 @@ export default class SkyObjectsTable extends Vue {
             {
                 key: "visible",
                 label: "",
-
                 class: "v-column",
             },
             {
                 key: "name",
-                label: "Небесное тело",
+                label: "Светило",
                 sortable: false,
                 class: "test2",
             },
@@ -86,7 +93,23 @@ export default class SkyObjectsTable extends Vue {
                 sortable: true,
                 class: "test",
             },
+            {
+                key: "phase",
+                label: "Фаза",
+            },
+             {
+                key: "diametr",
+                label: "Размер",
+            },
         ];
+    }
+
+    getF(str: string): number {
+        return this.INFO?.find((i) => i.name == str)?.f ?? 0;
+    }
+
+    getD(str: string): number {
+        return this.INFO?.find((i) => i.name == str)?.d ?? 0;
     }
 
     isHidden(item: any, type: any) {
@@ -111,9 +134,6 @@ export default class SkyObjectsTable extends Vue {
     padding-right: 20px !important;
 }
 
-.num {
-    width: 50px;
-}
 tr td,
 th {
     padding-left: 20px !important;
@@ -128,5 +148,10 @@ th {
 .unvisiblity-object {
     color: rgb(43, 41, 41);
     font-weight: 400;
+}
+.v-column{
+    width: 30px;
+    padding-left: 10px !important;
+    padding-right: 10px !important;
 }
 </style>
