@@ -9,7 +9,7 @@
   "dependencies": {
     "bootstrap": "4.5.3",
     "bootstrap-vue": "2.21.2",
-    "canvas-chart-ts": "0.0.4",
+    "canvas-chart-ts": "0.0.5",
     "core-js": "^3.8.0",
     "vue": "^2.6.12",
     "vue-class-component": "^7.2.6",

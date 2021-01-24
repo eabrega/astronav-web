@@ -13,7 +13,6 @@ import ControlPanel from "@/components/ControlPanel.vue";
 import PlotterWrapper from "@/components/PlotterWrapper.vue";
 import TimeLine from "@/components/TimeLine.vue";
 import SkyObjectsTable from "@/components/SkyObjectsTable.vue"
-import store from "@/store";
 
 @Component({
     components: {
