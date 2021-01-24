@@ -1,5 +1,5 @@
 <template>
-    <div class="sky-objects-table">
+    <div class="sky-objects">
         <b-table
             small
             hover
@@ -24,10 +24,10 @@
                 {{ SINONIMS.get(data.item.name) }}
             </template>
             <template #cell(phase)="data">
-                {{ getF(data.item.name) }}
+                {{ getF(data.item.name).toFixed(2) }}
             </template>
-             <template #cell(diametr)="data">
-                {{ getD(data.item.name) }}
+            <template #cell(diametr)="data">
+                {{ getD(data.item.name).toFixed(2) }}
             </template>
         </b-table>
     </div>
@@ -35,7 +35,7 @@
 
 <script lang="ts">
 import store from "@/store";
-import { Component, Vue, Watch } from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 import { BTable, BootstrapVueIcons } from "bootstrap-vue";
 import { ISkyInfo } from "@/store/ISkyInfo";
 @Component
@@ -79,27 +79,28 @@ export default class SkyObjectsTable extends Vue {
                 key: "name",
                 label: "Светило",
                 sortable: false,
-                class: "test2",
             },
             {
                 key: "x",
                 label: "Азимут",
                 sortable: true,
-                class: "test",
+                class: "column-right-align",
             },
             {
                 key: "y",
                 label: "Угол места",
                 sortable: true,
-                class: "test",
+                class: "column-right-align",
+            },
+            {
+                key: "diametr",
+                label: "Размер",
+                class: "column-right-align",
             },
             {
                 key: "phase",
                 label: "Фаза",
-            },
-             {
-                key: "diametr",
-                label: "Размер",
+                class: "column-right-align",
             },
         ];
     }
@@ -120,38 +121,28 @@ export default class SkyObjectsTable extends Vue {
 }
 </script>
 <style lang="scss">
-.sky-objects-table {
+.sky-objects {
     margin-top: 30px;
     width: 600px;
-}
 
-.test {
-    text-align: right !important;
-    padding-right: 20px !important;
-}
-.test2 {
-    text-align: left !important;
-    padding-right: 20px !important;
-}
+    .column-right-align {
+        text-align: right !important;
+        padding-right: 20px !important;
+        padding-left: 0px !important;
+    }
 
-tr td,
-th {
-    padding-left: 20px !important;
-    padding-right: 20px !important;
-}
+    .visiblity-object {
+        color: black;
+        font-weight: 500;
+    }
 
-.visiblity-object {
-    color: black;
-    font-weight: 500;
-}
-
-.unvisiblity-object {
-    color: rgb(43, 41, 41);
-    font-weight: 400;
-}
-.v-column{
-    width: 30px;
-    padding-left: 10px !important;
-    padding-right: 10px !important;
+    .unvisiblity-object {
+        color: rgba(43, 41, 41, 0.5);
+        font-weight: 500;
+    }
+    
+    .v-column {
+        width: 30px;
+    }
 }
 </style>
