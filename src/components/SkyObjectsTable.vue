@@ -6,6 +6,7 @@
             :items="ITEMS"
             :fields="FIELDS"
             :tbody-tr-class="isHidden"
+            :busy="IS_BUSY"
             responsive="sm"
         >
             <template #cell(visible)="data">
@@ -29,6 +30,12 @@
             <template #cell(diametr)="data">
                 {{ getD(data.item.name).toFixed(2) }}
             </template>
+            <template #table-busy>
+                <div class="text-center text-primary loading">
+                    <b-spinner class="align-middle"></b-spinner>
+                    <strong>Расчет траекторий...</strong>
+                </div>
+            </template>
         </b-table>
     </div>
 </template>
@@ -36,8 +43,8 @@
 <script lang="ts">
 import store from "@/store";
 import { Component, Vue } from "vue-property-decorator";
-import { BTable, BootstrapVueIcons } from "bootstrap-vue";
-import { ISkyInfo, ISkyInfoItem } from "@/store/ISkyInfo";
+import { BTable, BootstrapVueIcons, BSpinner } from "bootstrap-vue";
+import { ISkyInfoItem } from "@/store/ISkyInfo";
 @Component
 export default class SkyObjectsTable extends Vue {
     private readonly sinonims = new Map([
@@ -54,6 +61,7 @@ export default class SkyObjectsTable extends Vue {
         super();
         Vue.use(BootstrapVueIcons);
         Vue.component("b-table", BTable);
+        Vue.component("b-spinner", BSpinner);
     }
 
     get SINONIMS() {
@@ -105,6 +113,12 @@ export default class SkyObjectsTable extends Vue {
         ];
     }
 
+    get IS_BUSY() {
+        return store.getters.info && store.getters.currentCondition
+            ? false
+            : true;
+    }
+
     getF(str: string): number {
         return this.INFO?.find((i) => i.name == str)?.f ?? 0;
     }
@@ -140,9 +154,20 @@ export default class SkyObjectsTable extends Vue {
         color: rgba(43, 41, 41, 0.5);
         font-weight: 500;
     }
-    
+
     .v-column {
         width: 30px;
+    }
+
+    .b-table[aria-busy="true"] {
+        opacity: 0.6;
+    }
+
+    .loading {
+        padding-top: 40px;
+        .align-middle {
+            margin-right: 10px;
+        }
     }
 }
 </style>
