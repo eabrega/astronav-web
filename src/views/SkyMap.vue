@@ -1,5 +1,5 @@
 <template>
-    <div class="home">
+    <div class="sky-map">
         <ControlPanel />
         <TimeLine />
         <PlotterWrapper />
@@ -22,7 +22,7 @@ import SkyObjectsTable from "@/components/SkyObjectsTable.vue";
         SkyObjectsTable,
     },
 })
-export default class Home extends Vue {
+export default class SkyMap extends Vue {
     constructor() {
         super();
     }
@@ -36,9 +36,9 @@ export default class Home extends Vue {
 </script>
 
 <style lang="scss" scoped>
-.home {
+.sky-map {
     margin-left: 50px;
-    margin-top: 50px;
+    margin-top: 25px;
     display: block;
     width: 1200px;
     flex-direction: column;

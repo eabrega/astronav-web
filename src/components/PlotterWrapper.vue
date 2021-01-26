@@ -1,5 +1,5 @@
 <template>
-    <div class="hello">
+    <div class="sky-plotter">
         <canvas id="canva" width="1200" height="300"></canvas>
     </div>
 </template>
@@ -57,7 +57,7 @@ export default class PlotterWrapper extends Vue {
 }
 </script>
 <style scoped lang="scss">
-canvas {
+.sky-plotter {
     margin-top: 20px;
 }
 </style>
