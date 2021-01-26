@@ -2,12 +2,23 @@
     <div class="schedule">
         <h1>Сегодня в программе</h1>
         <p>Регулярные события</p>
-        
     </div>
 </template>
 
 <script>
-export default {};
+import { Component, Vue } from "vue-property-decorator";
+@Component 
+export default class Schedule extends Vue {
+    constructor() {
+        super();
+    }
+
+    mounted() {
+       // if (this.$store.getters.condition?.length == 0) {
+            this.$store?.dispatch("getEvents");
+       // }
+    }
+}
 </script>
 
 <style lang="scss">

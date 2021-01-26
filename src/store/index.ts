@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import { IDrawObjects } from "canvas-chart-ts/dist/drawObjectsFrame";
-import { ISkyInfo, ISkyInfoItem } from "@/store/ISkyInfo"
+import { ISkyEvent, ISkyInfo, ISkyInfoItem } from "@/store/ISkyInfo"
 import DateParser from "@/components/DateParser";
 
 Vue.use(Vuex);
@@ -9,6 +9,7 @@ Vue.use(Vuex);
 export interface IState {
     date: Date;
     condition: Array<IDrawObjects>;
+    events: Array<ISkyEvent>;
     info: Array<ISkyInfoItem>;
     currentFrameIndex: number,
     lon: number,
@@ -31,6 +32,9 @@ export default new Vuex.Store({
         SET_INFO(state, val) {
             state.info = val;
         },
+        SET_EVENTS(state, val) { 
+            state.events = val;
+        },
         SET_CURRENT_FRAME_ID(state, val) {
             state.currentFrameIndex = val;
         },
@@ -47,13 +51,17 @@ export default new Vuex.Store({
     actions: {
         updateCondition: async ({ state, commit }) => {
             const objects = await Load(new DateParser(state.date).toString(), state.lat, state.lon, state.date.getTimezoneOffset()).then();
-            const info = await LoadInfo(new DateParser(state.date).toString(), state.lat, state.lon, state.date.getTimezoneOffset()).then();
+            const info = await LoadInfo(new DateParser(state.date).toString(), state.lat, state.lon).then();
             commit("SET_STORE", objects);
             commit("SET_INFO", info.objects);
             const id = state.condition
                 .map((x) => timeToString(new Date(x.time)).substring(0, 4))
                 .indexOf(timeToString(new Date()).substring(0, 4));
             commit("SET_CURRENT_FRAME_ID", id);
+        },
+        getEvents: async ({ state, commit }) => {
+            const events = await LoadEvents(new DateParser(state.date).toString(), state.lat, state.lon, state.date.getTimezoneOffset()).then();
+            commit("SET_EVENTS", events);
         },
         setCurrentFrameId: ({ state, commit }, val) => {
             commit("SET_CURRENT_FRAME_ID", val);
@@ -66,7 +74,7 @@ export default new Vuex.Store({
         },
         setDate: async ({ state, commit }, val) => {
             const objects = await Load(new DateParser(state.date).toString(), state.lat, state.lon, state.date.getTimezoneOffset()).then();
-            const info = await LoadInfo(new DateParser(state.date).toString(), state.lat, state.lon, state.date.getTimezoneOffset()).then();
+            const info = await LoadInfo(new DateParser(state.date).toString(), state.lat, state.lon).then();
             commit("SET_STORE", objects);
             commit("SET_INFO", info.objects);
             commit("SET_CURRENT_FRAME_ID", state.currentFrameIndex);
@@ -114,10 +122,18 @@ async function Load(date: string, lat: number, lon: number, gmtCorrector: number
     return resp.json();
 }
 
-async function LoadInfo(date: string, lat: number, lon: number, gmtCorrector: number): Promise<ISkyInfo> {
+async function LoadInfo(date: string, lat: number, lon: number): Promise<ISkyInfo> {
     const dateAsString = new DateParser(date).toApiString();
     let resp = await fetch(
-        `https://api.astronav.ru/sky/info/date/${dateAsString}/gmt/${gmtCorrector}/latitude/${lat}/longitude/${lon}`
+        `https://api.astronav.ru/sky/info/date/${dateAsString}/latitude/${lat}/longitude/${lon}`
+    );
+    return resp.json();
+}
+
+async function LoadEvents(date: string, lat: number, lon: number, gmtCorrector: number) {
+    const dateAsString = new DateParser(date).toApiString();
+    let resp = await fetch(
+        `https://api.astronav.ru/sky/event/date/${dateAsString}/gmt/${gmtCorrector}/latitude/${lat}/longitude/${lon}`
     );
     return resp.json();
 }

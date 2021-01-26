@@ -31,7 +31,6 @@ export default class PlotterWrapper extends Vue {
 
     @Watch("CONDITION")
     conditionsUpdated(value: string, oldValue: string) {
-        console.log("getter", this.$store.getters.condition?.length != 0)
         this.plotter!.UpdateDataset = this.CONDITION;
         this.plotter?.DataFrameSelect(this.CURRENT_FRAME_ID);
     }
