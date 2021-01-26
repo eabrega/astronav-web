@@ -81,7 +81,7 @@ export default new Vuex.Store({
                 ? '+' + state.date.getTimezoneOffset() / -60
                 : '-' + state.date.getTimezoneOffset() / 60,
         currentFrameId: (state) => state.currentFrameIndex,
-        condition: (state) => state.condition,
+        condition: (state) => state.condition ?? null,
         info: (state) => state.info,
         currentCondition: (state) => state.condition[state.currentFrameIndex]?.objects ?? null,
         lat: (state) => state.lat,

@@ -12,19 +12,25 @@ import { Component, Vue } from "vue-property-decorator";
 import ControlPanel from "@/components/ControlPanel.vue";
 import PlotterWrapper from "@/components/PlotterWrapper.vue";
 import TimeLine from "@/components/TimeLine.vue";
-import SkyObjectsTable from "@/components/SkyObjectsTable.vue"
+import SkyObjectsTable from "@/components/SkyObjectsTable.vue";
 
 @Component({
     components: {
         PlotterWrapper,
         ControlPanel,
         TimeLine,
-        SkyObjectsTable
+        SkyObjectsTable,
     },
 })
 export default class Home extends Vue {
     constructor() {
         super();
+    }
+
+    mounted() {
+        if (this.$store.getters.condition?.length == 0) {
+            this.$store?.dispatch("updateCondition");
+        }
     }
 }
 </script>

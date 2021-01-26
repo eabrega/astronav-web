@@ -2,6 +2,7 @@
     <div id="app">
         <div id="nav">
             <router-link to="/">Карта</router-link>
+            <router-link to="/home">О проекте</router-link>
             <router-link to="/about">О проекте</router-link>
         </div>
         <hr>

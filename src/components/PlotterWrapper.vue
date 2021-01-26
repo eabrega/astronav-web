@@ -15,11 +15,10 @@ export default class PlotterWrapper extends Vue {
 
     constructor() {
         super();
-        store.dispatch("updateCondition");
     }
 
     get CONDITION() {
-        return store.state.condition;
+        return store.getters.condition;
     }
 
     get CURRENT_FRAME_ID() {
@@ -32,6 +31,7 @@ export default class PlotterWrapper extends Vue {
 
     @Watch("CONDITION")
     conditionsUpdated(value: string, oldValue: string) {
+        console.log("getter", this.$store.getters.condition?.length != 0)
         this.plotter!.UpdateDataset = this.CONDITION;
         this.plotter?.DataFrameSelect(this.CURRENT_FRAME_ID);
     }
@@ -48,6 +48,10 @@ export default class PlotterWrapper extends Vue {
                 cellSizeY: 10,
             };
             this.plotter = new Plotter(opt);
+        }
+
+        if (this.$store.getters.condition?.length != 0) {
+            this.plotter!.UpdateDataset = this.CONDITION;
         }
     }
 }
