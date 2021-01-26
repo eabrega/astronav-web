@@ -47,7 +47,7 @@ export default new Vuex.Store({
     actions: {
         updateCondition: async ({ state, commit }) => {
             const objects = await Load(new DateParser(state.date).toString(), state.lat, state.lon, state.date.getTimezoneOffset()).then();
-            const info = await LoadInfo(new DateParser(state.date).toString(), state.lat, state.lon, state.date.getTimezoneOffset()).then();
+            const info = await LoadInfo(new DateParser(state.date).toString(), state.lat, state.lon).then();
             commit("SET_STORE", objects);
             commit("SET_INFO", info.objects);
             const id = state.condition
@@ -66,7 +66,7 @@ export default new Vuex.Store({
         },
         setDate: async ({ state, commit }, val) => {
             const objects = await Load(new DateParser(state.date).toString(), state.lat, state.lon, state.date.getTimezoneOffset()).then();
-            const info = await LoadInfo(new DateParser(state.date).toString(), state.lat, state.lon, state.date.getTimezoneOffset()).then();
+            const info = await LoadInfo(new DateParser(state.date).toString(), state.lat, state.lon).then();
             commit("SET_STORE", objects);
             commit("SET_INFO", info.objects);
             commit("SET_CURRENT_FRAME_ID", state.currentFrameIndex);
@@ -114,10 +114,10 @@ async function Load(date: string, lat: number, lon: number, gmtCorrector: number
     return resp.json();
 }
 
-async function LoadInfo(date: string, lat: number, lon: number, gmtCorrector: number): Promise<ISkyInfo> {
+async function LoadInfo(date: string, lat: number, lon: number): Promise<ISkyInfo> {
     const dateAsString = new DateParser(date).toApiString();
     let resp = await fetch(
-        `https://api.astronav.ru/sky/info/date/${dateAsString}/gmt/${gmtCorrector}/latitude/${lat}/longitude/${lon}`
+        `https://api.astronav.ru/sky/info/date/${dateAsString}/latitude/${lat}/longitude/${lon}`
     );
     return resp.json();
 }
