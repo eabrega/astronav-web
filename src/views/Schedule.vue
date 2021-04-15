@@ -1,8 +1,10 @@
 <template>
     <div class="schedule">
         <h1>Сегодня в программе</h1>
-        <div v-for="(item, index) in EVENTS">
-            <Planet :skyObject="item" />
+        <div class="planets">
+            <div v-for="(item, index) in EVENTS" :key="index">
+                <Planet :skyObject="item" />
+            </div>
         </div>
     </div>
 </template>
@@ -27,9 +29,9 @@ export default class Schedule extends Vue {
     }
 
     mounted() {
-        if (this.$store.getters.condition?.length == 0) {
+      //  if (this.$store.getters.condition?.length == 0) {
             this.$store?.dispatch("getEvents");
-        }
+      //  }
     }
 }
 </script>
@@ -37,9 +39,16 @@ export default class Schedule extends Vue {
 <style lang="scss">
 .schedule {
     margin-left: 50px;
-    display: block;
-    width: 1200px;
-    flex-direction: column;
-    justify-self: center;
+    width: 90%;
+
+    .planets {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    h1 {
+        padding-top: 0px !important;
+    }
 }
 </style>

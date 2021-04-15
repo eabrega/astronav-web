@@ -14,4 +14,10 @@ export class Locale {
         ["Apogee", "Полдень"],
         ["Sunset", "Заход"]
     ]);
+
+    static EVENTS_ICONS = new Map([
+        ["Sunrise", "caret-up-fill"],
+        ["Apogee", "sun"],
+        ["Sunset", "caret-down-fill"]
+    ]);
 }
