@@ -106,12 +106,10 @@ export default class ControlPanel extends Vue {
 </script>
 
 <style lang="scss">
-@import "node_modules/bootstrap/scss/bootstrap.scss";
-@import "node_modules/bootstrap-vue/src/index.scss";
-
 .input-parameters {
     display: flex;
     flex-direction: row;
+    
     .card {
         margin-left: 20px;
     }

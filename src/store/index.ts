@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import { IDrawObjects } from "canvas-chart-ts/dist/drawObjectsFrame";
-import { ISkyInfo, ISkyInfoItem } from "@/store/ISkyInfo"
+import { ISkyEvent, ISkyInfo, ISkyInfoItem } from "@/store/ISkyInfo"
 import DateParser from "@/components/DateParser";
 
 Vue.use(Vuex);
@@ -9,6 +9,7 @@ Vue.use(Vuex);
 export interface IState {
     date: Date;
     condition: Array<IDrawObjects>;
+    events: Array<ISkyEvent>;
     info: Array<ISkyInfoItem>;
     currentFrameIndex: number,
     lon: number,
@@ -19,6 +20,7 @@ export default new Vuex.Store({
     state: {
         date: new Date(),
         condition: Array<IDrawObjects>(),
+        events: Array<ISkyEvent>(),
         info: Array<ISkyInfoItem>(),
         currentFrameIndex: 0,
         lon: 33,
@@ -30,6 +32,9 @@ export default new Vuex.Store({
         },
         SET_INFO(state, val) {
             state.info = val;
+        },
+        SET_EVENTS(state, val) { 
+            state.events = val;
         },
         SET_CURRENT_FRAME_ID(state, val) {
             state.currentFrameIndex = val;
@@ -54,6 +59,10 @@ export default new Vuex.Store({
                 .map((x) => timeToString(new Date(x.time)).substring(0, 4))
                 .indexOf(timeToString(new Date()).substring(0, 4));
             commit("SET_CURRENT_FRAME_ID", id);
+        },
+        getEvents: async ({ state, commit }) => {
+            const events = await LoadEvents(new DateParser(state.date).toString(), state.lat, state.lon, state.date.getTimezoneOffset()).then();
+            commit("SET_EVENTS", events);
         },
         setCurrentFrameId: ({ state, commit }, val) => {
             commit("SET_CURRENT_FRAME_ID", val);
@@ -81,7 +90,8 @@ export default new Vuex.Store({
                 ? '+' + state.date.getTimezoneOffset() / -60
                 : '-' + state.date.getTimezoneOffset() / 60,
         currentFrameId: (state) => state.currentFrameIndex,
-        condition: (state) => state.condition,
+        condition: (state) => state.condition ?? null,
+        events: (state) => state.events,
         info: (state) => state.info,
         currentCondition: (state) => state.condition[state.currentFrameIndex]?.objects ?? null,
         lat: (state) => state.lat,
@@ -118,6 +128,14 @@ async function LoadInfo(date: string, lat: number, lon: number): Promise<ISkyInf
     const dateAsString = new DateParser(date).toApiString();
     let resp = await fetch(
         `https://api.astronav.ru/sky/info/date/${dateAsString}/latitude/${lat}/longitude/${lon}`
+    );
+    return resp.json();
+}
+
+async function LoadEvents(date: string, lat: number, lon: number, gmtCorrector: number) {
+    const dateAsString = new DateParser(date).toApiString();
+    let resp = await fetch(
+        `https://api.astronav.ru/sky/event/date/${dateAsString}/gmt/${gmtCorrector}/latitude/${lat}/longitude/${lon}`
     );
     return resp.json();
 }

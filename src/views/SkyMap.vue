@@ -1,5 +1,5 @@
 <template>
-    <div class="home">
+    <div class="sky-map">
         <ControlPanel />
         <TimeLine />
         <PlotterWrapper />
@@ -12,27 +12,33 @@ import { Component, Vue } from "vue-property-decorator";
 import ControlPanel from "@/components/ControlPanel.vue";
 import PlotterWrapper from "@/components/PlotterWrapper.vue";
 import TimeLine from "@/components/TimeLine.vue";
-import SkyObjectsTable from "@/components/SkyObjectsTable.vue"
+import SkyObjectsTable from "@/components/SkyObjectsTable.vue";
 
 @Component({
     components: {
         PlotterWrapper,
         ControlPanel,
         TimeLine,
-        SkyObjectsTable
+        SkyObjectsTable,
     },
 })
-export default class Home extends Vue {
+export default class SkyMap extends Vue {
     constructor() {
         super();
+    }
+
+    mounted() {
+        if (this.$store.getters.condition?.length == 0) {
+            this.$store?.dispatch("updateCondition");
+        }
     }
 }
 </script>
 
 <style lang="scss" scoped>
-.home {
+.sky-map {
     margin-left: 50px;
-    margin-top: 50px;
+    margin-top: 25px;
     display: block;
     width: 1200px;
     flex-direction: column;

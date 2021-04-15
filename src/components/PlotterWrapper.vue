@@ -1,5 +1,5 @@
 <template>
-    <div class="hello">
+    <div class="sky-plotter">
         <canvas id="canva" width="1200" height="300"></canvas>
     </div>
 </template>
@@ -15,11 +15,10 @@ export default class PlotterWrapper extends Vue {
 
     constructor() {
         super();
-        store.dispatch("updateCondition");
     }
 
     get CONDITION() {
-        return store.state.condition;
+        return store.getters.condition;
     }
 
     get CURRENT_FRAME_ID() {
@@ -49,11 +48,15 @@ export default class PlotterWrapper extends Vue {
             };
             this.plotter = new Plotter(opt);
         }
+
+        if (this.$store.getters.condition?.length != 0) {
+            this.plotter!.UpdateDataset = this.CONDITION;
+        }
     }
 }
 </script>
 <style scoped lang="scss">
-canvas {
+.sky-plotter {
     margin-top: 20px;
 }
 </style>

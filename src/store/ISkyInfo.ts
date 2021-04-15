@@ -6,5 +6,16 @@ export interface ISkyInfoItem {
 
 export interface ISkyInfo {
     objects: Array<ISkyInfoItem>;
-    time: Date;
+    time: string;
+}
+
+export interface ISkyEventItem {
+    event: string;
+    date: string;
+    a: number;
+}
+
+export interface ISkyEvent {
+    events: Array<ISkyEventItem>;
+    name: string;
 }
