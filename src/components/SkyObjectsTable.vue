@@ -45,18 +45,10 @@ import store from "@/store";
 import { Component, Vue } from "vue-property-decorator";
 import { BTable, BootstrapVueIcons, BSpinner } from "bootstrap-vue";
 import { ISkyInfoItem } from "@/store/ISkyInfo";
+import { Locale } from "@/store/constants";
+
 @Component
 export default class SkyObjectsTable extends Vue {
-    private readonly sinonims = new Map([
-        ["Mercury", "Меркурий"],
-        ["Venus", "Венера"],
-        ["Mars", "Марс"],
-        ["Jupiter", "Юпитер"],
-        ["Saturn", "Сатурн"],
-        ["Moon", "Луна"],
-        ["Sun", "Солнце"],
-    ]);
-
     constructor() {
         super();
         Vue.use(BootstrapVueIcons);
@@ -65,7 +57,7 @@ export default class SkyObjectsTable extends Vue {
     }
 
     get SINONIMS() {
-        return this.sinonims;
+        return Locale.PLANET_RUS;
     }
 
     get ITEMS() {

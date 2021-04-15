@@ -10,11 +10,12 @@ export interface ISkyInfo {
 }
 
 export interface ISkyEventItem {
-    name: string;
+    event: string;
     date: Date;
+    a: number;
 }
 
 export interface ISkyEvent {
-    objects: Array<ISkyEventItem>;
+    events: Array<ISkyEventItem>;
     name: string;
 }

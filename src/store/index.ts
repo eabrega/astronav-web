@@ -20,6 +20,7 @@ export default new Vuex.Store({
     state: {
         date: new Date(),
         condition: Array<IDrawObjects>(),
+        events: Array<ISkyEvent>(),
         info: Array<ISkyInfoItem>(),
         currentFrameIndex: 0,
         lon: 33,
@@ -90,6 +91,7 @@ export default new Vuex.Store({
                 : '-' + state.date.getTimezoneOffset() / 60,
         currentFrameId: (state) => state.currentFrameIndex,
         condition: (state) => state.condition ?? null,
+        events: (state) => state.events,
         info: (state) => state.info,
         currentCondition: (state) => state.condition[state.currentFrameIndex]?.objects ?? null,
         lat: (state) => state.lat,
