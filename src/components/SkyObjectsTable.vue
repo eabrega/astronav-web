@@ -43,7 +43,6 @@
 <script lang="ts">
 import store from "@/store";
 import { Component, Vue } from "vue-property-decorator";
-import { BTable, BootstrapVueIcons, BSpinner } from "bootstrap-vue";
 import { ISkyInfoItem } from "@/store/ISkyInfo";
 import { Locale } from "@/store/constants";
 
@@ -51,9 +50,6 @@ import { Locale } from "@/store/constants";
 export default class SkyObjectsTable extends Vue {
     constructor() {
         super();
-        Vue.use(BootstrapVueIcons);
-        Vue.component("b-table", BTable);
-        Vue.component("b-spinner", BSpinner);
     }
 
     get SINONIMS() {

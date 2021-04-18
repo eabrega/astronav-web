@@ -31,17 +31,6 @@
 import { Component, Vue } from "vue-property-decorator";
 import DateParser from "./DateParser";
 import store from "@/store";
-import {
-    BButton,
-    BCard,
-    BFormGroup,
-    BFormInput,
-    BFormInvalidFeedback,
-    BInputGroup,
-    BInputGroupAppend,
-    BInputGroupPrepend,
-    BInputGroupText,
-} from "bootstrap-vue";
 
 @Component
 export default class ControlPanel extends Vue {
@@ -92,15 +81,6 @@ export default class ControlPanel extends Vue {
 
     constructor() {
         super();
-        Vue.component("b-card", BCard);
-        Vue.component("b-button", BButton);
-        Vue.component("b-form-input", BFormInput);
-        Vue.component("b-input-group", BInputGroup);
-        Vue.component("b-form-group", BFormGroup);
-        Vue.component("b-form-invalid-feedback", BFormInvalidFeedback);
-        Vue.component("b-input-group-append", BInputGroupAppend);
-        Vue.component("b-input-group-prepend", BInputGroupPrepend);
-        Vue.component("b-input-group-text", BInputGroupText);
     }
 }
 </script>

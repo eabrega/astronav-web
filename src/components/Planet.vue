@@ -27,7 +27,6 @@
 import { ISkyEvent } from "@/store/ISkyInfo";
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { Locale } from "@/store/constants";
-import { BootstrapVueIcons } from "bootstrap-vue";
 
 @Component
 export default class Planet extends Vue {
@@ -42,7 +41,6 @@ export default class Planet extends Vue {
 
     constructor() {
         super();
-        Vue.use(BootstrapVueIcons);
     }
 
     getTimeString(dateTime: string): string {
@@ -121,7 +119,6 @@ export default class Planet extends Vue {
     .planet-name {
         display: flex;
         flex-direction: row;
-        width: 100%;
         font-size: 1.5em !important;
         padding-bottom: 5px;
         justify-content: space-between;

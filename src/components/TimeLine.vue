@@ -22,15 +22,12 @@
 <script lang="ts">
 import store from "@/store";
 import { Component, Vue, Watch } from "vue-property-decorator";
-import { BFormInput, BAlert } from "bootstrap-vue";
 
 @Component
 export default class TimeLine extends Vue {
     private conditionIsLoaded: boolean = false;
     constructor() {
         super();
-        Vue.component("b-form-input", BFormInput);
-        Vue.component("b-alert", BAlert);
     }
 
     yesterday() {

@@ -1,20 +1,37 @@
 <template>
     <div class="schedule">
-        <div class="list">
-            <h2>Восходы</h2>
-            <div class="sunrises" v-for="(item, index) in SUNRISE_LIST('Sunrise')" :key="index">
-                <EventList :sky-object="item" />
-            </div>
-
-            <h2>Закаты</h2>
-            <div class="sunset" v-for="(item, index) in SUNRISE_LIST('Sunset')" :key="index + 20">
-                <EventList :sky-object="item" />
-            </div>
+        <div v-if="EVENTS_LIST('Sunset').length && EVENTS_LIST('Sunrise').length" class="list">
+            <b-card
+                class="sunrise"
+                v-if="EVENTS_LIST('Sunrise').length > 0"
+                header="Восходы"
+                header-tag="header"
+            >
+                <b-card-text style="max-width: 21rem;" class="sunrises">
+                    <EventList
+                        v-for="(item, index) in EVENTS_LIST('Sunrise')"
+                        :key="index"
+                        :sky-object="item"
+                    />
+                </b-card-text>
+            </b-card>
+            <b-card
+                class="sunset"
+                v-if="EVENTS_LIST('Sunset').length"
+                header="Закаты"
+                header-tag="header"
+            >
+                <b-card-text style="max-width: 21rem;" class="sunsets">
+                    <EventList
+                        v-for="(item, index) in EVENTS_LIST('Sunset')"
+                        :key="index"
+                        :sky-object="item"
+                    />
+                </b-card-text>
+            </b-card>
         </div>
         <div class="planets-widgets">
-            <div v-for="(item, index) in EVENTS" :key="index">
-                <Planet :skyObject="item" />
-            </div>
+            <Planet v-for="(item, index) in EVENTS" :key="index" :skyObject="item" />
         </div>
     </div>
 </template>
@@ -41,13 +58,15 @@ export default class Schedule extends Vue {
         return this.$store.getters.events;
     }
 
-    SUNRISE_LIST(eventName: string) {
-        return Array.from<ISkyEvent>(this.$store.getters.events)
+    EVENTS_LIST(eventName: string) {
+        const events = Array.from<ISkyEvent>(this.$store.getters.events)
             .flatMap((x) => {
                 const event = x.events.find((i) => i.event == eventName);
                 return new PlainEventItem(x.name, event!);
             })
-            .sort((a, b) => a.Time.getTime() - b.Time.getTime());
+            .sort((a, b) => a.Time.getTime() - b.Time.getTime())
+            .filter((i) => i.Time > new Date());
+        return events;
     }
 
     mounted() {
@@ -63,18 +82,26 @@ export default class Schedule extends Vue {
     margin-left: 50px;
     display: grid;
     grid-template-columns: auto 1fr;
-    gap: 10px;
+
+    .sunrise {
+        margin-bottom: 20px;
+    }
 
     .list {
-        h2:first-of-type {
-            padding-top: 0px !important;
-        }
+        margin-right: 20px;
     }
 
     .planets-widgets {
+        height: 150px;
         display: flex;
-        flex-wrap: wrap;
-        justify-content: flex-end;
+        flex-flow: row wrap;
+    }
+}
+
+@media (width: 320px) {
+    .schedule {
+        background-color: brown;
+        grid-template-columns: auto 1fr;
     }
 }
 </style>

@@ -1,6 +1,10 @@
 <template>
-    <div >
-       {{PLANET_RUS_NAME.get(skyObject.Name)}} - {{getTimeString(skyObject.Time)}} - <b>{{skyObject.A}}</b>
+    <div class="event-row">
+        <div class="name">{{ PLANET_RUS_NAME.get(skyObject.Name) }}</div>
+        <div class="time">{{ getTimeString(skyObject.Time) }}</div>
+        <div class="position">
+            <b>{{ skyObject.A }}°</b>
+        </div>
     </div>
 </template>
 
@@ -31,6 +35,22 @@ export default class EventList extends Vue {
 </script>
 
 <style lang="scss">
+.event-row {
+    display: flex;
+    margin-bottom: 5px;
+    flex-direction: row;
+    
+    .name {
+        width: 43%;
+    }
 
+    .time {
+        width: auto;
+    }
 
+    .position {
+        width: 33%;
+        text-align: right;
+    }
+}
 </style>
