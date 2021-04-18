@@ -62,16 +62,19 @@ export default class Schedule extends Vue {
 .schedule {
     margin-left: 50px;
     display: grid;
-    grid-template-columns: 1fr 600px;
+    grid-template-columns: auto 1fr;
     gap: 10px;
+
+    .list {
+        h2:first-of-type {
+            padding-top: 0px !important;
+        }
+    }
 
     .planets-widgets {
         display: flex;
         flex-wrap: wrap;
-    }
-
-    h1 {
-        padding-top: 0px !important;
+        justify-content: flex-end;
     }
 }
 </style>
