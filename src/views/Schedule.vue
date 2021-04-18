@@ -1,7 +1,17 @@
 <template>
     <div class="schedule">
-        <h1>Сегодня в программе</h1>
-        <div class="planets">
+        <div class="list">
+            <h2>Восходы</h2>
+            <div class="sunrises" v-for="(item, index) in SUNRISE_LIST('Sunrise')" :key="index">
+                <EventList :sky-object="item" />
+            </div>
+
+            <h2>Закаты</h2>
+            <div class="sunset" v-for="(item, index) in SUNRISE_LIST('Sunset')" :key="index + 20">
+                <EventList :sky-object="item" />
+            </div>
+        </div>
+        <div class="planets-widgets">
             <div v-for="(item, index) in EVENTS" :key="index">
                 <Planet :skyObject="item" />
             </div>
@@ -12,11 +22,14 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import Planet from "@/components/Planet.vue";
+import EventList from "@/components/EventList.vue";
 import { ISkyEvent } from "@/store/ISkyInfo";
+import { PlainEventItem } from "@/components/PlainEventItem";
 
 @Component({
     components: {
         Planet,
+        EventList,
     },
 })
 export default class Schedule extends Vue {
@@ -28,10 +41,19 @@ export default class Schedule extends Vue {
         return this.$store.getters.events;
     }
 
+    SUNRISE_LIST(eventName: string) {
+        return Array.from<ISkyEvent>(this.$store.getters.events)
+            .flatMap((x) => {
+                const event = x.events.find((i) => i.event == eventName);
+                return new PlainEventItem(x.name, event!);
+            })
+            .sort((a, b) => a.Time.getTime() - b.Time.getTime());
+    }
+
     mounted() {
-      //  if (this.$store.getters.condition?.length == 0) {
-            this.$store?.dispatch("getEvents");
-      //  }
+        //  if (this.$store.getters.condition?.length == 0) {
+        this.$store?.dispatch("getEvents");
+        //  }
     }
 }
 </script>
@@ -39,10 +61,11 @@ export default class Schedule extends Vue {
 <style lang="scss">
 .schedule {
     margin-left: 50px;
-    width: 90%;
+    display: grid;
+    grid-template-columns: 1fr 600px;
+    gap: 10px;
 
-    .planets {
-        width: 100%;
+    .planets-widgets {
         display: flex;
         flex-wrap: wrap;
     }

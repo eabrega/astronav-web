@@ -46,7 +46,8 @@ export default class Planet extends Vue {
     }
 
     getTimeString(dateTime: string): string {
-        return new Date(dateTime).toTimeString().split(" ")[0];
+        const date = new Date(dateTime);
+        return date.toTimeString().split(" ")[0];
     }
 
     get PLANET_RUS_NAME() {
@@ -66,16 +67,23 @@ export default class Planet extends Vue {
     }
 
     get VISIBLITY() {
-        const curentTime = new Date();
+        const curentDate = new Date();
 
-        const sunsetDate = this.skyObject.events.find((i) => i.event == "Sunset")?.date;
-        const sunriseDate = this.skyObject.events.find((i) => i.event == "Sunrise")?.date;
+        const sunsetDateStr = this.skyObject.events.find((i) => i.event == "Sunset")?.date;
+        const sunriseDateStr = this.skyObject.events.find((i) => i.event == "Sunrise")?.date;
 
-        if (sunsetDate == undefined || sunriseDate == undefined) {
+        if (sunsetDateStr == undefined || sunriseDateStr == undefined) {
             return false;
         }
 
-        return curentTime < new Date(sunsetDate) && curentTime > new Date(sunriseDate);
+        const sunsetDate = new Date(sunsetDateStr);
+        const sunriseDate = new Date(sunriseDateStr);
+
+        if (sunsetDate > sunriseDate) {
+            return curentDate <= sunsetDate && curentDate >= sunriseDate;
+        } else {
+            return curentDate <= sunsetDate && curentDate <= sunriseDate;
+        }
     }
 
     ANGLE_LETTERS(angle: number): string {
@@ -95,7 +103,7 @@ export default class Planet extends Vue {
 
 <style lang="scss">
 .planet {
-    width: 300px;
+    width: 270px;
     border: grayscale($color: #0a0a0a59);
     border-style: solid;
     border-width: 1px;
