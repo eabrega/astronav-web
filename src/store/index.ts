@@ -18,7 +18,7 @@ export interface IState {
 
 export default new Vuex.Store({
     state: {
-        date: new Date("2021-04-23 05:40:00"),
+        date: new Date(),
         condition: Array<IDrawObjects>(),
         events: Array<ISkyEvent>(),
         info: Array<ISkyInfoItem>(),
