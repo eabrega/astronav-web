@@ -77,9 +77,9 @@ export default class PlanetWidget extends Vue {
         const sunsetDate = new Date(sunsetDateStr);
         const sunriseDate = new Date(sunriseDateStr);
 
-        return sunsetDate > sunriseDate
-            ? curentDate <= sunsetDate && curentDate >= sunriseDate
-            : curentDate <= sunsetDate && curentDate <= sunriseDate;
+        return sunriseDate < sunsetDate
+            ? curentDate >= sunriseDate && curentDate <= sunsetDate
+            : curentDate > sunriseDate || curentDate < sunsetDate;
     }
 
     ANGLE_LETTERS(angle: number): string {
