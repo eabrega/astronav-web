@@ -56,9 +56,9 @@ export default new Vuex.Store({
             commit("SET_STORE", objects);
             commit("SET_INFO", info.objects);
             const id = state.condition
-                .map((x) => timeToString(new Date(x.time)).substring(0, 4))
-                .indexOf(timeToString(new Date()).substring(0, 4));
-            commit("SET_CURRENT_FRAME_ID", id);
+                .map((x) => DateToTimeString(new Date(x.time)).substring(0, 4))
+                .indexOf(DateToTimeString(state.date).substring(0, 4));
+            commit("SET_CURRENT_FRAME_ID", id > 0 ? id : 0);
         },
         getEvents: async ({ state, commit }) => {
             const events = await LoadEvents(new DateParser(state.date).toString(), state.lat, state.lon, state.date.getTimezoneOffset()).then();
@@ -98,12 +98,12 @@ export default new Vuex.Store({
         lon: (state) => state.lon,
         displayTime: (state) => {
             const time = state.condition[state.currentFrameIndex]?.time
-            return time ? timeToString(new Date(time)) : "00:00";
+            return time ? DateToTimeString(new Date(time)) : "00:00";
         },
     }
 });
 
-function timeToString(date: Date) {
+function DateToTimeString(date: Date) {
     let hoursStr =
         date.getHours() >= 10
             ? date.getHours()

@@ -65,7 +65,7 @@ export default class Schedule extends Vue {
                 return new PlainEventItem(x.name, event!);
             })
             .sort((a, b) => a.Time.getTime() - b.Time.getTime())
-            .filter((i) => i.Time > new Date());
+            .filter((i) => i.Time > this.$store.state.date);
         return events;
     }
 

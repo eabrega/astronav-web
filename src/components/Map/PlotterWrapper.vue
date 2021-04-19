@@ -5,28 +5,26 @@
 </template>
 
 <script lang="ts">
-import store from "@/store";
 import { Component, Vue, Watch } from "vue-property-decorator";
 import { Plotter } from "canvas-chart-ts/dist";
 
 @Component
 export default class PlotterWrapper extends Vue {
     plotter: Plotter | null = null;
-
     constructor() {
         super();
     }
 
     get CONDITION() {
-        return store.getters.condition;
+        return this.$store.getters.condition;
     }
 
     get CURRENT_FRAME_ID() {
-        return store.state.currentFrameIndex;
+        return this.$store.state.currentFrameIndex;
     }
 
     get DATE() {
-        return store.state.date;
+        return this.$store.state.date;
     }
 
     @Watch("CONDITION")

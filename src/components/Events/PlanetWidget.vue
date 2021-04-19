@@ -65,7 +65,7 @@ export default class PlanetWidget extends Vue {
     }
 
     get VISIBLITY() {
-        const curentDate = new Date();
+        const curentDate = this.$store.state.date;
 
         const sunsetDateStr = this.skyObject.events.find((i) => i.event == "Sunset")?.date;
         const sunriseDateStr = this.skyObject.events.find((i) => i.event == "Sunrise")?.date;
