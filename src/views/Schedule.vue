@@ -1,9 +1,12 @@
 <template>
     <div class="schedule">
-        <div v-if="EVENTS_LIST('Sunset').length && EVENTS_LIST('Sunrise').length" class="list">
+        <div
+            v-if="EVENTS_LIST('Sunrise').length || EVENTS_LIST('Sunset').length"
+            class="list"
+        >
             <b-card
                 class="sunrise"
-                v-if="EVENTS_LIST('Sunrise').length > 0"
+                v-if="EVENTS_LIST('Sunrise').length"
                 header="Восходы"
                 header-tag="header"
             >
