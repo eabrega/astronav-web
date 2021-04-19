@@ -7,7 +7,7 @@
 <script lang="ts">
 import store from "@/store";
 import { Component, Vue, Watch } from "vue-property-decorator";
-import { IPlotterOptions, Plotter } from "canvas-chart-ts/dist";
+import { Plotter } from "canvas-chart-ts/dist";
 
 @Component
 export default class PlotterWrapper extends Vue {
@@ -51,6 +51,7 @@ export default class PlotterWrapper extends Vue {
 
         if (this.$store.getters.condition?.length != 0) {
             this.plotter!.UpdateDataset = this.CONDITION;
+            this.plotter?.DataFrameSelect(this.CURRENT_FRAME_ID);
         }
     }
 }

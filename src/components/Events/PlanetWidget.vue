@@ -29,7 +29,7 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 import { Locale } from "@/store/constants";
 
 @Component
-export default class Planet extends Vue {
+export default class PlanetWidget extends Vue {
     @Prop()
     skyObject!: ISkyEvent;
 
@@ -77,11 +77,9 @@ export default class Planet extends Vue {
         const sunsetDate = new Date(sunsetDateStr);
         const sunriseDate = new Date(sunriseDateStr);
 
-        if (sunsetDate > sunriseDate) {
-            return curentDate <= sunsetDate && curentDate >= sunriseDate;
-        } else {
-            return curentDate <= sunsetDate && curentDate <= sunriseDate;
-        }
+        return sunsetDate > sunriseDate
+            ? curentDate <= sunsetDate && curentDate >= sunriseDate
+            : curentDate <= sunsetDate && curentDate <= sunriseDate;
     }
 
     ANGLE_LETTERS(angle: number): string {

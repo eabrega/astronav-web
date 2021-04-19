@@ -1,9 +1,6 @@
 <template>
     <div class="schedule">
-        <div
-            v-if="EVENTS_LIST('Sunrise').length || EVENTS_LIST('Sunset').length"
-            class="list"
-        >
+        <div v-if="EVENTS_LIST('Sunrise').length || EVENTS_LIST('Sunset').length" class="list">
             <b-card
                 class="sunrise"
                 v-if="EVENTS_LIST('Sunrise').length"
@@ -41,10 +38,10 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import Planet from "@/components/Planet.vue";
-import EventList from "@/components/EventList.vue";
+import Planet from "@/components/Events/PlanetWidget.vue";
+import EventList from "@/components/Events/EventList.vue";
 import { ISkyEvent } from "@/store/ISkyInfo";
-import { PlainEventItem } from "@/components/PlainEventItem";
+import { PlainEventItem } from "@/components/Events/PlainEventItem";
 
 @Component({
     components: {
@@ -73,9 +70,9 @@ export default class Schedule extends Vue {
     }
 
     mounted() {
-        //  if (this.$store.getters.condition?.length == 0) {
-        this.$store?.dispatch("getEvents");
-        //  }
+        if (this.$store.getters.events?.length == 0) {
+            this.$store?.dispatch("getEvents");
+        }
     }
 }
 </script>

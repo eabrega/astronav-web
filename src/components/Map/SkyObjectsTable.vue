@@ -3,7 +3,7 @@
         <b-table
             small
             hover
-            :items="ITEMS"
+            :items="$store.getters.currentCondition"
             :fields="FIELDS"
             :tbody-tr-class="isHidden"
             :busy="IS_BUSY"
@@ -25,10 +25,10 @@
                 {{ SINONIMS.get(data.item.name) }}
             </template>
             <template #cell(phase)="data">
-                {{ getF(data.item.name).toFixed(2) }}
+                {{ $store.getters.info(data.item.name).f.toFixed(2) }}
             </template>
             <template #cell(diametr)="data">
-                {{ getD(data.item.name).toFixed(2) }}
+                {{ $store.getters.info(data.item.name).d.toFixed(2) }}
             </template>
             <template #table-busy>
                 <div class="text-center text-primary loading">
@@ -41,9 +41,7 @@
 </template>
 
 <script lang="ts">
-import store from "@/store";
 import { Component, Vue } from "vue-property-decorator";
-import { ISkyInfoItem } from "@/store/ISkyInfo";
 import { Locale } from "@/store/constants";
 
 @Component
@@ -54,14 +52,6 @@ export default class SkyObjectsTable extends Vue {
 
     get SINONIMS() {
         return Locale.PLANET_RUS;
-    }
-
-    get ITEMS() {
-        return store.getters.currentCondition;
-    }
-
-    get INFO(): Array<ISkyInfoItem> {
-        return store.getters.info;
     }
 
     get FIELDS() {
@@ -102,17 +92,9 @@ export default class SkyObjectsTable extends Vue {
     }
 
     get IS_BUSY() {
-        return store.getters.info && store.getters.currentCondition
+        return this.$store.getters.info && this.$store.getters.currentCondition
             ? false
             : true;
-    }
-
-    getF(str: string): number {
-        return this.INFO?.find((i) => i.name == str)?.f ?? 0;
-    }
-
-    getD(str: string): number {
-        return this.INFO?.find((i) => i.name == str)?.d ?? 0;
     }
 
     isHidden(item: any, type: any) {

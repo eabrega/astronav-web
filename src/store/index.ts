@@ -33,7 +33,7 @@ export default new Vuex.Store({
         SET_INFO(state, val) {
             state.info = val;
         },
-        SET_EVENTS(state, val) { 
+        SET_EVENTS(state, val) {
             state.events = val;
         },
         SET_CURRENT_FRAME_ID(state, val) {
@@ -92,13 +92,13 @@ export default new Vuex.Store({
         currentFrameId: (state) => state.currentFrameIndex,
         condition: (state) => state.condition ?? null,
         events: (state) => state.events,
-        info: (state) => state.info,
+        info: (state) => (str: string) => state.info.find(i => i.name == str),
         currentCondition: (state) => state.condition[state.currentFrameIndex]?.objects ?? null,
         lat: (state) => state.lat,
         lon: (state) => state.lon,
         displayTime: (state) => {
-            let time = new Date(state.condition[state.currentFrameIndex].time);
-            return timeToString(time);
+            const time = state.condition[state.currentFrameIndex]?.time
+            return time ? timeToString(new Date(time)) : "00:00";
         },
     }
 });

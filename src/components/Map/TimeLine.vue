@@ -4,8 +4,10 @@
             <b-button size="sm" @click="yesterday" variant="secondary">
                 Вчера
             </b-button>
-            <b-input-group size="sm" :prepend="`UTC${TIME_ZONE}`" class="range">
-                <b-input-group-prepend is-text>{{DISPLAY_TIME}}</b-input-group-prepend>
+            <b-input-group size="sm" :prepend="`UTC${$store.getters.timeZone}`" class="range">
+                <b-input-group-prepend is-text>{{
+                    $store.getters.displayTime
+                }}</b-input-group-prepend>
                 <b-form-input
                     size="sm"
                     type="range"
@@ -20,53 +22,36 @@
 </template>
 
 <script lang="ts">
-import store from "@/store";
-import { Component, Vue, Watch } from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 
 @Component
 export default class TimeLine extends Vue {
-    private conditionIsLoaded: boolean = false;
     constructor() {
         super();
     }
 
     yesterday() {
-        let newDate = new Date(store.state.date);
+        let newDate = new Date(this.$store.state.date);
         newDate.setDate(newDate.getDate() - 1);
-        store.dispatch("setDate", newDate);
+        this.$store.dispatch("setDate", newDate);
     }
 
     tomorrow() {
-        let newDate = new Date(store.state.date);
+        let newDate = new Date(this.$store.state.date);
         newDate.setDate(newDate.getDate() + 1);
-        store.dispatch("setDate", newDate);
+        this.$store.dispatch("setDate", newDate);
     }
 
     get FRAME_ID() {
-        return store.state.currentFrameIndex;
-    }
-
-    get MAX_LENGTH() {
-        return (store.getters.condition?.length - 1).toString();
+        return this.$store.state.currentFrameIndex;
     }
 
     set FRAME_ID(val: number) {
-        store.dispatch("setCurrentFrameId", Number(val));
+        this.$store.dispatch("setCurrentFrameId", Number(val));
     }
 
-    get DISPLAY_TIME() {
-        return this.conditionIsLoaded == true
-            ? store.getters.displayTime
-            : "00:00";
-    }
-
-    get TIME_ZONE() {
-        return store.getters.timeZone;
-    }
-
-    @Watch("FRAME_ID")
-    conditionsUpdated(value: string, oldValue: string) {
-        this.conditionIsLoaded = true;
+    get MAX_LENGTH() {
+        return (this.$store.getters.condition?.length - 1).toString();
     }
 }
 </script>

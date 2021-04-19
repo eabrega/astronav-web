@@ -9,10 +9,9 @@
 </template>
 
 <script lang="ts">
-import { PlainEventItem } from "@/components/PlainEventItem";
+import { PlainEventItem } from "@/components/Events/PlainEventItem";
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { Locale } from "@/store/constants";
-import { BootstrapVueIcons } from "bootstrap-vue";
 
 @Component
 export default class EventList extends Vue {
@@ -21,7 +20,6 @@ export default class EventList extends Vue {
 
     constructor() {
         super();
-        Vue.use(BootstrapVueIcons);
     }
 
     getTimeString(dateTime: Date): string {
