@@ -57,7 +57,7 @@ export default new Vuex.Store({
             commit("SET_INFO", info.objects);
             const id = state.condition
                 .map((x) => DateToTimeString(new Date(x.time)).substring(0, 4))
-                .indexOf(DateToTimeString(state.date).substring(0, 4)) - 1;
+                .indexOf(DateToTimeString(state.date).substring(0, 4));
             commit("SET_CURRENT_FRAME_ID", id > 0 ? id : 0);
         },
         getEvents: async ({ state, commit }) => {

@@ -49,8 +49,8 @@ import { PlainEventItem } from "@/components/Events/PlainEventItem";
     },
     components: {
         Planet,
-        EventList,
-    },
+        EventList
+    }
 })
 export default class Schedule extends Vue {
     constructor() {

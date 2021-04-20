@@ -87,7 +87,7 @@
 <script>
 export default {
     metaInfo: {
-        title: "О проекте",
+        title: "О проекте"
     }
 };
 </script>
@@ -95,7 +95,7 @@ export default {
 <style lang="scss">
 .about {
     text-align: left;
-    margin-left: 120px;
+    margin-left: 50px;
     font-weight: 400;
 
     .sumbol-v {

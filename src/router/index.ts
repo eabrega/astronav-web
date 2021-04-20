@@ -14,7 +14,6 @@ const routes: Array<RouteConfig> = [
         path: '/skymap',
         name: 'Map',
         component: () => import('../views/SkyMap.vue')
-        
     },
     {
         path: '/about',
