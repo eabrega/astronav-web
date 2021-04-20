@@ -15,6 +15,16 @@ import TimeLine from "@/components/Map/TimeLine.vue";
 import SkyObjectsTable from "@/components/Map/SkyObjectsTable.vue";
 
 @Component({
+    metaInfo: {
+        title: "Карта звездного неба",
+        meta: [
+            {
+                vmid: "description",
+                name: "description",
+                content: "content2",
+            }
+        ]
+    },
     components: {
         PlotterWrapper,
         ControlPanel,

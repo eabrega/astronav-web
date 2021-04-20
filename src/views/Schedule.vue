@@ -43,7 +43,10 @@ import EventList from "@/components/Events/EventList.vue";
 import { ISkyEvent } from "@/store/ISkyInfo";
 import { PlainEventItem } from "@/components/Events/PlainEventItem";
 
-@Component({
+@Component({ 
+    metaInfo: {
+        title: "Расписание астрономических событий",
+    },
     components: {
         Planet,
         EventList,

@@ -85,7 +85,11 @@
 </template>
 
 <script>
-export default {};
+export default {
+    metaInfo: {
+        title: "О проекте",
+    }
+};
 </script>
 
 <style lang="scss">
