@@ -9,7 +9,7 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import ControlPanel from "@/components/ControlPanel.vue";
+import ControlPanel from "@/components/Common/ControlPanel.vue";
 import PlotterWrapper from "@/components/Map/PlotterWrapper.vue";
 import TimeLine from "@/components/Map/TimeLine.vue";
 import SkyObjectsTable from "@/components/Map/SkyObjectsTable.vue";

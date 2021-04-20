@@ -100,11 +100,4 @@ export default class Schedule extends Vue {
         flex-flow: row wrap;
     }
 }
-
-@media (width: 320px) {
-    .schedule {
-        background-color: brown;
-        grid-template-columns: auto 1fr;
-    }
-}
 </style>

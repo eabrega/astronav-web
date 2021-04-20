@@ -2,7 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import { IDrawObjects } from "canvas-chart-ts/dist/drawObjectsFrame";
 import { ISkyEvent, ISkyInfo, ISkyInfoItem } from "@/store/ISkyInfo"
-import DateParser from "@/components/DateParser";
+import DateParser from "@/components/Common/DateParser";
 
 Vue.use(Vuex);
 
