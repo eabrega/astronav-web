@@ -43,14 +43,14 @@ import EventList from "@/components/Events/EventList.vue";
 import { ISkyEvent } from "@/store/ISkyInfo";
 import { PlainEventItem } from "@/components/Events/PlainEventItem";
 
-@Component({ 
+@Component({
     metaInfo: {
         title: "Расписание астрономических событий",
     },
     components: {
         Planet,
-        EventList
-    }
+        EventList,
+    },
 })
 export default class Schedule extends Vue {
     constructor() {
@@ -62,20 +62,22 @@ export default class Schedule extends Vue {
     }
 
     EVENTS_LIST(eventName: string) {
-        const events = Array.from<ISkyEvent>(this.$store.getters.events)
-            .flatMap((x) => {
-                const event = x.events.find((i) => i.event == eventName);
-                return new PlainEventItem(x.name, event!);
-            })
-            .sort((a, b) => a.Time.getTime() - b.Time.getTime())
-            .filter((i) => i.Time > this.$store.state.date);
-        return events;
+        return Array.from<ISkyEvent>(this.$store.getters.events)
+            .filter((x) => x.events.find((x) => x.event == eventName))
+            .flatMap((x) => this.plainEventItemFabric(x, eventName))
+            .filter((i) => i.Time > this.$store.state.date)
+            .sort((a, b) => a.Time.getTime() - b.Time.getTime());
     }
 
     mounted() {
         if (this.$store.getters.events?.length == 0) {
             this.$store?.dispatch("getEvents");
         }
+    }
+
+    private plainEventItemFabric(skyEvent: ISkyEvent, name: string): PlainEventItem {
+        const event = skyEvent.events.find((i) => i.event == name);
+        return new PlainEventItem(skyEvent.name, event!);
     }
 }
 </script>
