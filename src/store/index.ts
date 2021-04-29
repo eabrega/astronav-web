@@ -91,7 +91,7 @@ export default new Vuex.Store({
                 : '-' + state.date.getTimezoneOffset() / 60,
         currentFrameId: (state) => state.currentFrameIndex,
         condition: (state) => state.condition ?? null,
-        events: (state) => state.events,
+        events: (state): Array<ISkyEvent> => state.events,
         info: (state) => (str: string) => state.info.find(i => i.name == str),
         currentCondition: (state) => state.condition[state.currentFrameIndex]?.objects ?? null,
         lat: (state) => state.lat,

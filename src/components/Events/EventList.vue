@@ -3,7 +3,7 @@
         <div class="name">{{ PLANET_RUS_NAME.get(skyObject.Name) }}</div>
         <div class="time">{{ getTimeString(skyObject.Time) }}</div>
         <div class="position">
-            <b>{{ skyObject.A }}°</b>
+            <b>{{ skyObject.A.toFixed(2) }}°</b>
         </div>
     </div>
 </template>

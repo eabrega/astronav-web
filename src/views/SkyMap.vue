@@ -16,14 +16,14 @@ import SkyObjectsTable from "@/components/Map/SkyObjectsTable.vue";
 
 @Component({
     metaInfo: {
-        title: "Карта звездного неба"
+        title: "Карта звездного неба",
     },
     components: {
         PlotterWrapper,
         ControlPanel,
         TimeLine,
-        SkyObjectsTable
-    }
+        SkyObjectsTable,
+    },
 })
 export default class SkyMap extends Vue {
     constructor() {

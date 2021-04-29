@@ -1,22 +1,22 @@
 <template>
     <div class="planet">
         <div class="planet-name">
-            {{ PLANET_RUS_NAME.get(skyObject.name) }}
+            {{ PLANET_RUS_NAME.get(skyObject.PlanetName) }}
             <div class="status" v-if="!VISIBLITY"><b>(за горизонтом)</b></div>
         </div>
         <div class="info-box">
-            <div class="event" v-for="(event, i) in skyObject.events" :key="i">
+            <div class="event" v-for="(event, i) in skyObject.Events" :key="i">
                 <div class="icon">
                     <b-icon
-                        :icon="EVENTS_ICONS.get(event.event)"
+                        :icon="EVENTS_ICONS.get(event.Event)"
                         scale="1"
-                        :variant="EVENTS_COLOR.get(event.event)"
+                        :variant="EVENTS_COLOR.get(event.Event)"
                     ></b-icon>
                 </div>
-                <div class="time">{{ getTimeString(event.date) }}</div>
-                <div class="position-leter">{{ ANGLE_LETTERS(event.a) }}</div>
+                <div class="time">{{ event.Date.toLocaleTimeString() }}</div>
+                <div class="position-leter">{{ ANGLE_LETTERS(event.A) }}</div>
                 <div class="position">
-                    <b>{{ event.a }}°</b>
+                    <b>{{ event.A.toFixed(2) }}°</b>
                 </div>
             </div>
         </div>
@@ -24,14 +24,14 @@
 </template>
 
 <script lang="ts">
-import { ISkyEvent } from "@/store/ISkyInfo";
+import { SkyEvent } from "@/store/ISkyInfo";
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { Locale } from "@/store/constants";
 
 @Component
 export default class PlanetWidget extends Vue {
-    @Prop()
-    skyObject!: ISkyEvent;
+    @Prop(SkyEvent)
+    private skyObject!: SkyEvent;
 
     eventsColor = new Map([
         ["Sunrise", "success"],
@@ -41,11 +41,6 @@ export default class PlanetWidget extends Vue {
 
     constructor() {
         super();
-    }
-
-    getTimeString(dateTime: string): string {
-        const date = new Date(dateTime);
-        return date.toTimeString().split(" ")[0];
     }
 
     get PLANET_RUS_NAME() {
@@ -65,21 +60,14 @@ export default class PlanetWidget extends Vue {
     }
 
     get VISIBLITY() {
-        const curentDate = this.$store.state.date;
+        const curentDate = this.$store.state.date as Date;
 
-        const sunsetDateStr = this.skyObject.events.find((i) => i.event == "Sunset")?.date;
-        const sunriseDateStr = this.skyObject.events.find((i) => i.event == "Sunrise")?.date;
+        const sunsetDate = this.skyObject.Events.find((i) => i.Event == "Sunset")?.Date ?? null;
+        const sunriseDate = this.skyObject.Events.find((i) => i.Event == "Sunrise")?.Date ?? null;
 
-        if (sunsetDateStr == undefined || sunriseDateStr == undefined) {
-            return false;
-        }
-
-        const sunsetDate = new Date(sunsetDateStr);
-        const sunriseDate = new Date(sunriseDateStr);
-
-        return sunriseDate < sunsetDate
-            ? curentDate >= sunriseDate && curentDate <= sunsetDate
-            : curentDate > sunriseDate || curentDate < sunsetDate;
+        return sunriseDate! < sunsetDate!
+            ? curentDate >= sunriseDate! && curentDate <= sunsetDate!
+            : curentDate > sunriseDate! || curentDate < sunsetDate!;
     }
 
     ANGLE_LETTERS(angle: number): string {

@@ -40,7 +40,7 @@
 import { Component, Vue } from "vue-property-decorator";
 import Planet from "@/components/Events/PlanetWidget.vue";
 import EventList from "@/components/Events/EventList.vue";
-import { ISkyEvent } from "@/store/ISkyInfo";
+import { ISkyEvent, SkyEvent } from "@/store/ISkyInfo";
 import { PlainEventItem } from "@/components/Events/PlainEventItem";
 
 @Component({
@@ -57,8 +57,9 @@ export default class Schedule extends Vue {
         super();
     }
 
-    get EVENTS(): Array<ISkyEvent> {
-        return this.$store.getters.events;
+    get EVENTS(): Array<SkyEvent> {
+        const events = <Array<ISkyEvent>>this.$store.getters.events;
+        return events.map((x) => new SkyEvent(x));
     }
 
     EVENTS_LIST(eventName: string) {
