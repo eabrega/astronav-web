@@ -1,37 +1,32 @@
 <template>
     <div class="schedule">
-        <div v-if="EVENTS_LIST('Sunrise').length || EVENTS_LIST('Sunset').length" class="list">
-            <b-card
-                class="sunrise"
-                v-if="EVENTS_LIST('Sunrise').length"
-                header="Восходы"
-                header-tag="header"
-            >
-                <b-card-text style="max-width: 21rem;" class="sunrises">
-                    <EventList
-                        v-for="(item, index) in EVENTS_LIST('Sunrise')"
-                        :key="index"
-                        :sky-object="item"
-                    />
-                </b-card-text>
-            </b-card>
-            <b-card
-                class="sunset"
-                v-if="EVENTS_LIST('Sunset').length"
-                header="Закаты"
-                header-tag="header"
-            >
-                <b-card-text style="max-width: 21rem;" class="sunsets">
-                    <EventList
-                        v-for="(item, index) in EVENTS_LIST('Sunset')"
-                        :key="index"
-                        :sky-object="item"
-                    />
-                </b-card-text>
-            </b-card>
+        <div class="schedule-control">
+            <ControlPanel />
         </div>
-        <div class="planets-widgets">
-            <Planet v-for="(item, index) in EVENTS" :key="index" :skyObject="item" />
+        <div class="schedule-body">
+            <div class="list">
+                <b-card class="sunrise" header="Восходы" header-tag="header">
+                    <b-card-text style="max-width: 21rem;" class="sunrises">
+                        <EventList
+                            v-for="(item, index) in EVENTS_LIST('Sunrise')"
+                            :key="index"
+                            :sky-object="item"
+                        />
+                    </b-card-text>
+                </b-card>
+                <b-card class="sunset" header="Закаты" header-tag="header">
+                    <b-card-text style="max-width: 21rem;" class="sunsets">
+                        <EventList
+                            v-for="(item, index) in EVENTS_LIST('Sunset')"
+                            :key="index"
+                            :sky-object="item"
+                        />
+                    </b-card-text>
+                </b-card>
+            </div>
+            <div class="planets-widgets">
+                <Planet v-for="(item, index) in EVENTS" :key="index" :skyObject="item" />
+            </div>
         </div>
     </div>
 </template>
@@ -42,6 +37,7 @@ import Planet from "@/components/Events/PlanetWidget.vue";
 import EventList from "@/components/Events/EventList.vue";
 import { ISkyEvent, SkyEvent } from "@/store/ISkyInfo";
 import { PlainEventItem } from "@/components/Events/PlainEventItem";
+import ControlPanel from "@/components/Common/ControlPanel.vue";
 
 @Component({
     metaInfo: {
@@ -50,6 +46,7 @@ import { PlainEventItem } from "@/components/Events/PlainEventItem";
     components: {
         Planet,
         EventList,
+        ControlPanel,
     },
 })
 export default class Schedule extends Vue {
@@ -58,15 +55,14 @@ export default class Schedule extends Vue {
     }
 
     get EVENTS(): Array<SkyEvent> {
-        const events = <Array<ISkyEvent>>this.$store.getters.events;
+        const events = <Array<ISkyEvent>>this.$store.state.events;
         return events.map((x) => new SkyEvent(x));
     }
 
     EVENTS_LIST(eventName: string) {
-        return Array.from<ISkyEvent>(this.$store.getters.events)
+        return Array.from<ISkyEvent>(this.$store.state.events)
             .filter((x) => x.events.find((x) => x.event == eventName))
             .flatMap((x) => this.plainEventItemFabric(x, eventName))
-            .filter((i) => i.Time > this.$store.state.date)
             .sort((a, b) => a.Time.getTime() - b.Time.getTime());
     }
 
@@ -86,21 +82,27 @@ export default class Schedule extends Vue {
 <style lang="scss">
 .schedule {
     margin-left: 50px;
-    display: grid;
-    grid-template-columns: auto 1fr;
-
-    .sunrise {
+    margin-top: 25px;
+    .schedule-control {
         margin-bottom: 20px;
     }
+    .schedule-body {
+        display: grid;
+        grid-template-columns: auto 1fr;
 
-    .list {
-        margin-right: 20px;
-    }
+        .sunrise {
+            margin-bottom: 20px;
+        }
 
-    .planets-widgets {
-        height: 150px;
-        display: flex;
-        flex-flow: row wrap;
+        .list {
+            margin-right: 20px;
+        }
+
+        .planets-widgets {
+            height: 150px;
+            display: flex;
+            flex-flow: row wrap;
+        }
     }
 }
 </style>

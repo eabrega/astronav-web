@@ -32,7 +32,7 @@ export default class SkyMap extends Vue {
 
     mounted() {
         if (this.$store.getters.condition?.length == 0) {
-            this.$store?.dispatch("updateCondition");
+            this.$store?.dispatch("getConditions");
         }
     }
 }

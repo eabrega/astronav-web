@@ -1,11 +1,7 @@
 <template>
     <div class="input-parameters">
         <b-input-group size="sm" prepend="Широта:">
-            <b-form-input
-                v-model.number="Lat"
-                :state="isLatValid"
-                type="number"
-            ></b-form-input>
+            <b-form-input v-model.number="Lat" :state="isLatValid" type="number"></b-form-input>
             <b-input-group-prepend is-text>Долгота:</b-input-group-prepend>
             <b-form-input
                 v-model.number="Lon"
@@ -21,7 +17,7 @@
                 class="w-25"
             ></b-form-input>
             <b-input-group-append>
-                <b-button size="sm" variant="info" @click="update">Ok</b-button>
+                <b-button size="sm" variant="info" v-on:click="update">Ok</b-button>
             </b-input-group-append>
         </b-input-group>
     </div>
@@ -76,7 +72,7 @@ export default class ControlPanel extends Vue {
     }
 
     update() {
-        store.dispatch("updateCondition");
+        store.dispatch("setDate", new DateParser(this.CurrentDate).Date);
     }
 
     constructor() {
@@ -89,7 +85,7 @@ export default class ControlPanel extends Vue {
 .input-parameters {
     display: flex;
     flex-direction: row;
-    
+
     .card {
         margin-left: 20px;
     }

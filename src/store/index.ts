@@ -3,6 +3,7 @@ import Vuex from "vuex";
 import { IDrawObjects } from "canvas-chart-ts/dist/drawObjectsFrame";
 import { ISkyEvent, ISkyInfo, ISkyInfoItem } from "@/store/ISkyInfo"
 import DateParser from "@/components/Common/DateParser";
+import router from "@/router";
 
 Vue.use(Vuex);
 
@@ -27,7 +28,7 @@ export default new Vuex.Store({
         lat: 55,
     } as IState,
     mutations: {
-        SET_STORE(state, val) {
+        SET_CONDITIONS(state, val) {
             state.condition = val;
         },
         SET_INFO(state, val) {
@@ -50,10 +51,10 @@ export default new Vuex.Store({
         },
     },
     actions: {
-        updateCondition: async ({ state, commit }) => {
+        getConditions: async ({ state, commit }) => {
             const objects = await Load(new DateParser(state.date).toString(), state.lat, state.lon, state.date.getTimezoneOffset()).then();
             const info = await LoadInfo(new DateParser(state.date).toString(), state.lat, state.lon).then();
-            commit("SET_STORE", objects);
+            commit("SET_CONDITIONS", objects);
             commit("SET_INFO", info.objects);
             const id = state.condition
                 .map((x) => DateToTimeString(new Date(x.time)).substring(0, 4))
@@ -64,7 +65,7 @@ export default new Vuex.Store({
             const events = await LoadEvents(new DateParser(state.date).toString(), state.lat, state.lon, state.date.getTimezoneOffset()).then();
             commit("SET_EVENTS", events);
         },
-        setCurrentFrameId: ({ state, commit }, val) => {
+        setCurrentFrameId: ({ commit }, val) => {
             commit("SET_CURRENT_FRAME_ID", val);
         },
         setLat: ({ commit }, val) => {
@@ -73,13 +74,21 @@ export default new Vuex.Store({
         setLon: ({ commit }, val) => {
             commit("SET_LON", val);
         },
-        setDate: async ({ state, commit }, val) => {
-            const objects = await Load(new DateParser(state.date).toString(), state.lat, state.lon, state.date.getTimezoneOffset()).then();
-            const info = await LoadInfo(new DateParser(state.date).toString(), state.lat, state.lon).then();
-            commit("SET_STORE", objects);
-            commit("SET_INFO", info.objects);
-            commit("SET_CURRENT_FRAME_ID", state.currentFrameIndex);
+        setDate: async ({ state, commit }, val:Date) => {
             commit("SET_DATE", val);
+            switch (router.currentRoute.name) {
+                case "Map":
+                    const objects = await Load(new DateParser(state.date).toString(), state.lat, state.lon, state.date.getTimezoneOffset()).then();
+                    const info = await LoadInfo(new DateParser(state.date).toString(), state.lat, state.lon).then();
+                    commit("SET_CONDITIONS", objects);
+                    commit("SET_INFO", info.objects);
+                    commit("SET_CURRENT_FRAME_ID", state.currentFrameIndex);                  
+                    break;
+                case "Schedule":
+                    const events = await LoadEvents(new DateParser(state.date).toString(), state.lat, state.lon, state.date.getTimezoneOffset()).then();
+                    commit("SET_EVENTS", events);
+                    break;
+            }
         },
     },
     modules: {},
@@ -91,7 +100,7 @@ export default new Vuex.Store({
                 : '-' + state.date.getTimezoneOffset() / 60,
         currentFrameId: (state) => state.currentFrameIndex,
         condition: (state) => state.condition ?? null,
-        events: (state): Array<ISkyEvent> => state.events,
+        events: (state): Array<ISkyEvent> => state.events ?? null,
         info: (state) => (str: string) => state.info.find(i => i.name == str),
         currentCondition: (state) => state.condition[state.currentFrameIndex]?.objects ?? null,
         lat: (state) => state.lat,
@@ -139,3 +148,4 @@ async function LoadEvents(date: string, lat: number, lon: number, gmtCorrector: 
     );
     return resp.json();
 }
+

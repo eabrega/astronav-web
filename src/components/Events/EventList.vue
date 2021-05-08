@@ -1,7 +1,7 @@
 <template>
-    <div class="event-row">
+    <div class="event-row" v-bind:class="{ completed: IS_COMPLETED }">
         <div class="name">{{ PLANET_RUS_NAME.get(skyObject.Name) }}</div>
-        <div class="time">{{ getTimeString(skyObject.Time) }}</div>
+        <div class="time ">{{ skyObject.Time.toLocaleTimeString() }}</div>
         <div class="position">
             <b>{{ skyObject.A.toFixed(2) }}°</b>
         </div>
@@ -22,22 +22,27 @@ export default class EventList extends Vue {
         super();
     }
 
-    getTimeString(dateTime: Date): string {
-        return dateTime.toTimeString().split(" ")[0];
-    }
-
     get PLANET_RUS_NAME() {
         return Locale.PLANET_RUS;
+    }
+
+    get IS_COMPLETED() {
+        return this.skyObject.Time < new Date()
     }
 }
 </script>
 
 <style lang="scss">
+.completed {
+    color: rgba(43, 41, 41, 0.5);
+    font-weight: 500;
+    text-decoration: line-through;
+}
 .event-row {
     display: flex;
     margin-bottom: 5px;
     flex-direction: row;
-    
+
     .name {
         width: 43%;
     }

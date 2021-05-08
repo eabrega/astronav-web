@@ -7,12 +7,12 @@ interface IDate {
 export default class DateParser {
     private readonly date: Date;
     constructor(date: Date | String) {
-        typeof(date) === 'string'
+        typeof (date) === 'string'
             ? this.date = new Date(date)
             : this.date = <Date>date;
     }
 
-    get Date() { 
+    get Date(): Date {
         return this.date;
     }
 
