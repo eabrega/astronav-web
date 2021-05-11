@@ -3,7 +3,6 @@ import Vuex from "vuex";
 import { IDrawObjects } from "canvas-chart-ts/dist/drawObjectsFrame";
 import { ISkyEvent, ISkyInfo, ISkyInfoItem } from "@/store/ISkyInfo"
 import DateParser from "@/components/Common/DateParser";
-import router from "@/router";
 
 Vue.use(Vuex);
 
@@ -76,19 +75,13 @@ export default new Vuex.Store({
         },
         setDate: async ({ state, commit }, val:Date) => {
             commit("SET_DATE", val);
-            switch (router.currentRoute.name) {
-                case "Map":
-                    const objects = await Load(new DateParser(state.date).toString(), state.lat, state.lon, state.date.getTimezoneOffset()).then();
-                    const info = await LoadInfo(new DateParser(state.date).toString(), state.lat, state.lon).then();
+            const objects = await Load(new DateParser(state.date).toString(), state.lat, state.lon, state.date.getTimezoneOffset()).then();
+            const info = await LoadInfo(new DateParser(state.date).toString(), state.lat, state.lon).then();
+            const events = await LoadEvents(new DateParser(state.date).toString(), state.lat, state.lon, state.date.getTimezoneOffset()).then();
                     commit("SET_CONDITIONS", objects);
                     commit("SET_INFO", info.objects);
                     commit("SET_CURRENT_FRAME_ID", state.currentFrameIndex);                  
-                    break;
-                case "Schedule":
-                    const events = await LoadEvents(new DateParser(state.date).toString(), state.lat, state.lon, state.date.getTimezoneOffset()).then();
                     commit("SET_EVENTS", events);
-                    break;
-            }
         },
     },
     modules: {},
