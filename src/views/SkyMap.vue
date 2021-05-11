@@ -17,6 +17,14 @@ import SkyObjectsTable from "@/components/Map/SkyObjectsTable.vue";
 @Component({
     metaInfo: {
         title: "Карта звездного неба",
+         meta: [
+            {
+                vmid: "description",
+                name: "description",
+                content:
+                    "Интерактивная карта звездного неба, на любой день, для любых координат наблюдателя.",
+            },
+        ],
     },
     components: {
         PlotterWrapper,
