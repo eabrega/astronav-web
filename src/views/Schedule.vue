@@ -42,6 +42,15 @@ import ControlPanel from "@/components/Common/ControlPanel.vue";
 @Component({
     metaInfo: {
         title: "Расписание астрономических событий",
+        meta: [
+            {
+                vmid: "description",
+                name: "description",
+                content:
+                    "Расписание событий происходящих в небе, с учетом наблюдателя. " +
+                    "Список закатов, рассветов и зрелищных сближений планет, солнца и созвездий",
+            },
+        ],
     },
     components: {
         Planet,
