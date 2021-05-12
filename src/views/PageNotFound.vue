@@ -1,6 +1,20 @@
 <template>
-  <div class="about">
-    <h1>404</h1>
-    <p>Данной страницы не существует</p>
-  </div>
+    <div class="page-not-found">
+        <h1>404</h1>
+        <p>Такой страницы не существует</p>
+    </div>
 </template>
+
+<style lang="scss">
+.page-not-found {
+    margin-left: 50px;
+    width: 1400px !important;
+    h1 {
+        font-size: 15em !important;
+    }
+    p {
+        font-size: 4em !important;
+        width: 1400px !important;
+    }
+}
+</style>
