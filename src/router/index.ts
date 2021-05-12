@@ -21,14 +21,9 @@ const routes: Array<RouteConfig> = [
         component: () => import('../views/About.vue')
     },
     {
-        path: '/404',
+        path: '*',
         component: PageNotFound,
     },
-    {
-        path: '*',
-        redirect: '/404'
-    }
-
 ]
 
 const router = new VueRouter({
