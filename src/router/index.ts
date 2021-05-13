@@ -25,6 +25,14 @@ const routes: Array<RouteConfig> = [
         path: '*',
         component: PageNotFound,
     },
+    // {
+    //     path: '*',
+    //     beforeEnter: (to, from, next) => {
+    //         const path = `${to.fullPath}/err`;
+    //         console.log(path);
+    //         next(path)
+    //     }
+    // },
 ]
 
 const router = new VueRouter({
@@ -34,7 +42,7 @@ const router = new VueRouter({
 })
 
 Vue.use(VueYandexMetrika, {
-    id: 78086995,
+    id: 78309397,
     router: router,
     env: process.env.NODE_ENV,
     options: {
