@@ -23,16 +23,12 @@ const routes: Array<RouteConfig> = [
     },
     {
         path: '*',
-        component: PageNotFound,
+        redirect: '/404'
     },
-    // {
-    //     path: '*',
-    //     beforeEnter: (to, from, next) => {
-    //         const path = `${to.fullPath}/err`;
-    //         console.log(path);
-    //         next(path)
-    //     }
-    // },
+    {
+        path: '/404',
+        component: PageNotFound
+    }
 ]
 
 const router = new VueRouter({
