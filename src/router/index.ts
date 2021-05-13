@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
+import VueYandexMetrika from 'vue-yandex-metrika-ts'
 import PageNotFound from '../views/PageNotFound.vue'
 
 Vue.use(VueRouter)
@@ -30,6 +31,16 @@ const router = new VueRouter({
     mode: 'history',
     base: process.env.BASE_URL,
     routes
+})
+
+Vue.use(VueYandexMetrika, {
+    id: 78086995,
+    router: router,
+    env: process.env.NODE_ENV,
+    options: {
+        clickmap: true,
+        webvisor: true
+    }
 })
 
 export default router
