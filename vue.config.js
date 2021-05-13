@@ -10,16 +10,21 @@ module.exports = {
         },
         optimization: {
             splitChunks: {
-                minSize: 10000,
+                minSize: 20000,
                 maxSize: 250000,
             }
         },
         plugins: [
             new PrerenderSPAPlugin({
-                // Required - The path to the webpack-outputted app to prerender.
                 staticDir: path.join(__dirname, 'dist'),
-                // Required - Routes to render.
                 routes: ['/', '/about', '/skymap'],
+                minify: {
+                    collapseBooleanAttributes: true,
+                    collapseWhitespace: true,
+                    decodeEntities: true,
+                    keepClosingSlash: true,
+                    sortAttributes: true
+                },
             })
         ]
     }

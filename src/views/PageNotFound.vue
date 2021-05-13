@@ -5,6 +5,14 @@
     </div>
 </template>
 
+<script>
+export default {
+    metaInfo: {
+        title: "404 NotFound",
+    },
+};
+</script>
+
 <style lang="scss">
 .page-not-found {
     margin-left: 50px;
