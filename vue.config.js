@@ -4,13 +4,42 @@ const PrerenderSPAPlugin = require('prerender-spa-plugin')
 module.exports = {
     runtimeCompiler: true,
     outputDir: 'dist',
+    pluginOptions: {
+        sitemap: {
+            productionOnly: true,
+            trailingSlash: false,
+            pretty: true,
+            baseURL: 'https://astronav.ru',
+            urls: [
+                {
+                    loc: '/',
+                    lastmod: 'May 14, 2021',
+                    priority: 1,
+                    changefreq: 'weekly',
+                },
+                {
+                    loc: '/skymap',
+                    lastmod: 'Mart 14, 2021',
+                    priority: 1,
+                    changefreq: 'weekly',
+                },
+                {
+                    loc: '/about',
+                    lastmod: 'April 18, 2021',
+                    priority: 1,
+                    changefreq: 'weekly',
+                },
+            ]
+        }
+    },
+    productionSourceMap: false,
     configureWebpack: {
         performance: {
             hints: false
         },
         optimization: {
             splitChunks: {
-                minSize: 20000,
+                minSize: 10000,
                 maxSize: 250000,
             }
         },
@@ -25,7 +54,7 @@ module.exports = {
                     keepClosingSlash: true,
                     sortAttributes: true
                 },
-            })
+            }),
         ]
     }
 }

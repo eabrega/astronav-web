@@ -3,8 +3,6 @@ import VueRouter, { RouteConfig } from 'vue-router'
 import VueYandexMetrika from 'vue-yandex-metrika-ts'
 import PageNotFound from '../views/PageNotFound.vue'
 
-Vue.use(VueRouter)
-
 const routes: Array<RouteConfig> = [
     {
         path: '/',
@@ -37,6 +35,7 @@ const router = new VueRouter({
     routes
 })
 
+Vue.use(VueRouter)
 Vue.use(VueYandexMetrika, {
     id: 78309397,
     router: router,
