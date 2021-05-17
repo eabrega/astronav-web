@@ -2,7 +2,9 @@
     <div class="planet">
         <div class="planet-name">
             {{ PLANET_RUS_NAME.get(skyObject.PlanetName) }}
-            <div class="status" v-if="!VISIBLITY"><b>(за горизонтом)</b></div>
+            <div class="status">
+                <b>{{ POSITION }}</b>
+            </div>
         </div>
         <div class="info-box">
             <div class="event" v-for="(event, i) in skyObject.Events" :key="i">
@@ -33,7 +35,7 @@ export default class PlanetWidget extends Vue {
     @Prop(SkyEvent)
     private skyObject!: SkyEvent;
 
-    eventsColor = new Map([
+    сolorByEventName = new Map([
         ["Sunrise", "success"],
         ["Apogee", "primary"],
         ["Sunset", "danger"],
@@ -56,18 +58,28 @@ export default class PlanetWidget extends Vue {
     }
 
     get EVENTS_COLOR() {
-        return this.eventsColor;
+        return this.сolorByEventName;
     }
 
-    get VISIBLITY() {
-        const curentDate = this.$store.state.date as Date;
-
+    get POSITION(): string {
         const sunsetDate = this.skyObject.Events.find((i) => i.Event == "Sunset")?.Date ?? null;
         const sunriseDate = this.skyObject.Events.find((i) => i.Event == "Sunrise")?.Date ?? null;
+        const currentDate = this.$store.state.date as Date;
 
-        return sunriseDate! < sunsetDate!
-            ? curentDate >= sunriseDate! && curentDate <= sunsetDate!
-            : curentDate > sunriseDate! || curentDate < sunsetDate!;
+        if (!this.isToDay()) {
+            return "--";
+        }
+
+        let isHideSet =
+            sunriseDate! < sunsetDate!
+                ? currentDate >= sunriseDate! && currentDate <= sunsetDate!
+                : currentDate > sunriseDate! || currentDate < sunsetDate!;
+
+        if (!isHideSet) {
+            return "За горизонтом";
+        }
+
+        return "";
     }
 
     ANGLE_LETTERS(angle: number): string {
@@ -82,6 +94,13 @@ export default class PlanetWidget extends Vue {
         if (angle >= 292.5 && angle <= 337.5) return "CЗ";
 
         throw new Error(`Angle '${angle}' is wrong value`);
+    }
+
+    private isToDay() {
+        const currentDate = new Date();
+        currentDate.setHours(0, 0, 0, 0);
+        const requestDate = this.$store.state.date as Date;
+        return Math.abs(currentDate.getTime() - requestDate.getTime()) < 24 * 3600 * 1000;
     }
 }
 </script>

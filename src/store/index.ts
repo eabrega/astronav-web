@@ -73,15 +73,20 @@ export default new Vuex.Store({
         setLon: ({ commit }, val) => {
             commit("SET_LON", val);
         },
-        setDate: async ({ state, commit }, val:Date) => {
-            commit("SET_DATE", val);
+        setDate: async ({ state, commit }, val: Date) => {
+            if (isToDay(val)) {
+                commit("SET_DATE", new Date());
+            }
+            else {
+                commit("SET_DATE", val);
+            }
             const objects = await Load(new DateParser(state.date).toString(), state.lat, state.lon, state.date.getTimezoneOffset()).then();
             const info = await LoadInfo(new DateParser(state.date).toString(), state.lat, state.lon).then();
             const events = await LoadEvents(new DateParser(state.date).toString(), state.lat, state.lon, state.date.getTimezoneOffset()).then();
-                    commit("SET_CONDITIONS", objects);
-                    commit("SET_INFO", info.objects);
-                    commit("SET_CURRENT_FRAME_ID", state.currentFrameIndex);                  
-                    commit("SET_EVENTS", events);
+            commit("SET_CONDITIONS", objects);
+            commit("SET_INFO", info.objects);
+            commit("SET_CURRENT_FRAME_ID", state.currentFrameIndex);
+            commit("SET_EVENTS", events);
         },
     },
     modules: {},
@@ -142,3 +147,8 @@ async function LoadEvents(date: string, lat: number, lon: number, gmtCorrector: 
     return resp.json();
 }
 
+function isToDay(date: Date) {
+    const currentDate = new Date();
+    currentDate.setHours(0, 0, 0, 0);
+    return Math.abs(currentDate.getTime() - date.getTime()) < 24 * 3600 * 1000;
+}

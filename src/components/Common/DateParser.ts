@@ -8,7 +8,7 @@ export default class DateParser {
     private readonly date: Date;
     constructor(date: Date | String) {
         typeof (date) === 'string'
-            ? this.date = new Date(date)
+            ? this.date = new Date(`${date}T00:00:00`)
             : this.date = <Date>date;
     }
 
