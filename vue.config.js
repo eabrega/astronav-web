@@ -1,5 +1,19 @@
 const path = require('path')
 const PrerenderSPAPlugin = require('prerender-spa-plugin')
+const RobotstxtPlugin = require("robotstxt-webpack-plugin");
+
+const hostName = "https://astronav.ru"
+
+const robotsOptions = {
+    policy: [
+        {
+            userAgent: "Yandex",
+            allow: "/"
+        }
+    ],
+    sitemap: `${hostName}/sitemap.xml`,
+    host: hostName,
+};
 
 module.exports = {
     runtimeCompiler: true,
@@ -9,7 +23,7 @@ module.exports = {
             productionOnly: true,
             trailingSlash: false,
             pretty: true,
-            baseURL: 'https://astronav.ru',
+            baseURL: hostName,
             urls: [
                 {
                     loc: '/',
@@ -55,6 +69,7 @@ module.exports = {
                     sortAttributes: true
                 },
             }),
+            new RobotstxtPlugin(robotsOptions)
         ]
     }
 }
