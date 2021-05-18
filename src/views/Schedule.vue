@@ -4,8 +4,8 @@
             <ControlPanel />
         </div>
         <div class="schedule-date">
-            <b>{{ new Date().toLocaleDateString() }}</b>
-            <span class="schedule-date__suffix">{{ DATE_STRING }}</span>
+            <b>{{ REQUEST_DATE }}</b>
+            <span class="schedule-date__suffix">{{ DATE_SUFFIX }}</span>
         </div>
         <div class="schedule-body">
             <div class="list">
@@ -75,7 +75,11 @@ export default class Schedule extends Vue {
         });
     }
 
-    get DATE_STRING() {
+    get REQUEST_DATE(){
+        return (this.$store.state.date as Date).toLocaleDateString()
+    }
+    
+    get DATE_SUFFIX() {
         const currentDate = new Date();
         const requestDate = this.$store.state.date as Date;
         let resString = "";
