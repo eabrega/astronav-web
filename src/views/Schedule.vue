@@ -5,6 +5,7 @@
         </div>
         <div class="schedule-date">
             <b>{{ REQUEST_DATE }}</b>
+            <span class="schedule-time" v-if="IS_TODAY">{{ CURRENT_TIME }}</span>
             <span class="schedule-date__suffix">{{ DATE_SUFFIX }}</span>
         </div>
         <div class="schedule-body">
@@ -63,44 +64,57 @@ import ControlPanel from "@/components/Common/ControlPanel.vue";
     },
 })
 export default class Schedule extends Vue {
+    private time = new Date();
     constructor() {
         super();
     }
 
     get EVENTS(): Array<SkyEvent> {
         const events = <Array<ISkyEvent>>this.$store.state.events;
-        return events.map((x) => new SkyEvent(x)).sort((a,b)=>{
-            if (a.PlanetName > b.PlanetName) return 1
-            else return -1
-        });
+        return events
+            .map((x) => new SkyEvent(x))
+            .sort((a, b) => {
+                if (a.PlanetName > b.PlanetName) return 1;
+                else return -1;
+            });
     }
 
-    get REQUEST_DATE(){
-        return (this.$store.state.date as Date).toLocaleDateString()
+    get CURRENT_TIME() {
+        return this.time.toLocaleTimeString();
     }
-    
+
+    get REQUEST_DATE() {
+        return (this.$store.state.date as Date).toLocaleDateString();
+    }
+
+    get IS_TODAY() {
+        const currentDate = new Date();
+        currentDate.setHours(0, 0, 0, 0);
+        const requestDate = this.$store.state.date as Date;
+        return Math.abs(currentDate.getTime() - requestDate.getTime()) < 24 * 3600 * 1000;
+    }
+
     get DATE_SUFFIX() {
         const currentDate = new Date();
+        currentDate.setHours(0, 0, 0, 0);
         const requestDate = this.$store.state.date as Date;
         let resString = "";
 
-        if (this.isToDay()) {
+        if (this.IS_TODAY) {
             return "";
         }
 
         const dDays = Math.round(
-            Math.abs(currentDate.getTime() - requestDate.getTime()) / 1000 / 3600 / 24
+            Math.abs(currentDate.getTime() - requestDate.getTime()) / 3600000 / 24
         );
-        const str = this.declOfNum(dDays, ["день", "дня", "дней"]);
+        const suffix = this.declOfNum(dDays, ["день", "дня", "дней"]);
 
-        resString =
-            dDays == 1
-                ? currentDate > requestDate
-                    ? `вчера`
-                    : `завтра`
-                : currentDate > requestDate
-                    ? `${dDays} ${str} назад`
-                    : `через ${dDays} ${str}`;
+        if (dDays == 1) {
+            resString = currentDate > requestDate ? `вчера` : `завтра`;
+        } else {
+            resString =
+                currentDate > requestDate ? `${dDays} ${suffix} назад` : `через ${dDays} ${suffix}`;
+        }
 
         return `(${resString})`;
     }
@@ -116,6 +130,13 @@ export default class Schedule extends Vue {
         if (this.$store.getters.events?.length == 0) {
             this.$store?.dispatch("getEvents");
         }
+        this.runTimeUpdate();
+    }
+
+    private runTimeUpdate() {
+        setInterval(() => {
+            this.time = new Date();
+        }, 1000);
     }
 
     private plainEventItemFabric(skyEvent: ISkyEvent, name: string): PlainEventItem {
@@ -129,13 +150,6 @@ export default class Schedule extends Vue {
             number % 100 > 4 && number % 100 < 20 ? 2 : cases[number % 10 < 5 ? number % 10 : 5]
         ];
     }
-
-    private isToDay() {
-        const currentDate = new Date();
-        currentDate.setHours(0, 0, 0, 0);
-        const requestDate = this.$store.state.date as Date;
-        return Math.abs(currentDate.getTime() - requestDate.getTime()) < 24 * 3600 * 1000;
-    }
 }
 </script>
 
@@ -147,7 +161,9 @@ export default class Schedule extends Vue {
     .schedule-control {
         margin-bottom: 20px;
     }
-
+    .schedule-time {
+        margin-left: 15px;
+    }
     .schedule-date {
         margin-bottom: 20px;
         font-size: 2em;
