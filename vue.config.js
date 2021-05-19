@@ -9,6 +9,10 @@ const robotsOptions = {
         {
             userAgent: "Yandex",
             allow: "/"
+        },
+        {
+            userAgent: "PetalBot",
+            disallow: "/"
         }
     ],
     sitemap: `${hostName}/sitemap.xml`,
