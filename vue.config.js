@@ -12,7 +12,16 @@ const robotsOptions = {
         },
         {
             userAgent: "PetalBot",
-            allow: "/about",
+            disallow: "/",
+            allow: [
+                "/$",
+                "/skymap",
+                "/about"
+            ],
+        },
+        {
+            userAgent: "*",
+            disallow: "/",
         }
     ],
     sitemap: `${hostName}/sitemap.xml`,
