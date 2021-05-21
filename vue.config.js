@@ -36,20 +36,20 @@ module.exports = {
             urls: [
                 {
                     loc: '/',
-                    lastmod: 'May 18, 2021',
+                    lastmod: 'May 21, 2021',
                     priority: 1,
                     changefreq: 'weekly',
                 },
                 {
                     loc: '/skymap',
                     lastmod: 'Mart 14, 2021',
-                    priority: 1,
+                    priority: 0.8,
                     changefreq: 'weekly',
                 },
                 {
                     loc: '/about',
                     lastmod: 'April 18, 2021',
-                    priority: 1,
+                    priority: 0.2,
                     changefreq: 'weekly',
                 },
             ]
