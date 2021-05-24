@@ -3,10 +3,12 @@ import Vuex from "vuex";
 import { IDrawObjects } from "canvas-chart-ts/dist/drawObjectsFrame";
 import { ISkyEvent, ISkyInfo, ISkyInfoItem } from "@/store/ISkyInfo"
 import DateParser from "@/components/Common/DateParser";
+import IUserSettings from "@/store/userSettings";
 
 Vue.use(Vuex);
 
 export interface IState {
+    userSettings: IUserSettings;
     date: Date;
     condition: Array<IDrawObjects>;
     events: Array<ISkyEvent>;
@@ -23,8 +25,8 @@ export default new Vuex.Store({
         events: Array<ISkyEvent>(),
         info: Array<ISkyInfoItem>(),
         currentFrameIndex: 0,
-        lon: 33,
-        lat: 55,
+        lon: getLocalStoredParam()?.lon ?? 37.6,
+        lat: getLocalStoredParam()?.lat ?? 55.7,
     } as IState,
     mutations: {
         SET_CONDITIONS(state, val) {
@@ -83,6 +85,12 @@ export default new Vuex.Store({
             const objects = await Load(new DateParser(state.date).toString(), state.lat, state.lon, state.date.getTimezoneOffset()).then();
             const info = await LoadInfo(new DateParser(state.date).toString(), state.lat, state.lon).then();
             const events = await LoadEvents(new DateParser(state.date).toString(), state.lat, state.lon, state.date.getTimezoneOffset()).then();
+
+            localStorage.userSettings = JSON.stringify({
+                lat: state.lat,
+                lon: state.lon
+            });
+
             commit("SET_CONDITIONS", objects);
             commit("SET_INFO", info.objects);
             commit("SET_CURRENT_FRAME_ID", state.currentFrameIndex);
@@ -151,4 +159,9 @@ function isToDay(date: Date) {
     const currentDate = new Date();
     currentDate.setHours(0, 0, 0, 0);
     return Math.abs(currentDate.getTime() - date.getTime()) < 24 * 3600 * 1000;
+}
+
+function getLocalStoredParam(): IUserSettings | null {
+    if (!(localStorage.userSettings as IUserSettings)) return null;
+    return <IUserSettings>JSON.parse(localStorage.userSettings);
 }
