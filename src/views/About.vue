@@ -95,8 +95,9 @@ export default {
 
 <style lang="scss">
 .about {
-    text-align: left;
-    margin-left: 50px;
+    max-width: var(--max-size);
+    min-width: calc(var(--min-size) - var(--main-margin));
+    margin-left: var(--main-margin);
     font-weight: 400;
 
     .sumbol-v {
@@ -112,8 +113,12 @@ export default {
     }
 
     ol {
-        width: 800px;
         list-style-type: none;
+        font-size: 1em;
+        li{
+            padding: 8px;
+            font-size: 1em;
+        }
     }
 }
 </style>

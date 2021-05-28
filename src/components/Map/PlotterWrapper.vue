@@ -56,6 +56,7 @@ export default class PlotterWrapper extends Vue {
 </script>
 <style scoped lang="scss">
 .sky-plotter {
-    margin-top: 20px;
+    margin-top: 10px;
+    overflow-x: auto;
 }
 </style>

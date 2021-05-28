@@ -107,7 +107,8 @@ export default class PlanetWidget extends Vue {
 
 <style lang="scss">
 .planet {
-    width: 270px;
+    scroll-snap-align: center;
+    min-width: 270px;
     border: grayscale($color: #0a0a0a59);
     border-style: solid;
     border-width: 1px;
@@ -116,7 +117,7 @@ export default class PlanetWidget extends Vue {
     padding-right: 20px;
     padding-bottom: 10px;
     padding-top: 10px;
-    background-color: gainsboro;
+    background-color:  rgba(0, 140, 255, 0.158);
     margin-right: 20px;
     margin-bottom: 20px;
     display: flex;

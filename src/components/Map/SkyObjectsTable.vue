@@ -10,10 +10,7 @@
             responsive="sm"
         >
             <template #cell(visible)="data">
-                <b-icon
-                    :icon="+data.item.y > 0 ? 'eye' : 'eye-slash'"
-                    scale="1.1"
-                ></b-icon>
+                <b-icon :icon="+data.item.y > 0 ? 'eye' : 'eye-slash'" scale="1.1"></b-icon>
             </template>
             <template #cell(x)="data">
                 {{ data.item.x.toFixed(2) }}
@@ -92,9 +89,7 @@ export default class SkyObjectsTable extends Vue {
     }
 
     get IS_BUSY() {
-        return this.$store.getters.info && this.$store.getters.currentCondition
-            ? false
-            : true;
+        return this.$store.getters.info && this.$store.getters.currentCondition ? false : true;
     }
 
     isHidden(item: any, type: any) {
@@ -106,8 +101,13 @@ export default class SkyObjectsTable extends Vue {
 </script>
 <style lang="scss">
 .sky-objects {
-    margin-top: 30px;
-    width: 600px;
+    @media (max-width: 600px) {
+        .v-column {
+            display: none;
+        }
+
+        font-size: 0.8em;
+    }
 
     .column-right-align {
         text-align: right !important;

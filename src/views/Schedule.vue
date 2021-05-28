@@ -1,17 +1,27 @@
 <template>
     <div class="schedule">
-        <div class="schedule-control">
-            <ControlPanel />
-        </div>
-        <div class="schedule-date">
-            <b>{{ REQUEST_DATE }}</b>
-            <span class="schedule-time" v-if="IS_TODAY">{{ CURRENT_TIME }}</span>
-            <span class="schedule-date__suffix">{{ DATE_SUFFIX }}</span>
+        <div class="schedule-info_bar">
+            <b-alert class="info_bar" variant="secondary" show>
+                <div class="schedule-latlon">
+                    <span>Широта: {{ $store.state.lat }}</span>
+                    <span>Долгота: {{ $store.state.lon }}</span>
+                </div>
+            </b-alert>
+            <b-alert class="info_bar" variant="secondary" show>
+                <div class="schedule-date">
+                    <b>{{ REQUEST_DATE }}</b>
+                    <span class="schedule-time" v-if="IS_TODAY">{{ CURRENT_TIME }}</span>
+                    <span class="schedule-date__suffix">{{ DATE_SUFFIX }}</span>
+                </div>
+            </b-alert>
         </div>
         <div class="schedule-body">
+            <div class="planets-widgets">
+                <PlanetWidget v-for="(item, index) in EVENTS" :key="index" :skyObject="item" />
+            </div>
             <div class="list">
-                <b-card class="sunrise" header="Восходы" header-tag="header">
-                    <b-card-text style="max-width: 21rem;" class="sunrises">
+                <b-card class="events-card" header="Восходы" header-tag="header">
+                    <b-card-text>
                         <EventList
                             v-for="(item, index) in getEventsList('Sunrise')"
                             :key="index"
@@ -19,8 +29,8 @@
                         />
                     </b-card-text>
                 </b-card>
-                <b-card class="sunset" header="Закаты" header-tag="header">
-                    <b-card-text style="max-width: 21rem;" class="sunsets">
+                <b-card class="events-card" header="Закаты" header-tag="header">
+                    <b-card-text>
                         <EventList
                             v-for="(item, index) in getEventsList('Sunset')"
                             :key="index"
@@ -28,9 +38,6 @@
                         />
                     </b-card-text>
                 </b-card>
-            </div>
-            <div class="planets-widgets">
-                <PlanetWidget v-for="(item, index) in EVENTS" :key="index" :skyObject="item" />
             </div>
         </div>
     </div>
@@ -42,7 +49,6 @@ import PlanetWidget from "@/components/Events/PlanetWidget.vue";
 import EventList from "@/components/Events/EventList.vue";
 import { ISkyEvent, SkyEvent } from "@/store/ISkyInfo";
 import { PlainEventItem } from "@/components/Events/PlainEventItem";
-import ControlPanel from "@/components/Common/ControlPanel.vue";
 
 @Component({
     metaInfo: {
@@ -66,7 +72,6 @@ import ControlPanel from "@/components/Common/ControlPanel.vue";
     components: {
         PlanetWidget,
         EventList,
-        ControlPanel,
     },
 })
 export default class Schedule extends Vue {
@@ -159,43 +164,88 @@ export default class Schedule extends Vue {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .schedule {
-    margin-left: 50px;
-    margin-top: 25px;
+    max-width: var(--max-size);
+    min-width: calc(var(--min-size) - var(--main-margin));
+    .schedule-info_bar {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        margin-right: calc(var(--main-margin) * -1);
 
-    .schedule-control {
-        margin-bottom: 20px;
-    }
-    .schedule-time {
-        margin-left: 15px;
-    }
-    .schedule-date {
-        margin-bottom: 20px;
-        font-size: 2em;
+        .info_bar {
+            min-width: calc(var(--min-size) - var(--main-margin));
+            flex-basis: 390px;
+            flex-grow: 1;
+            margin-right: var(--main-margin);
 
-        .schedule-date__suffix {
-            margin-left: 15px;
-            font-size: 0.8em;
+            .schedule-time {
+                margin-left: 15px;
+            }
+            .schedule-date {
+                font-size: 1.5em;
+
+                .schedule-date__suffix {
+                    margin-left: 15px;
+                    font-size: 0.8em;
+                }
+            }
+        }
+
+        .info_bar:first-of-type {
+            min-width: calc(var(--min-size) - var(--main-margin));
+            flex-basis: 350px;
+            margin-right: var(--main-margin);
+
+            .schedule-latlon {
+                font-size: 1.5em;
+                span {
+                    padding-right: 20px;
+                }
+            }
         }
     }
 
     .schedule-body {
-        display: grid;
-        grid-template-columns: auto 1fr;
-
-        .sunrise {
-            margin-bottom: 20px;
+        .events-card {
+            min-width: calc(var(--min-size) - var(--main-margin));
+            flex-basis: var(--min-size);
+            flex-grow: 1;
+            margin-bottom: var(--main-margin);
+            margin-right: var(--main-margin);
         }
 
         .list {
-            margin-right: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            margin-right: calc(var(--main-margin) * -1);
         }
 
         .planets-widgets {
-            height: 150px;
             display: flex;
-            flex-flow: row wrap;
+            flex-flow: row nowrap;
+            overflow-x: auto;
+            margin-bottom: var(--main-margin);
+            scroll-snap-type: x mandatory;
+        }
+        ::-webkit-scrollbar-track {
+            background-color: rgba(0, 140, 255, 0.158);
+            box-shadow: 0px 0px 3px rgb(190, 190, 190) inset;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            -webkit-border-radius: 10px;
+            border-radius: 10px;
+            background-color: #42b983;
+            box-shadow: 0px 1px 1px rgb(190, 190, 190) inset;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        ::-webkit-scrollbar {
+            height: 15px;
         }
     }
 }

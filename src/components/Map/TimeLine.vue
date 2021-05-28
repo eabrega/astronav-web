@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="time-line">
-            <b-button size="sm" @click="yesterday" variant="secondary">
+            <b-button class="btn1" size="sm" @click="yesterday" variant="secondary">
                 Вчера
             </b-button>
             <b-input-group size="sm" :prepend="`UTC${$store.getters.timeZone}`" class="range">
@@ -16,7 +16,7 @@
                     :max="MAX_LENGTH"
                 ></b-form-input>
             </b-input-group>
-            <b-button size="sm" @click="tomorrow" variant="secondary">Завтра</b-button>
+            <b-button class="btn2" size="sm" @click="tomorrow" variant="secondary">Завтра</b-button>
         </div>
     </div>
 </template>
@@ -57,17 +57,45 @@ export default class TimeLine extends Vue {
 </script>
 <style scoped lang="scss">
 .time-line {
-    width: 600px;
-    margin-top: 20px;
-    display: flex;
+    margin-top: 5px;
+    display: grid;
+    gap: 10px;
+
+    @media (min-width: 600px) {
+        grid-template-areas: "btn1 line btn2";
+        grid-template-columns: 60px auto 60px;
+    }
+
+    @media (max-width: 600px) {
+        grid-template-areas:
+            "line line"
+            "btn1 btn2";
+
+        .btn1,
+        .btn2 {
+            height: 35px;
+            width: 70px;
+        }
+
+        .btn2 {
+            justify-self: end;
+        }
+    }
 
     .range {
-        margin-left: 15px;
-        margin-right: 15px;
+        grid-area: line;
 
         .input-group-text {
             font-weight: bold;
         }
+    }
+
+    .btn1 {
+        grid-area: btn1;
+    }
+
+    .btn2 {
+        grid-area: btn2;
     }
 }
 </style>

@@ -1,15 +1,13 @@
 <template>
     <div class="sky-map">
-        <ControlPanel />
-        <TimeLine />
         <PlotterWrapper />
-        <SkyObjectsTable />
+        <TimeLine />
+        <SkyObjectsTable class="table" />
     </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import ControlPanel from "@/components/Common/ControlPanel.vue";
 import PlotterWrapper from "@/components/Map/PlotterWrapper.vue";
 import TimeLine from "@/components/Map/TimeLine.vue";
 import SkyObjectsTable from "@/components/Map/SkyObjectsTable.vue";
@@ -17,7 +15,7 @@ import SkyObjectsTable from "@/components/Map/SkyObjectsTable.vue";
 @Component({
     metaInfo: {
         title: "Карта звездного неба",
-         meta: [
+        meta: [
             {
                 vmid: "description",
                 name: "description",
@@ -28,7 +26,6 @@ import SkyObjectsTable from "@/components/Map/SkyObjectsTable.vue";
     },
     components: {
         PlotterWrapper,
-        ControlPanel,
         TimeLine,
         SkyObjectsTable,
     },
@@ -48,11 +45,16 @@ export default class SkyMap extends Vue {
 
 <style lang="scss" scoped>
 .sky-map {
-    margin-left: 50px;
-    margin-top: 25px;
+    max-width: var(--max-size);
+    min-width: calc(var(--min-size) - var(--main-margin));
+    margin-left: var(--main-margin);
     display: block;
-    width: 1200px;
     flex-direction: column;
     justify-self: center;
+
+    .table {
+        margin-top: 20px;
+        overflow-x: auto;
+    }
 }
 </style>
