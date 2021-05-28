@@ -195,10 +195,12 @@ export default class Schedule extends Vue {
 
         .info_bar:first-of-type {
             min-width: calc(var(--min-size) - var(--main-margin));
-            flex-basis: 350px;
+            flex-basis: 450px;
             margin-right: var(--main-margin);
 
             .schedule-latlon {
+                display: flex;
+                flex-wrap: wrap;
                 font-size: 1.5em;
                 span {
                     padding-right: 20px;
