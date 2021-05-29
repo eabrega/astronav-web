@@ -24,7 +24,7 @@
                     <b-form-input
                         class="input-latlon"
                         v-model.number="Lon"
-                        :state="isLatValid"
+                        :state="isLonValid"
                         type="number"
                         debounce="500"
                     ></b-form-input>
@@ -58,28 +58,26 @@ import store from "@/store";
 export default class AppSettingsSidebar extends Vue {
     private lat = store.state.lat;
     private lon = store.state.lon;
+    private date = new DateParser(store.state.date).toString();
 
     get CurrentDate(): string {
-        return new DateParser(store.state.date).toString();
+        return new DateParser(this.date).toString();
     }
 
     set CurrentDate(date: string) {
-        store.dispatch("setDate", new DateParser(date).Date);
+        this.date = new DateParser(date).toString();
     }
 
     get isLatValid(): boolean {
-        return this.lat <= 90;
+        return Math.abs(this.lat) <= 90;
     }
 
     get isLonValid(): boolean {
-        return this.lon <= 180;
+        return Math.abs(this.lon) <= 180;
     }
 
     set Lat(val: number) {
         this.lat = val;
-        if (this.isLatValid) {
-            store.dispatch("setLat", val);
-        }
     }
 
     get Lat() {
@@ -88,9 +86,6 @@ export default class AppSettingsSidebar extends Vue {
 
     set Lon(val: number) {
         this.lon = val;
-        if (this.isLonValid) {
-            store.dispatch("setLon", val);
-        }
     }
 
     get Lon() {
@@ -98,7 +93,11 @@ export default class AppSettingsSidebar extends Vue {
     }
 
     update() {
-        store.dispatch("setDate", new DateParser(this.CurrentDate).Date);
+        if (this.isLatValid && this.isLonValid) {
+            store.dispatch("setLon", this.lon);
+            store.dispatch("setLat", this.lat);
+            store.dispatch("setDate", new DateParser(this.CurrentDate).Date);
+        }
     }
 
     get mo() {
@@ -111,6 +110,11 @@ export default class AppSettingsSidebar extends Vue {
 }
 </script>
 
-<style lang="scss">
-
+<style lang="scss" scoped>
+.app-settings-sidebar {
+    .input-group-text {
+        width: 90px;
+        font-weight: 550;
+    }
+}
 </style>

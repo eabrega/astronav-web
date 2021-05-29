@@ -10,6 +10,7 @@ Vue.use(Vuex);
 export interface IState {
     userSettings: IUserSettings;
     date: Date;
+    isLoading: boolean;
     condition: Array<IDrawObjects>;
     events: Array<ISkyEvent>;
     info: Array<ISkyInfoItem>;
@@ -21,6 +22,7 @@ export interface IState {
 export default new Vuex.Store({
     state: {
         date: new Date(),
+        isLoading: false,
         condition: Array<IDrawObjects>(),
         events: Array<ISkyEvent>(),
         info: Array<ISkyInfoItem>(),
@@ -50,9 +52,13 @@ export default new Vuex.Store({
         SET_DATE(state, val) {
             state.date = val;
         },
+        SET_IS_LOADING(state, val) {
+            state.isLoading = val;
+        },
     },
     actions: {
         getConditions: async ({ state, commit }) => {
+            commit("SET_IS_LOADING", true);
             const objects = await Load(new DateParser(state.date).toString(), state.lat, state.lon, state.date.getTimezoneOffset()).then();
             const info = await LoadInfo(new DateParser(state.date).toString(), state.lat, state.lon).then();
             commit("SET_CONDITIONS", objects);
@@ -61,6 +67,7 @@ export default new Vuex.Store({
                 .map((x) => DateToTimeString(new Date(x.time)).substring(0, 4))
                 .indexOf(DateToTimeString(state.date).substring(0, 4));
             commit("SET_CURRENT_FRAME_ID", id > 0 ? id : 0);
+            commit("SET_IS_LOADING", false);
         },
         getEvents: async ({ state, commit }) => {
             const events = await LoadEvents(new DateParser(state.date).toString(), state.lat, state.lon, state.date.getTimezoneOffset()).then();
@@ -76,6 +83,7 @@ export default new Vuex.Store({
             commit("SET_LON", val);
         },
         setDate: async ({ state, commit }, val: Date) => {
+            commit("SET_IS_LOADING", true);
             if (isToDay(val)) {
                 commit("SET_DATE", new Date());
             }
@@ -95,6 +103,8 @@ export default new Vuex.Store({
             commit("SET_INFO", info.objects);
             commit("SET_CURRENT_FRAME_ID", state.currentFrameIndex);
             commit("SET_EVENTS", events);
+
+            commit("SET_IS_LOADING", false);
         },
     },
     modules: {},
@@ -106,6 +116,7 @@ export default new Vuex.Store({
                 : '-' + state.date.getTimezoneOffset() / 60,
         currentFrameId: (state) => state.currentFrameIndex,
         condition: (state) => state.condition ?? null,
+        isLoading: (state) => state.isLoading,
         events: (state): Array<ISkyEvent> => state.events ?? null,
         info: (state) => (str: string) => state.info.find(i => i.name == str),
         currentCondition: (state) => state.condition[state.currentFrameIndex]?.objects ?? null,

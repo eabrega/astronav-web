@@ -1,24 +1,31 @@
 <template>
-    <div class="planet">
-        <div class="planet-name">
-            {{ PLANET_RUS_NAME.get(skyObject.PlanetName) }}
-            <div class="status">
-                <b>{{ POSITION }}</b>
+    <div class="planet-box">
+        <div class="spinner" v-if="IS_LOADED">
+            <div class="text-center">
+                <b-spinner variant="primary" label="Text Centered"></b-spinner>
             </div>
         </div>
-        <div class="info-box">
-            <div class="event" v-for="(event, i) in skyObject.Events" :key="i">
-                <div class="icon">
-                    <b-icon
-                        :icon="EVENTS_ICONS.get(event.Event)"
-                        scale="1"
-                        :variant="EVENTS_COLOR.get(event.Event)"
-                    ></b-icon>
+        <div class="planet" v-else>
+            <div class="planet-name">
+                {{ PLANET_RUS_NAME.get(skyObject.PlanetName) }}
+                <div class="status">
+                    <b>{{ POSITION }}</b>
                 </div>
-                <div class="time">{{ event.Date.toLocaleTimeString() }}</div>
-                <div class="position-leter">{{ ANGLE_LETTERS(event.A) }}</div>
-                <div class="position">
-                    <b>{{ event.A.toFixed(2) }}°</b>
+            </div>
+            <div class="info-box">
+                <div class="event" v-for="(event, i) in skyObject.Events" :key="i">
+                    <div class="icon">
+                        <b-icon
+                            :icon="EVENTS_ICONS.get(event.Event)"
+                            scale="1"
+                            :variant="EVENTS_COLOR.get(event.Event)"
+                        ></b-icon>
+                    </div>
+                    <div class="time">{{ event.Date.toLocaleTimeString() }}</div>
+                    <div class="position-leter">{{ ANGLE_LETTERS(event.A) }}</div>
+                    <div class="position">
+                        <b>{{ event.A.toFixed(2) }}°</b>
+                    </div>
                 </div>
             </div>
         </div>
@@ -43,6 +50,10 @@ export default class PlanetWidget extends Vue {
 
     constructor() {
         super();
+    }
+
+    get IS_LOADED() {
+        return this.$store.getters.isLoading;
     }
 
     get PLANET_RUS_NAME() {
@@ -84,7 +95,7 @@ export default class PlanetWidget extends Vue {
 
     ANGLE_LETTERS(angle: number): string {
         if (angle >= 337.5 && angle <= 360) return "C";
-        if (angle >= 360 && angle <= 22.5) return "C";
+        if (angle >= 0 && angle <= 22.5) return "C";
         if (angle >= 22.5 && angle <= 67.5) return "CВ";
         if (angle >= 67.5 && angle <= 112.5) return "В";
         if (angle >= 112.5 && angle <= 157.5) return "ЮВ";
@@ -106,9 +117,10 @@ export default class PlanetWidget extends Vue {
 </script>
 
 <style lang="scss">
-.planet {
+.planet-box {
     scroll-snap-align: center;
     min-width: 270px;
+    height: 135px;
     border: grayscale($color: #0a0a0a59);
     border-style: solid;
     border-width: 1px;
@@ -117,49 +129,57 @@ export default class PlanetWidget extends Vue {
     padding-right: 20px;
     padding-bottom: 10px;
     padding-top: 10px;
-    background-color:  rgba(0, 140, 255, 0.158);
+    background-color: rgba(0, 140, 255, 0.158);
     margin-right: 20px;
-    margin-bottom: 20px;
     display: flex;
     flex-direction: column;
+    justify-content: stretch;
 
-    .planet-name {
+    .spinner{
+        height: 135px;
         display: flex;
-        flex-direction: row;
-        font-size: 1.5em !important;
-        padding-bottom: 5px;
-        justify-content: space-between;
-
-        .status {
-            font-size: 0.6em;
-        }
+        justify-content: center;
+        align-items: center;
     }
-
-    .info-box {
-        width: 100%;
-
-        .event {
-            margin-left: 0px;
+    .planet {
+        .planet-name {
             display: flex;
             flex-direction: row;
+            font-size: 1.5em !important;
+            padding-bottom: 5px;
+            justify-content: space-between;
 
-            .icon {
-                width: 20%;
+            .status {
+                font-size: 0.6em;
             }
+        }
 
-            .time {
-                width: 40%;
-            }
+        .info-box {
+            width: 100%;
 
-            .position-leter {
-                width: 30px;
-                margin-right: 15px;
-                color: blue;
-            }
+            .event {
+                margin-left: 0px;
+                display: flex;
+                flex-direction: row;
 
-            .position {
-                width: 60px;
-                text-align: right;
+                .icon {
+                    width: 20%;
+                }
+
+                .time {
+                    width: 40%;
+                }
+
+                .position-leter {
+                    width: 30px;
+                    margin-right: 15px;
+                    color: blue;
+                }
+
+                .position {
+                    width: 60px;
+                    text-align: right;
+                }
             }
         }
     }

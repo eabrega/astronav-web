@@ -89,7 +89,7 @@ export default class SkyObjectsTable extends Vue {
     }
 
     get IS_BUSY() {
-        return this.$store.getters.info && this.$store.getters.currentCondition ? false : true;
+        return this.$store.getters.isLoading;
     }
 
     isHidden(item: any, type: any) {
