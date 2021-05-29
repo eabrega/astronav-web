@@ -48,7 +48,7 @@ module.exports = {
                 },
                 {
                     loc: '/about',
-                    lastmod: 'April 18, 2021',
+                    lastmod: 'May 29, 2021',
                     priority: 0.2,
                     changefreq: 'weekly',
                 },
