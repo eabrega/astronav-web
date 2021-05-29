@@ -9,6 +9,7 @@
                     $store.getters.displayTime
                 }}</b-input-group-prepend>
                 <b-form-input
+                class="range"
                     size="sm"
                     type="range"
                     v-model.number="FRAME_ID"
@@ -80,6 +81,8 @@ export default class TimeLine extends Vue {
         .btn2 {
             justify-self: end;
         }
+
+        .range{height: 45px;}
     }
 
     .range {

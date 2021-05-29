@@ -1,6 +1,6 @@
 <template>
     <div class="sky-map">
-        <PlotterWrapper />
+        <PlotterWrapper class="plotter" />
         <TimeLine />
         <SkyObjectsTable class="table" />
     </div>
@@ -51,6 +51,30 @@ export default class SkyMap extends Vue {
     display: block;
     flex-direction: column;
     justify-self: center;
+
+    .plotter {
+        margin-bottom: 20px;
+        overflow-x: auto;
+    }
+
+    ::-webkit-scrollbar-track {
+        background-color: rgba(0, 140, 255, 0.158);
+        box-shadow: 0px 0px 3px rgb(190, 190, 190) inset;
+        border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        -webkit-border-radius: 10px;
+        border-radius: 10px;
+        background-color: #42b983;
+        box-shadow: 0px 1px 1px rgb(190, 190, 190) inset;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+
+    ::-webkit-scrollbar {
+        height: 15px;
+    }
 
     .table {
         margin-top: 20px;
