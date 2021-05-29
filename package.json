@@ -1,6 +1,6 @@
 {
   "name": "astronav",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve --mode development",
@@ -10,26 +10,26 @@
     "bootstrap": "4.5.3",
     "bootstrap-vue": "2.21.2",
     "canvas-chart-ts": "0.0.5",
-    "core-js": "^3.8.0",
+    "core-js": "^3.13.1",
     "vue": "^2.6.12",
     "vue-class-component": "^7.2.6",
     "vue-meta": "^2.4.0",
     "vue-property-decorator": "^9.1.2",
-    "vue-router": "^3.4.9",
+    "vue-router": "^3.5.1",
     "vue-yandex-metrika-ts": "^1.0.6",
-    "vuex": "^3.6.0"
+    "vuex": "^3.6.2"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "~4.5.9",
-    "@vue/cli-plugin-router": "~4.5.9",
-    "@vue/cli-plugin-typescript": "~4.5.9",
-    "@vue/cli-plugin-vuex": "~4.5.9",
-    "@vue/cli-service": "~4.5.9",
+    "@vue/cli-plugin-babel": "~4.5.13",
+    "@vue/cli-plugin-router": "~4.5.13",
+    "@vue/cli-plugin-typescript": "~4.5.13",
+    "@vue/cli-plugin-vuex": "~4.5.13",
+    "@vue/cli-service": "~4.5.13",
     "prerender-spa-plugin": "^3.4.0",
     "robotstxt-webpack-plugin": "^7.0.0",
     "sass": "^1.29.0",
     "sass-loader": "^10.1.0",
-    "typescript": "~4.1.2",
+    "typescript": "~4.3.2",
     "vue-cli-plugin-sitemap": "~2.3.0",
     "vue-template-compiler": "^2.6.12"
   }
