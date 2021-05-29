@@ -90,11 +90,30 @@ export default {
         font-size: 1.1em;
         padding-top: 5px;
     }
+
+        ::-webkit-scrollbar-track {
+        background-color: rgba(0, 140, 255, 0.158);
+        box-shadow: 0px 0px 3px rgb(190, 190, 190) inset;
+        border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        -webkit-border-radius: 10px;
+        border-radius: 10px;
+        background-color: #42b983;
+        box-shadow: 0px 1px 1px rgb(190, 190, 190) inset;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+
+    ::-webkit-scrollbar {
+        height: 15px;
+    }
 }
 
 .navbar {
     background-color: rgba(0, 140, 255, 0.158);
-    margin-bottom: 10px;
+    margin-bottom: var(--main-margin);
 
     .nav-item {
         padding-right: var(--main-margin);

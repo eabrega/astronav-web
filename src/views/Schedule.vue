@@ -232,24 +232,6 @@ export default class Schedule extends Vue {
             padding-bottom: 10px;
             scroll-snap-type: x mandatory;
         }
-        ::-webkit-scrollbar-track {
-            background-color: rgba(0, 140, 255, 0.158);
-            box-shadow: 0px 0px 3px rgb(190, 190, 190) inset;
-            border-radius: 10px;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            -webkit-border-radius: 10px;
-            border-radius: 10px;
-            background-color: #42b983;
-            box-shadow: 0px 1px 1px rgb(190, 190, 190) inset;
-            background-position: center;
-            background-repeat: no-repeat;
-        }
-
-        ::-webkit-scrollbar {
-            height: 15px;
-        }
     }
 }
 </style>
