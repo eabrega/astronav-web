@@ -1,16 +1,16 @@
 <template>
     <div class="planet-box">
         <div class="spinner" v-if="IS_LOADED">
-            <div class="text-center">
-                <b-spinner variant="primary" label="Text Centered"></b-spinner>
+            <div>
+                <b-spinner variant="primary" label="loading..."></b-spinner>
             </div>
         </div>
         <div class="planet" v-else>
             <div class="planet-name">
                 {{ PLANET_RUS_NAME.get(skyObject.PlanetName) }}
-                <div class="status">
-                    <b>{{ POSITION }}</b>
-                </div>
+                <span class="status">
+                    {{ STATUS }}
+                </span>
             </div>
             <div class="info-box">
                 <div class="event" v-for="(event, i) in skyObject.Events" :key="i">
@@ -72,7 +72,7 @@ export default class PlanetWidget extends Vue {
         return this.сolorByEventName;
     }
 
-    get POSITION(): string {
+    get STATUS(): string {
         const sunsetDate = this.skyObject.Events.find((i) => i.Event == "Sunset")?.Date ?? null;
         const sunriseDate = this.skyObject.Events.find((i) => i.Event == "Sunrise")?.Date ?? null;
         const currentDate = this.$store.state.date as Date;
@@ -120,7 +120,7 @@ export default class PlanetWidget extends Vue {
 .planet-box {
     scroll-snap-align: center;
     min-width: 270px;
-    height: 135px;
+    min-height: 135px;
     border: grayscale($color: #0a0a0a59);
     border-style: solid;
     border-width: 1px;
@@ -135,7 +135,7 @@ export default class PlanetWidget extends Vue {
     flex-direction: column;
     justify-content: stretch;
 
-    .spinner{
+    .spinner {
         height: 135px;
         display: flex;
         justify-content: center;
@@ -143,14 +143,15 @@ export default class PlanetWidget extends Vue {
     }
     .planet {
         .planet-name {
+            padding: 0px;
             display: flex;
-            flex-direction: row;
-            font-size: 1.5em !important;
-            padding-bottom: 5px;
             justify-content: space-between;
-
+            display: flex;
+            font-size: 1.5em;
             .status {
-                font-size: 0.6em;
+                display: flex;
+                font-size: 0.5em;
+                font-weight: 600;
             }
         }
 

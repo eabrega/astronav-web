@@ -131,9 +131,10 @@ export default class Schedule extends Vue {
     }
 
     getEventsList(eventName: string) {
+        
         return Array.from<ISkyEvent>(this.$store.state.events)
             .filter((x) => x.events.find((x) => x.event == eventName))
-            .flatMap((x) => this.plainEventItemFabric(x, eventName))
+            .flatMap((x) => this.plainEventItemDecorator(x, eventName))
             .sort((a, b) => a.Time.getTime() - b.Time.getTime());
     }
 
@@ -150,9 +151,10 @@ export default class Schedule extends Vue {
         }, 1000);
     }
 
-    private plainEventItemFabric(skyEvent: ISkyEvent, name: string): PlainEventItem {
-        const event = skyEvent.events.find((i) => i.event == name);
-        return new PlainEventItem(skyEvent.name, event!);
+    private plainEventItemDecorator(skyEvent: ISkyEvent, name: string): PlainEventItem[] {
+        return skyEvent.events
+            .filter((i) => i.event == name)
+            .map(x=> { return new PlainEventItem(skyEvent.name, x) });
     }
 
     private declOfNum(number: number, titles: Array<string>) {
