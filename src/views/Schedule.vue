@@ -1,5 +1,13 @@
 <template>
     <div class="schedule">
+        <b-alert class="info_bar" variant="success" show dismissible>
+            На странице представленна информация о небесных телах видимых с учетом вашего
+            <b-link v-b-toggle.app-settings-sidebar>местоположения</b-link>.<br> Выбранное местоположения 
+            сохранится в нстройках браузера. <br/>
+        </b-alert>
+        <b-alert class="info_bar" variant="warning" show dismissible>
+
+        </b-alert>
         <div class="schedule-info_bar">
             <b-alert class="info_bar" variant="secondary" show>
                 <div class="schedule-latlon">
@@ -19,25 +27,9 @@
             <div class="planets-widgets">
                 <PlanetWidget v-for="(item, index) in EVENTS" :key="index" :skyObject="item" />
             </div>
-            <div class="list">
-                <b-card class="events-card" header="Восходы" header-tag="header">
-                    <b-card-text>
-                        <EventList
-                            v-for="(item, index) in getEventsList('Sunrise')"
-                            :key="index"
-                            :sky-object="item"
-                        />
-                    </b-card-text>
-                </b-card>
-                <b-card class="events-card" header="Закаты" header-tag="header">
-                    <b-card-text>
-                        <EventList
-                            v-for="(item, index) in getEventsList('Sunset')"
-                            :key="index"
-                            :sky-object="item"
-                        />
-                    </b-card-text>
-                </b-card>
+            <div class="schedule-events">
+                <EventsList name="Sunrise" />
+                <EventsList name="Sunset" />
             </div>
         </div>
     </div>
@@ -46,9 +38,9 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import PlanetWidget from "@/components/Events/PlanetWidget.vue";
-import EventList from "@/components/Events/EventList.vue";
+import EventsList from "@/components/Events/EventsList.vue";
+import EventIcon from "@/components/Events/EventIcon.vue";
 import { ISkyEvent, SkyEvent } from "@/store/ISkyInfo";
-import { PlainEventItem } from "@/components/Events/PlainEventItem";
 
 @Component({
     metaInfo: {
@@ -71,7 +63,8 @@ import { PlainEventItem } from "@/components/Events/PlainEventItem";
     },
     components: {
         PlanetWidget,
-        EventList,
+        EventsList,
+        EventIcon
     },
 })
 export default class Schedule extends Vue {
@@ -130,14 +123,6 @@ export default class Schedule extends Vue {
         return `(${resString})`;
     }
 
-    getEventsList(eventName: string) {
-        
-        return Array.from<ISkyEvent>(this.$store.state.events)
-            .filter((x) => x.events.find((x) => x.event == eventName))
-            .flatMap((x) => this.plainEventItemDecorator(x, eventName))
-            .sort((a, b) => a.Time.getTime() - b.Time.getTime());
-    }
-
     mounted() {
         if (this.$store.getters.events?.length == 0) {
             this.$store?.dispatch("getEvents");
@@ -149,12 +134,6 @@ export default class Schedule extends Vue {
         setInterval(() => {
             this.time = new Date();
         }, 1000);
-    }
-
-    private plainEventItemDecorator(skyEvent: ISkyEvent, name: string): PlainEventItem[] {
-        return skyEvent.events
-            .filter((i) => i.event == name)
-            .map(x=> { return new PlainEventItem(skyEvent.name, x) });
     }
 
     private declOfNum(number: number, titles: Array<string>) {
@@ -170,6 +149,9 @@ export default class Schedule extends Vue {
 .schedule {
     max-width: var(--max-size);
     min-width: calc(var(--min-size) - var(--main-margin));
+
+    $font-size: 1.4em;
+
     .schedule-info_bar {
         display: flex;
         justify-content: space-between;
@@ -186,7 +168,7 @@ export default class Schedule extends Vue {
                 margin-left: 15px;
             }
             .schedule-date {
-                font-size: 1.5em;
+                font-size: $font-size;
 
                 .schedule-date__suffix {
                     margin-left: 15px;
@@ -203,7 +185,7 @@ export default class Schedule extends Vue {
             .schedule-latlon {
                 display: flex;
                 flex-wrap: wrap;
-                font-size: 1.5em;
+                font-size: $font-size;
                 span {
                     padding-right: 20px;
                 }
@@ -212,15 +194,7 @@ export default class Schedule extends Vue {
     }
 
     .schedule-body {
-        .events-card {
-            min-width: calc(var(--min-size) - var(--main-margin));
-            flex-basis: var(--min-size);
-            flex-grow: 1;
-            margin-bottom: var(--main-margin);
-            margin-right: var(--main-margin);
-        }
-
-        .list {
+        .schedule-events {
             display: flex;
             flex-wrap: wrap;
             margin-right: calc(var(--main-margin) * -1);

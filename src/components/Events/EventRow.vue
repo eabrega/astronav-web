@@ -14,7 +14,7 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 import { Locale } from "@/store/constants";
 
 @Component
-export default class EventList extends Vue {
+export default class EventRow extends Vue {
     @Prop()
     skyObject!: PlainEventItem;
 

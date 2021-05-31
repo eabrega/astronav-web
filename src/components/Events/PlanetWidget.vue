@@ -14,13 +14,7 @@
             </div>
             <div class="info-box">
                 <div class="event" v-for="(event, i) in skyObject.Events" :key="i">
-                    <div class="icon">
-                        <b-icon
-                            :icon="EVENTS_ICONS.get(event.Event)"
-                            scale="1"
-                            :variant="EVENTS_COLOR.get(event.Event)"
-                        ></b-icon>
-                    </div>
+                    <EventIcon :name="event.Event" />
                     <div class="time">{{ event.Date.toLocaleTimeString() }}</div>
                     <div class="position-leter">{{ ANGLE_LETTERS(event.A) }}</div>
                     <div class="position">
@@ -36,17 +30,16 @@
 import { SkyEvent } from "@/store/ISkyInfo";
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { Locale } from "@/store/constants";
+import EventIcon from "@/components/Events/EventIcon.vue";
 
-@Component
+@Component({
+    components: {
+        EventIcon,
+    },
+})
 export default class PlanetWidget extends Vue {
     @Prop(SkyEvent)
     private skyObject!: SkyEvent;
-
-    сolorByEventName = new Map([
-        ["Sunrise", "success"],
-        ["Apogee", "primary"],
-        ["Sunset", "danger"],
-    ]);
 
     constructor() {
         super();
@@ -62,14 +55,6 @@ export default class PlanetWidget extends Vue {
 
     get EVENT_RUS_NAME() {
         return Locale.EVENTS_RUS;
-    }
-
-    get EVENTS_ICONS() {
-        return Locale.EVENTS_ICONS;
-    }
-
-    get EVENTS_COLOR() {
-        return this.сolorByEventName;
     }
 
     get STATUS(): string {
@@ -163,11 +148,7 @@ export default class PlanetWidget extends Vue {
                 display: flex;
                 flex-direction: row;
 
-                .icon {
-                    width: 20%;
-                }
-
-                .time {
+               .time {
                     width: 40%;
                 }
 
