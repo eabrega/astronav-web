@@ -8,7 +8,6 @@
             backdrop
             shadow
             right
-            v-show="mo"
         >
             <div class="px-3 py-2">
                 <b-input-group prepend="Широта" class="mt-3">
@@ -44,6 +43,9 @@
                     variant="success"
                     >Cохранить</b-button
                 >
+                <b-form-checkbox v-model="isHelp" class="mt-5 input-latlon" size="lg" name="check-button" switch >
+                    <span>Скрывать подсказки</span>
+                </b-form-checkbox>
             </div>
         </b-sidebar>
     </div>
@@ -92,16 +94,20 @@ export default class AppSettingsSidebar extends Vue {
         return this.lon;
     }
 
+    get isHelp(){
+        return !store.state.isShowHellpMessage;
+    }
+
+    set isHelp(val:boolean){
+        store.dispatch("setIsShowHelpMessage", !val);
+    }
+
     update() {
         if (this.isLatValid && this.isLonValid) {
             store.dispatch("setLon", this.lon);
             store.dispatch("setLat", this.lat);
             store.dispatch("setDate", new DateParser(this.CurrentDate).Date);
         }
-    }
-
-    get mo() {
-        return true;
     }
 
     constructor() {

@@ -17,6 +17,7 @@ export interface IState {
     currentFrameIndex: number,
     lon: number,
     lat: number,
+    isShowHellpMessage: boolean
 }
 
 export default new Vuex.Store({
@@ -29,6 +30,7 @@ export default new Vuex.Store({
         currentFrameIndex: 0,
         lon: getLocalStoredParam()?.lon ?? 37.6,
         lat: getLocalStoredParam()?.lat ?? 55.7,
+        isShowHellpMessage: getLocalStoredParam()?.isShowHellpMessage ?? false
     } as IState,
     mutations: {
         SET_CONDITIONS(state, val) {
@@ -55,6 +57,9 @@ export default new Vuex.Store({
         SET_IS_LOADING(state, val) {
             state.isLoading = val;
         },
+        SET_IS_SHOW_HELP(state, val) {
+            state.isShowHellpMessage = val;
+        }
     },
     actions: {
         getConditions: async ({ state, commit }) => {
@@ -94,10 +99,7 @@ export default new Vuex.Store({
             const info = await LoadInfo(new DateParser(state.date).toString(), state.lat, state.lon).then();
             const events = await LoadEvents(new DateParser(state.date).toString(), state.lat, state.lon, state.date.getTimezoneOffset()).then();
 
-            localStorage.userSettings = JSON.stringify({
-                lat: state.lat,
-                lon: state.lon
-            });
+            saveSettings(state);
 
             commit("SET_CONDITIONS", objects);
             commit("SET_INFO", info.objects);
@@ -106,6 +108,10 @@ export default new Vuex.Store({
 
             commit("SET_IS_LOADING", false);
         },
+        setIsShowHelpMessage: ({ commit, state }, val: boolean) => {
+            commit("SET_IS_SHOW_HELP", val);
+            saveSettings(state);
+        }
     },
     modules: {},
     getters: {
@@ -126,6 +132,9 @@ export default new Vuex.Store({
             const time = state.condition[state.currentFrameIndex]?.time
             return time ? DateToTimeString(new Date(time)) : "00:00";
         },
+        isShowHellpMessage: (state) => {
+            state.isShowHellpMessage
+        }
     }
 });
 
@@ -175,4 +184,12 @@ function isToDay(date: Date) {
 function getLocalStoredParam(): IUserSettings | null {
     if (!(localStorage.userSettings as IUserSettings)) return null;
     return <IUserSettings>JSON.parse(localStorage.userSettings);
+}
+
+function saveSettings(state: IState) {
+    localStorage.userSettings = JSON.stringify({
+        lat: state.lat,
+        lon: state.lon,
+        isShowHellpMessage: state.isShowHellpMessage
+    });
 }

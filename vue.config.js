@@ -36,7 +36,7 @@ module.exports = {
             urls: [
                 {
                     loc: '/',
-                    lastmod: 'May 21, 2021',
+                    lastmod: 'May 30, 2021',
                     priority: 1,
                     changefreq: 'weekly',
                 },

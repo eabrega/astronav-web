@@ -1,12 +1,17 @@
 <template>
     <div class="schedule">
-        <b-alert class="info_bar" variant="success" show dismissible>
-            На странице представленна информация о небесных телах видимых с учетом вашего
-            <b-link v-b-toggle.app-settings-sidebar>местоположения</b-link>.<br> Выбранное местоположения 
-            сохранится в нстройках браузера. <br/>
-        </b-alert>
-        <b-alert class="info_bar" variant="warning" show dismissible>
-
+        <b-alert
+            class="info_bar"
+            variant="success"
+            show
+            dismissible
+            v-on:dismissed="hellpClosed"
+            v-if="$store.state.isShowHellpMessage"
+        >
+            На странице представленна информация об астрономических объектах видимых с учетом вашего
+            <b-link v-b-toggle.app-settings-sidebar>местоположения</b-link>.<br />
+            Выбранное местоположение сохранится в нстройках браузера. <br />
+            Вы всегда можете настроет отображение подсказок в <b-link v-b-toggle.app-settings-sidebar>настройках</b-link>.
         </b-alert>
         <div class="schedule-info_bar">
             <b-alert class="info_bar" variant="secondary" show>
@@ -64,7 +69,7 @@ import { ISkyEvent, SkyEvent } from "@/store/ISkyInfo";
     components: {
         PlanetWidget,
         EventsList,
-        EventIcon
+        EventIcon,
     },
 })
 export default class Schedule extends Vue {
@@ -141,6 +146,10 @@ export default class Schedule extends Vue {
         return titles[
             number % 100 > 4 && number % 100 < 20 ? 2 : cases[number % 10 < 5 ? number % 10 : 5]
         ];
+    }
+
+    private hellpClosed(){
+        this.$store.dispatch("setIsShowHelpMessage", !this.$store.state.isShowHellpMessage);
     }
 }
 </script>
