@@ -30,7 +30,7 @@ export default new Vuex.Store({
         currentFrameIndex: 0,
         lon: getLocalStoredParam()?.lon ?? 37.6,
         lat: getLocalStoredParam()?.lat ?? 55.7,
-        isShowHellpMessage: getLocalStoredParam()?.isShowHellpMessage ?? false
+        isShowHellpMessage: getLocalStoredParam()?.isShowHellpMessage ?? true
     } as IState,
     mutations: {
         SET_CONDITIONS(state, val) {
