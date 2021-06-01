@@ -10,8 +10,8 @@
         >
             На странице представленна информация об астрономических объектах видимых с учетом вашего
             <b-link v-b-toggle.app-settings-sidebar>местоположения</b-link>.<br />
-            Выбранное местоположение сохранится в нстройках браузера. <br />
-            Вы всегда можете настроет отображение подсказок в <b-link v-b-toggle.app-settings-sidebar>настройках</b-link>.
+            Выбранное местоположение сохранится в настройках браузера. <br />
+            Вы всегда можете настроить отображение подсказок в <b-link v-b-toggle.app-settings-sidebar>настройках</b-link>.
         </b-alert>
         <div class="schedule-info_bar">
             <b-alert class="info_bar" variant="secondary" show>
