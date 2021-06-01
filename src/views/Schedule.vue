@@ -11,7 +11,7 @@
             На странице представленна информация об астрономических объектах видимых с учетом вашего
             <b-link v-b-toggle.app-settings-sidebar>местоположения</b-link>.<br />
             Выбранное местоположение сохранится в настройках браузера. <br />
-            Вы всегда можете настроить отображение подсказок в <b-link v-b-toggle.app-settings-sidebar>настройках</b-link>.
+            Вы всегда можете изменить отображение подсказок в <b-link v-b-toggle.app-settings-sidebar>настройках</b-link>.
         </b-alert>
         <div class="schedule-info_bar">
             <b-alert class="info_bar" variant="secondary" show>
@@ -33,8 +33,8 @@
                 <PlanetWidget v-for="(item, index) in EVENTS" :key="index" :skyObject="item" />
             </div>
             <div class="schedule-events">
-                <EventsList name="Sunrise" />
-                <EventsList name="Sunset" />
+                <EventsList title="Восходы" name="Sunrise" />
+                <EventsList title="Закаты" name="Sunset" />
             </div>
         </div>
     </div>

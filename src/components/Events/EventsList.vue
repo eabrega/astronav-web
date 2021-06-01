@@ -1,5 +1,5 @@
 <template>
-    <b-card class="events-card" header="Восходы" header-tag="header">
+    <b-card class="events-card" :header="this.title" header-tag="header">
         <b-card-text>
             <EventRow
                 v-for="(item, index) in getEventsList(this.name)"
@@ -23,6 +23,9 @@ import EventRow from "@/components/Events/EventRow.vue";
 export default class EventsList extends Vue {
     @Prop()
     name!: string;
+
+    @Prop()
+    title!: string
 
     constructor() {
         super();
