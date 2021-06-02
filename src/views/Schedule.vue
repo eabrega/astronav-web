@@ -3,15 +3,15 @@
         <b-alert
             class="info_bar"
             variant="success"
-            show
+            v-model="$store.state.isShowHelpMessage"
             dismissible
-            v-on:dismissed="hellpClosed"
-            v-if="$store.state.isShowHellpMessage"
+            v-on:dismissed="helpWindowClosedHeandler"
         >
             На странице представленна информация об астрономических объектах видимых с учетом вашего
             <b-link v-b-toggle.app-settings-sidebar>местоположения</b-link>.<br />
             Выбранное местоположение сохранится в настройках браузера. <br />
-            Вы всегда можете изменить отображение подсказок в <b-link v-b-toggle.app-settings-sidebar>настройках</b-link>.
+            Вы всегда можете изменить отображение подсказок в
+            <b-link v-b-toggle.app-settings-sidebar>настройках</b-link>.
         </b-alert>
         <div class="schedule-info_bar">
             <b-alert class="info_bar" variant="secondary" show>
@@ -148,8 +148,8 @@ export default class Schedule extends Vue {
         ];
     }
 
-    private hellpClosed(){
-        this.$store.dispatch("setIsShowHelpMessage", !this.$store.state.isShowHellpMessage);
+    private helpWindowClosedHeandler() {
+        this.$store.dispatch("setIsShowHelpMessage", false);
     }
 }
 </script>

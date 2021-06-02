@@ -17,7 +17,7 @@ export interface IState {
     currentFrameIndex: number,
     lon: number,
     lat: number,
-    isShowHellpMessage: boolean
+    isShowHelpMessage: boolean
 }
 
 export default new Vuex.Store({
@@ -30,7 +30,7 @@ export default new Vuex.Store({
         currentFrameIndex: 0,
         lon: getLocalStoredParam()?.lon ?? 37.6,
         lat: getLocalStoredParam()?.lat ?? 55.7,
-        isShowHellpMessage: getLocalStoredParam()?.isShowHellpMessage ?? true
+        isShowHelpMessage: getLocalStoredParam()?.isShowHelpMessage ?? true
     } as IState,
     mutations: {
         SET_CONDITIONS(state, val) {
@@ -58,7 +58,7 @@ export default new Vuex.Store({
             state.isLoading = val;
         },
         SET_IS_SHOW_HELP(state, val) {
-            state.isShowHellpMessage = val;
+            state.isShowHelpMessage = val;
         }
     },
     actions: {
@@ -133,7 +133,7 @@ export default new Vuex.Store({
             return time ? DateToTimeString(new Date(time)) : "00:00";
         },
         isShowHellpMessage: (state) => {
-            state.isShowHellpMessage
+            state.isShowHelpMessage
         }
     }
 });
@@ -190,6 +190,6 @@ function saveSettings(state: IState) {
     localStorage.userSettings = JSON.stringify({
         lat: state.lat,
         lon: state.lon,
-        isShowHellpMessage: state.isShowHellpMessage
+        isShowHelpMessage: state.isShowHelpMessage
     });
 }
