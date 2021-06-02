@@ -1,11 +1,6 @@
 <template>
     <div class="schedule">
-        <b-alert
-            class="info_bar"
-            variant="success"
-            v-model="isShowMessageBox"
-            dismissible
-        >
+        <b-alert class="info_bar" variant="success" v-model="isShowMessageBox" dismissible>
             На странице представленна информация об астрономических объектах видимых с учетом вашего
             <b-link v-b-toggle.app-settings-sidebar>местоположения</b-link>.<br />
             Выбранное местоположение сохранится в настройках браузера. <br />
@@ -147,11 +142,14 @@ export default class Schedule extends Vue {
         ];
     }
 
-    get isShowMessageBox(){
+    get isShowMessageBox() {
+        if ((window as any)?.prerenderInjected == "false") {
+            return false;
+        }
         return this.$store.state.isShowHelpMessage;
     }
 
-    set isShowMessageBox(val:boolean){
+    set isShowMessageBox(val: boolean) {
         this.$store.dispatch("setIsShowHelpMessage", false);
     }
 }

@@ -70,6 +70,10 @@ module.exports = {
             new PrerenderSPAPlugin({
                 staticDir: path.join(__dirname, 'dist'),
                 routes: ['/', '/about', '/skymap', '/404'],
+                renderer: new PrerenderSPAPlugin.PuppeteerRenderer({
+                    injectProperty: 'prerenderInjected',
+                    inject: "false"
+                }),
                 minify: {
                     collapseBooleanAttributes: true,
                     collapseWhitespace: true,
