@@ -5,7 +5,6 @@
             variant="success"
             v-model="isShowMessageBox"
             dismissible
-            v-on:dismissed="helpWindowClosedHeandler"
         >
             На странице представленна информация об астрономических объектах видимых с учетом вашего
             <b-link v-b-toggle.app-settings-sidebar>местоположения</b-link>.<br />
@@ -129,7 +128,6 @@ export default class Schedule extends Vue {
     }
 
     mounted() {
-        console.log(this.$store.state.isShowHelpMessage)
         if (this.$store.getters.events?.length == 0) {
             this.$store?.dispatch("getEvents");
         }
@@ -149,13 +147,12 @@ export default class Schedule extends Vue {
         ];
     }
 
-    private helpWindowClosedHeandler() {
-        this.$store.dispatch("setIsShowHelpMessage", false);
+    get isShowMessageBox(){
+        return this.$store.state.isShowHelpMessage;
     }
 
-    get isShowMessageBox(){
-        console.log(this.$store.state.isShowHelpMessage)
-        return this.$store.state.isShowHelpMessage;
+    set isShowMessageBox(val:boolean){
+        this.$store.dispatch("setIsShowHelpMessage", false);
     }
 }
 </script>
