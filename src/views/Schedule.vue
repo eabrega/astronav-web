@@ -3,7 +3,7 @@
         <b-alert
             class="info_bar"
             variant="success"
-            v-model="$store.state.isShowHelpMessage"
+            v-model="isShowMessageBox"
             dismissible
             v-on:dismissed="helpWindowClosedHeandler"
         >
@@ -129,6 +129,7 @@ export default class Schedule extends Vue {
     }
 
     mounted() {
+        console.log(this.$store.state.isShowHelpMessage)
         if (this.$store.getters.events?.length == 0) {
             this.$store?.dispatch("getEvents");
         }
@@ -150,6 +151,11 @@ export default class Schedule extends Vue {
 
     private helpWindowClosedHeandler() {
         this.$store.dispatch("setIsShowHelpMessage", false);
+    }
+
+    get isShowMessageBox(){
+        console.log(this.$store.state.isShowHelpMessage)
+        return this.$store.state.isShowHelpMessage;
     }
 }
 </script>
