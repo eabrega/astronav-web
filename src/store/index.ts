@@ -158,7 +158,7 @@ async function Load(date: string, lat: number, lon: number, gmtCorrector: number
 async function LoadInfo(date: string, lat: number, lon: number): Promise<ISkyInfo> {
     const dateAsString = new DateParser(date).toApiString();
     let resp = await fetch(
-        `http://192.168.1.20:51803/sky/info/date/${dateAsString}/latitude/${lat}/longitude/${lon}`
+        `https://api.astronav.ru/sky/info/date/${dateAsString}/latitude/${lat}/longitude/${lon}`
     );
     return resp.json();
 }
