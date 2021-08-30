@@ -10,7 +10,10 @@
             responsive="sm"
         >
             <template #cell(visible)="data">
-                <b-icon :icon="+data.item.y > 0 ? 'eye' : 'eye-slash'" scale="1.1"></b-icon>
+                <b-icon
+                    :icon="+data.item.y > 0 ? 'eye' : 'eye-slash'"
+                    scale="1.1"
+                ></b-icon>
             </template>
             <template #cell(x)="data">
                 {{ data.item.x.toFixed(2) }}
@@ -25,7 +28,7 @@
                 {{ $store.getters.info(data.item.name).f.toFixed(2) }}
             </template>
             <template #cell(diametr)="data">
-                {{ $store.getters.info(data.item.name).d.toFixed(2) }}
+                <AngularDiameter :value="$store.getters.info(data.item.name).d"/>
             </template>
             <template #table-busy>
                 <div class="text-center text-primary loading">
@@ -40,8 +43,13 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { Locale } from "@/store/constants";
+import AngularDiameter from "@/components/Common/AngularDiameter.vue";
 
-@Component
+@Component({
+    components: {
+        AngularDiameter,
+    },
+})
 export default class SkyObjectsTable extends Vue {
     constructor() {
         super();
@@ -78,7 +86,7 @@ export default class SkyObjectsTable extends Vue {
             {
                 key: "diametr",
                 label: "Размер",
-                class: "column-right-align",
+                class: "diameter",
             },
             {
                 key: "phase",
@@ -138,6 +146,11 @@ export default class SkyObjectsTable extends Vue {
         .align-middle {
             margin-right: 10px;
         }
+    }
+
+    .diameter div{
+        display: flex;
+        justify-content: flex-end;
     }
 }
 </style>

@@ -45,12 +45,6 @@ export default class SkyMap extends Vue {
 
 <style lang="scss" scoped>
 .sky-map {
-    max-width: var(--max-size);
-    min-width: calc(var(--min-size) - var(--main-margin));
-    display: block;
-    flex-direction: column;
-    justify-self: center;
-
     .plotter {
         margin-bottom: 20px;
         overflow-x: auto;

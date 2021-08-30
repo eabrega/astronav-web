@@ -43,7 +43,13 @@
                     variant="success"
                     >Cохранить</b-button
                 >
-                <b-form-checkbox v-model="isChacked" class="mt-5 input-latlon" size="lg" name="check-button" switch >
+                <b-form-checkbox
+                    v-model="isChacked"
+                    class="mt-5 input-latlon"
+                    size="lg"
+                    name="check-button"
+                    switch
+                >
                     <span>Скрывать подсказки</span>
                 </b-form-checkbox>
             </div>
@@ -94,11 +100,11 @@ export default class AppSettingsSidebar extends Vue {
         return this.lon;
     }
 
-    get isChacked(){
+    get isChacked() {
         return !store.state.isShowHelpMessage;
     }
 
-    set isChacked(val:boolean){
+    set isChacked(val: boolean) {
         store.dispatch("setIsShowHelpMessage", !val);
     }
 

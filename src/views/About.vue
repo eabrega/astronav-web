@@ -95,9 +95,9 @@ export default {
 
 <style lang="scss">
 .about {
-    max-width: var(--max-size);
-    min-width: calc(var(--min-size) - var(--main-margin));
-    margin-left: var(--main-margin);
+    // max-width: var(--max-size);
+    // min-width: calc(var(--min-size) - var(--main-margin));
+    //margin-left: var(--main-margin);
     font-weight: 400;
 
     .sumbol-v {
