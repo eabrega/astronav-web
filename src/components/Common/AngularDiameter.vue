@@ -11,14 +11,6 @@
         <div class="sec" v-b-tooltip.hover title="Угловые секунды">
             {{ value.sec }}"
         </div>
-        <div
-            class="millisecond"
-            v-b-tooltip.hover
-            title="Угловые миллисекунды"
-            v-if="value.millisecond"
-        >
-            {{ value.millisecond }}
-        </div>
     </div>
 </template>
 
@@ -36,21 +28,3 @@ export default class AngularDiameter extends Vue {
     }
 }
 </script>
-
-<style lang="scss">
-.angular-diameter {
-    display: flex;
-
-    .min {
-        margin-right: 3px;
-    }
-
-    .sec {
-        margin-right: 3px;
-    }
-
-    .millisecond {
-        margin-right: 9px;
-    }
-}
-</style>
