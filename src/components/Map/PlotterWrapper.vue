@@ -6,7 +6,7 @@
 
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
-import { Plotter } from "canvas-chart-ts/dist";
+import { Plotter } from "@/components/Plotter/index";
 
 @Component
 export default class PlotterWrapper extends Vue {
