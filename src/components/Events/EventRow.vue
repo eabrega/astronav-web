@@ -1,7 +1,7 @@
 <template>
     <div class="event-row" v-bind:class="{ completed: IS_COMPLETED }">
         <div class="name">{{ PLANET_RUS_NAME.get(skyObject.Name) }}</div>
-        <div class="time ">{{ skyObject.Time.toLocaleTimeString() }}</div>
+        <div class="time ">{{ skyObject.Time.toLocaleTimeString().substr(0,5) }}</div>
         <div class="position">
             <b>{{ skyObject.A.toFixed(2) }}°</b>
         </div>
@@ -38,13 +38,14 @@ export default class EventRow extends Vue {
     font-weight: 500;
     text-decoration: line-through;
 }
+
 .event-row {
     display: flex;
     margin-bottom: 5px;
     flex-direction: row;
 
     .name {
-        width: 43%;
+        width: 40%;
     }
 
     .time {
@@ -52,7 +53,7 @@ export default class EventRow extends Vue {
     }
 
     .position {
-        width: 33%;
+        width: 45%;
         text-align: right;
     }
 }
