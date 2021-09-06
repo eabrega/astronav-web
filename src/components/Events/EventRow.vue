@@ -1,9 +1,11 @@
 <template>
     <div class="event-row" v-bind:class="{ completed: IS_COMPLETED }">
         <div class="name">{{ PLANET_RUS_NAME.get(skyObject.Name) }}</div>
-        <div class="time ">{{ skyObject.Time.toLocaleTimeString().substr(0,5) }}</div>
+        <div class="time">
+            {{ skyObject.Time.toLocaleTimeString().substr(0, 5) }}
+        </div>
         <div class="position">
-            <b>{{ skyObject.A.toFixed(2) }}°</b>
+            <b>{{ localize(skyObject.A) }}°</b>
         </div>
     </div>
 </template>
@@ -27,7 +29,14 @@ export default class EventRow extends Vue {
     }
 
     get IS_COMPLETED() {
-        return this.skyObject.Time < new Date()
+        return this.skyObject.Time < new Date();
+    }
+
+    private localize(value: number): string {
+        return value.toLocaleString("ru-RU", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+        });
     }
 }
 </script>

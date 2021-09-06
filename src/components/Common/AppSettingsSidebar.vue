@@ -16,6 +16,7 @@
                         v-model.number="Lat"
                         :state="isLatValid"
                         type="number"
+                        step="0.01"
                         debounce="500"
                     ></b-form-input>
                 </b-input-group>
@@ -25,6 +26,7 @@
                         v-model.number="Lon"
                         :state="isLonValid"
                         type="number"
+                        step="0.01"
                         debounce="500"
                     ></b-form-input>
                 </b-input-group>

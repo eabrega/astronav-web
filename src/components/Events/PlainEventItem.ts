@@ -4,7 +4,7 @@ export class PlainEventItem {
     Name: string;
     Event: string;
     Time: Date;
-    A: Number;
+    A: number;
     
     constructor(name: string, event: ISkyEventItem) {
         this.Name = name;

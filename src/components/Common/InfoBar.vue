@@ -2,8 +2,8 @@
     <div class="info_bar">
         <b-alert class="info_bar-panel" variant="secondary" show>
             <div class="latlon">
-                <span>Широта: {{ $store.state.lat }}</span>
-                <span>Долгота: {{ $store.state.lon }}</span>
+                <span>Широта: {{ localize($store.state.lat) }}</span>
+                <span>Долгота: {{ localize($store.state.lon) }}</span>
             </div>
         </b-alert>
         <b-alert class="info_bar-panel" variant="secondary" show>
@@ -94,6 +94,14 @@ export default class InfoBar extends Vue {
         setInterval(() => {
             this.time = new Date();
         }, 1000);
+    }
+
+    private localize(value: number): string {
+        return value.toLocaleString("ru-RU", {
+            style: "decimal",
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 2,
+        });
     }
 }
 </script>

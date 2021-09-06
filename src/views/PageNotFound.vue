@@ -15,14 +15,14 @@ export default {
 
 <style lang="scss">
 .page-not-found {
-    margin-left: 50px;
-    width: 1400px !important;
+    //width: 1200px !important;
     h1 {
-        font-size: 15em !important;
+        font-size: 8em !important;
+        text-align: center;
     }
     p {
-        font-size: 4em !important;
-        width: 1400px !important;
+        font-size: 1.2em !important;
+       // width: 1200px !important;
     }
 }
 </style>

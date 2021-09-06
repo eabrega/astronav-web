@@ -1,5 +1,6 @@
 <template>
     <div class="schedule">
+        <InfoBar />
         <div class="planets-widgets">
             <PlanetWidget
                 v-for="(item, index) in EVENTS"
@@ -16,6 +17,7 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+import InfoBar from "@/components/Common/InfoBar.vue";
 import PlanetWidget from "@/components/Events/PlanetWidget.vue";
 import EventsList from "@/components/Events/EventsList.vue";
 import EventIcon from "@/components/Events/EventIcon.vue";
@@ -44,6 +46,7 @@ import { ISkyEvent, SkyEvent } from "@/store/ISkyInfo";
         PlanetWidget,
         EventsList,
         EventIcon,
+        InfoBar,
     },
 })
 export default class Schedule extends Vue {

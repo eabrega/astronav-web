@@ -16,19 +16,21 @@
                 ></b-icon>
             </template>
             <template #cell(x)="data">
-                {{ data.item.x.toFixed(2) }}
+                {{ localize(Number(data.item.x)) }}
             </template>
             <template #cell(y)="data">
-                {{ data.item.y.toFixed(2) }}
+                {{ localize(Number(data.item.y)) }}
             </template>
             <template #cell(name)="data">
                 {{ SINONIMS.get(data.item.name) }}
             </template>
             <template #cell(phase)="data">
-                {{ $store.getters.info(data.item.name).f.toFixed(2) }}
+                {{ localize(Number($store.getters.info(data.item.name).f)) }}
             </template>
             <template #cell(diametr)="data">
-                <AngularDiameter :value="$store.getters.info(data.item.name).d"/>
+                <AngularDiameter
+                    :value="$store.getters.info(data.item.name).d"
+                />
             </template>
             <template #table-busy>
                 <div class="text-center text-primary loading">
@@ -105,6 +107,14 @@ export default class SkyObjectsTable extends Vue {
         if (item.y < 0) return "unvisiblity-object";
         else return "visiblity-object";
     }
+
+    private localize(value: number): string {
+        return value.toLocaleString("ru-RU", {
+            style: "decimal",
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+        });
+    }
 }
 </script>
 <style lang="scss">
@@ -148,7 +158,7 @@ export default class SkyObjectsTable extends Vue {
         }
     }
 
-    .diameter div{
+    .diameter div {
         display: flex;
         justify-content: flex-end;
     }

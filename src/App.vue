@@ -31,15 +31,13 @@
                     объектах видимых с учетом вашего
                     <b-link v-b-toggle.app-settings-sidebar>
                         местоположения
-                    </b-link>
-                    .
+                    </b-link>.
                     <br />
                     Выбранное местоположение сохранится в настройках браузера.
                     <br />
                     Вы всегда можете изменить отображение подсказок в
                     <b-link v-b-toggle.app-settings-sidebar>настройках</b-link>.
                 </b-alert>
-                <InfoBar />
                 <router-view />
             </div>
         </div>
@@ -49,7 +47,6 @@
 <script lang="ts">
 import AppSettingsSidebar from "@/components/Common/AppSettingsSidebar.vue";
 import { Component, Vue } from "vue-property-decorator";
-import InfoBar from "@/components/Common/InfoBar.vue";
 @Component({
     name: "App",
     metaInfo: {
@@ -72,8 +69,7 @@ import InfoBar from "@/components/Common/InfoBar.vue";
         ],
     },
     components: {
-        AppSettingsSidebar,
-        InfoBar,
+        AppSettingsSidebar
     },
 })
 export default class App extends Vue {
