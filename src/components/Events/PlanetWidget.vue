@@ -103,7 +103,7 @@ export default class PlanetWidget extends Vue {
 
 <style lang="scss">
 .planet-box {
-    scroll-snap-align: center;
+    scroll-snap-align: start;
     min-width: 270px;
     min-height: 135px;
     border: grayscale($color: #0a0a0a59);
