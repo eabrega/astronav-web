@@ -3,7 +3,7 @@
         <b-sidebar
             id="app-settings-sidebar"
             title="Настройки"
-            width="400px"
+            width="500px"
             backdrop-variant="dark"
             backdrop
             shadow
@@ -16,7 +16,7 @@
                         v-model.number="Lat"
                         :state="isLatValid"
                         type="number"
-                        step="0.01"
+                        step="0.001"
                         debounce="500"
                     ></b-form-input>
                 </b-input-group>
@@ -26,10 +26,22 @@
                         v-model.number="Lon"
                         :state="isLonValid"
                         type="number"
-                        step="0.01"
+                        step="0.001"
                         debounce="500"
                     ></b-form-input>
                 </b-input-group>
+                 <yandex-map
+                    id="map"
+                    :coords="[Lat, Lon]"
+                    :zoom="15"
+                    @click="onClick"
+                    :controls="['geolocationControl']"
+                >
+                    <ymap-marker
+                        :coords="[Lat, Lon]"
+                        marker-id="123"
+                        hint-content="some hint"
+                /></yandex-map>
                 <b-input-group prepend="Дата" class="mt-3">
                     <b-form-input
                         v-model="CurrentDate"
@@ -47,7 +59,7 @@
                 >
                 <b-form-checkbox
                     v-model="isChacked"
-                    class="mt-5 input-latlon"
+                    class="mt-4 input-latlon"
                     size="lg"
                     name="check-button"
                     switch
@@ -63,11 +75,13 @@
 import { Component, Vue } from "vue-property-decorator";
 import DateParser from "./DateParser";
 import store from "@/store";
+import { MapEvent } from "yandex-maps";
 
 @Component
 export default class AppSettingsSidebar extends Vue {
     private lat = store.state.lat;
     private lon = store.state.lon;
+
     private date = new DateParser(store.state.date).toString();
 
     get CurrentDate(): string {
@@ -118,17 +132,30 @@ export default class AppSettingsSidebar extends Vue {
         }
     }
 
+    onClick(e: MapEvent, c: any) {
+        const coords = e.get("coords");
+
+        this.lat = coords[0].toFixed(3);
+        this.lon = coords[1].toFixed(3)
+    }
+
     constructor() {
         super();
     }
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .app-settings-sidebar {
     .input-group-text {
         width: 90px;
         font-weight: 550;
+    }
+
+    #map {
+         padding-top: 15px;
+       // padding-bottom: 5px;
+        height: 250px;
     }
 }
 </style>

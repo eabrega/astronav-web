@@ -25,6 +25,9 @@ const robotsOptions = {
 };
 
 module.exports = {
+    devServer: {
+        https: true,
+    },
     runtimeCompiler: true,
     outputDir: 'dist',
     pluginOptions: {

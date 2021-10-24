@@ -49,6 +49,7 @@ import { ISkyEvent, SkyEvent } from "@/store/ISkyInfo";
         InfoBar,
     },
 })
+
 export default class Schedule extends Vue {
     constructor() {
         super();
