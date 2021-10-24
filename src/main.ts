@@ -13,7 +13,11 @@ Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 Vue.use(VueMeta)
 Vue.use(YmapPlugin, {
-    apiKey:"40abc509-38d7-4044-a712-a6d775005709"
+    apiKey: "40abc509-38d7-4044-a712-a6d775005709",
+    lang: 'ru_RU',
+    coordorder: 'latlong',
+    enterprise: false,
+    version: '2.1'
 })
 new Vue({
     router,
