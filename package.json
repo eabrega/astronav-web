@@ -1,6 +1,6 @@
 {
   "name": "astronav",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve --mode development",
@@ -11,19 +11,19 @@
     "bootstrap-vue": "2.21.2",
     "canvas-chart-ts": "0.0.5",
     "core-js": "^3.13.1",
+    "vue-leaflet": "0.1.0",
     "vue": "^2.6.12",
     "vue-class-component": "^7.2.6",
     "vue-meta": "^2.4.0",
     "vue-property-decorator": "^9.1.2",
     "vue-router": "^3.5.1",
     "vue-yandex-metrika-ts": "^1.0.6",
-    "vuex": "^3.6.2",
-    "vue-yandex-maps": "0.11.0",
-    "@types/yandex-maps": "2.1.20"
+    "vue2-leaflet": "^2.7.1",
+    "vuex": "^3.6.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.13",
-    "@vue/cli-plugin-router": "~4.5.13",
+    "@vue/cli-plugin-router": "~4.5.14",
     "@vue/cli-plugin-typescript": "~4.5.13",
     "@vue/cli-plugin-vuex": "~4.5.13",
     "@vue/cli-service": "~4.5.13",

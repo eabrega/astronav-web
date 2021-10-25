@@ -11,9 +11,9 @@
                     <b-nav-item to="/about">О проекте</b-nav-item>
                 </b-navbar-nav>
                 <b-navbar-nav class="ml-auto">
-                    <b-nav-item v-b-toggle.app-settings-sidebar right
-                        >Настройки</b-nav-item
-                    >
+                    <b-nav-item v-b-toggle.app-settings-sidebar right>
+                        Настройки
+                    </b-nav-item>
                 </b-navbar-nav>
             </b-collapse>
         </b-navbar>
@@ -30,8 +30,8 @@
                     На странице представленна информация об астрономических
                     объектах видимых с учетом вашего
                     <b-link v-b-toggle.app-settings-sidebar>
-                        местоположения
-                    </b-link>.
+                        местоположения </b-link
+                    >.
                     <br />
                     Выбранное местоположение сохранится в настройках браузера.
                     <br />
@@ -88,6 +88,7 @@ export default class App extends Vue {
 
 <style lang="scss">
 @import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500&display=swap");
+@import url("https://unpkg.com/leaflet@1.6.0/dist/leaflet.css");
 @import "node_modules/bootstrap/scss/bootstrap.scss";
 @import "node_modules/bootstrap-vue/src/index.scss";
 

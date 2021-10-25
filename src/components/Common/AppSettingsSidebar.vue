@@ -1,9 +1,10 @@
 <template>
     <div class="app-settings-sidebar">
         <b-sidebar
+            @shown="show"
             id="app-settings-sidebar"
             title="Настройки"
-            width="500px"
+            width="450px"
             backdrop-variant="dark"
             backdrop
             shadow
@@ -30,18 +31,21 @@
                         debounce="500"
                     ></b-form-input>
                 </b-input-group>
-                 <yandex-map
+
+                <l-map
                     id="map"
-                    :coords="[Lat, Lon]"
+                    ref="map"
+                    :center="center"
                     :zoom="15"
-                    @click="onClick"
-                    :controls="['geolocationControl']"
+                    @click="click"
                 >
-                    <ymap-marker
-                        :coords="[Lat, Lon]"
-                        marker-id="123"
-                        hint-content="some hint"
-                /></yandex-map>
+                    <l-tile-layer
+                        :url="url"
+                        :attribution="attribution"
+                    ></l-tile-layer>
+                    <l-marker ref="marker" :lat-lng="center"></l-marker>
+                </l-map>
+
                 <b-input-group prepend="Дата" class="mt-3">
                     <b-form-input
                         v-model="CurrentDate"
@@ -75,9 +79,15 @@
 import { Component, Vue } from "vue-property-decorator";
 import DateParser from "./DateParser";
 import store from "@/store";
-import { MapEvent } from "yandex-maps";
-
-@Component
+import L from "leaflet";
+import { LMap, LTileLayer, LMarker } from "vue2-leaflet";
+@Component({
+    components: {
+        LMap,
+        LTileLayer,
+        LMarker
+    },
+})
 export default class AppSettingsSidebar extends Vue {
     private lat = store.state.lat;
     private lon = store.state.lon;
@@ -104,7 +114,7 @@ export default class AppSettingsSidebar extends Vue {
         this.lat = val;
     }
 
-    get Lat() {
+    get Lat():number {
         return this.lat;
     }
 
@@ -132,12 +142,30 @@ export default class AppSettingsSidebar extends Vue {
         }
     }
 
-    onClick(e: MapEvent, c: any) {
-        const coords = e.get("coords");
-
-        this.lat = coords[0].toFixed(3);
-        this.lon = coords[1].toFixed(3)
+    get url(): string {
+        return "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
     }
+
+    get attribution() {
+        return '&copy; <a target="_blank" href="http://osm.org/copyright">OpenStreetMap</a> contributors';
+    }
+
+    get center() {
+        return [this.lat, this.lon];
+    }
+
+    show() {
+        (this.$refs.map as LMap).mapObject.invalidateSize();
+    }
+
+    click(e: L.LeafletMouseEvent) {
+        (this.$refs.marker as LMarker).setLatLng(e.latlng);
+
+        this.lat = parseFloat(e.latlng.lat.toFixed(3));
+        this.lon = parseFloat(e.latlng.lng.toFixed(3));
+    }
+
+
 
     constructor() {
         super();
@@ -153,9 +181,9 @@ export default class AppSettingsSidebar extends Vue {
     }
 
     #map {
-         padding-top: 15px;
-       // padding-bottom: 5px;
-        height: 250px;
+        margin-top: 15px;
+        height: 290px;
+        border-radius: 5px;
     }
 }
 </style>

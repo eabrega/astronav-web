@@ -100,7 +100,7 @@ export default class InfoBar extends Vue {
         return value.toLocaleString("ru-RU", {
             style: "decimal",
             minimumFractionDigits: 0,
-            maximumFractionDigits: 2,
+            maximumFractionDigits: 3,
         });
     }
 }
