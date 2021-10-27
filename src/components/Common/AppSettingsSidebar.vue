@@ -138,6 +138,8 @@ export default class AppSettingsSidebar extends Vue {
         if (this.isLatValid && this.isLonValid) {
             store.dispatch("setLon", this.lon);
             store.dispatch("setLat", this.lat);
+
+            console.log(this.CurrentDate)
             store.dispatch("setDate", new DateParser(this.CurrentDate).Date);
         }
     }
@@ -164,8 +166,6 @@ export default class AppSettingsSidebar extends Vue {
         this.lat = parseFloat(e.latlng.lat.toFixed(3));
         this.lon = parseFloat(e.latlng.lng.toFixed(3));
     }
-
-
 
     constructor() {
         super();

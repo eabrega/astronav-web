@@ -41,7 +41,25 @@ export default class InfoBar extends Vue {
 
     get IS_TODAY() {
         const requestDate = this.$store.state.date as Date;
-        return this.dDays(requestDate) == 0 ? true : false;
+        const currentDate = new Date();
+        if (
+            requestDate.getDate() == currentDate.getDate() &&
+            requestDate.getMonth() == currentDate.getMonth() &&
+            requestDate.getFullYear() == currentDate.getFullYear()
+        ) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private dDays(distinationDate: Date): number {
+        const currentDate = new Date();
+        const dDays = Math.round(
+            (distinationDate.getTime() - currentDate.getTime()) / 3600000 / 24
+        );
+
+        return dDays +1;
     }
 
     get DATE_SUFFIX() {
@@ -80,14 +98,6 @@ export default class InfoBar extends Vue {
                 ? 2
                 : cases[number % 10 < 5 ? number % 10 : 5]
         ];
-    }
-
-    private dDays(distinationDate: Date): number {
-        const currentDate = new Date();
-        const dDays = Math.round(
-            (distinationDate.getTime() - currentDate.getTime()) / 3600000 / 24
-        );
-        return dDays;
     }
 
     private runTimeUpdate() {
