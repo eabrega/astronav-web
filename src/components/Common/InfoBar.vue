@@ -59,7 +59,7 @@ export default class InfoBar extends Vue {
             (distinationDate.getTime() - currentDate.getTime()) / 3600000 / 24
         );
 
-        return dDays +1;
+        return dDays;
     }
 
     get DATE_SUFFIX() {

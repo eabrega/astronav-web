@@ -22,7 +22,7 @@ export interface IState {
 
 export default new Vuex.Store({
     state: {
-        date: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
+        date: new Date(),
         isLoading: false,
         condition: Array<IDrawObjects>(),
         events: Array<ISkyEvent>(),
@@ -53,7 +53,6 @@ export default new Vuex.Store({
         },
         SET_DATE(state, val) {
             state.date = val;
-            console.log("1",val);
         },
         SET_IS_LOADING(state, val) {
             state.isLoading = val;
@@ -91,7 +90,13 @@ export default new Vuex.Store({
         // это обновление настроек а не даты!!!!!
         setDate: async ({ state, commit }, val: Date) => {
             commit("SET_IS_LOADING", true);
-            commit("SET_DATE", val);
+            commit("SET_DATE", new Date(
+                val.getFullYear(),
+                val.getMonth(),
+                val.getDate(),
+                new Date().getHours(),
+                new Date().getMinutes(),
+                new Date().getSeconds()));
 
             const objects = await Load(new DateParser(state.date).toString(), state.lat, state.lon, state.date.getTimezoneOffset()).then();
             const info = await LoadInfo(new DateParser(state.date).toString(), state.lat, state.lon).then();
