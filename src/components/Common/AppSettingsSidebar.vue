@@ -85,7 +85,7 @@ import { LMap, LTileLayer, LMarker } from "vue2-leaflet";
     components: {
         LMap,
         LTileLayer,
-        LMarker
+        LMarker,
     },
 })
 export default class AppSettingsSidebar extends Vue {
@@ -114,7 +114,7 @@ export default class AppSettingsSidebar extends Vue {
         this.lat = val;
     }
 
-    get Lat():number {
+    get Lat(): number {
         return this.lat;
     }
 
@@ -139,7 +139,6 @@ export default class AppSettingsSidebar extends Vue {
             store.dispatch("setLon", this.lon);
             store.dispatch("setLat", this.lat);
 
-            console.log(this.CurrentDate)
             store.dispatch("setDate", new DateParser(this.CurrentDate).Date);
         }
     }
