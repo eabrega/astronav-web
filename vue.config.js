@@ -28,9 +28,6 @@ const robotsOptions = {
 };
 
 module.exports = {
-    devServer: {
-        https: true,
-    },
     runtimeCompiler: true,
     outputDir: 'dist',
     pluginOptions: {
@@ -68,8 +65,8 @@ module.exports = {
         },
         optimization: {
             splitChunks: {
-                minSize: 10000,
-                maxSize: 250000,
+                minSize: 30000,
+                maxSize: 300000,
             }
         },
         plugins: [
