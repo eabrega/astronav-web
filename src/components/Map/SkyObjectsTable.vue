@@ -33,7 +33,7 @@
                 />
             </template>
             <template #cell(sm)="data">
-                <div class="sm">
+                <div>
                     <div v-b-tooltip.hover.top title="Звездная величина">
                         {{
                             localize(
@@ -99,12 +99,12 @@ export default class SkyObjectsTable extends Vue {
             {
                 key: "sm",
                 label: "Блеск",
-                class: "column-right-align",
+                class: "column-right-align tooltip-align",
             },
             {
                 key: "diametr",
                 label: "Размер",
-                class: "column-right-align",
+                class: "column-right-align tooltip-align",
             },
             {
                 key: "phase",
@@ -177,14 +177,6 @@ export default class SkyObjectsTable extends Vue {
         font-weight: 500;
     }
 
-    .v-column {
-        width: 30px;
-    }
-
-    .b-table[aria-busy="true"] {
-        opacity: 0.6;
-    }
-
     .loading {
         padding-top: 40px;
         .align-middle {
@@ -192,7 +184,7 @@ export default class SkyObjectsTable extends Vue {
         }
     }
 
-    td {
+    .tooltip-align {
         & > div {
             display: flex;
             justify-content: flex-end;
