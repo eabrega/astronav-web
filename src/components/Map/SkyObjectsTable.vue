@@ -32,6 +32,17 @@
                     :value="$store.getters.info(data.item.name).d"
                 />
             </template>
+            <template #cell(sm)="data">
+                <div class="sm">
+                    <div v-b-tooltip.hover.top title="Звездная величина">
+                        {{
+                            localize(
+                                Number($store.getters.info(data.item.name).sm)
+                            )
+                        }}
+                    </div>
+                </div>
+            </template>
             <template #table-busy>
                 <div class="text-center text-primary loading">
                     <b-spinner class="align-middle"></b-spinner>
@@ -86,9 +97,14 @@ export default class SkyObjectsTable extends Vue {
                 class: "column-right-align",
             },
             {
+                key: "sm",
+                label: "Блеск",
+                class: "column-right-align",
+            },
+            {
                 key: "diametr",
                 label: "Размер",
-                class: "diameter",
+                class: "column-right-align",
             },
             {
                 key: "phase",
@@ -119,17 +135,35 @@ export default class SkyObjectsTable extends Vue {
 </script>
 <style lang="scss">
 .sky-objects {
+    --sr-only-padding-size: 20px;
     @media (max-width: 600px) {
         .v-column {
             display: none;
         }
 
+        --sr-only-padding-size: 15px;
         font-size: 0.8em;
+    }
+
+    @media (max-width: 400px) {
+        font-size: 0.7em;
+    }
+
+    th {
+        &.column-right-align {
+            text-align: right !important;
+            padding-right: var(--sr-only-padding-size) !important;
+            padding-left: 0px !important;
+        }
+
+        &.sr-only {
+            display: none;
+        }
     }
 
     .column-right-align {
         text-align: right !important;
-        padding-right: 20px !important;
+        padding-right: var(--sr-only-padding-size) !important;
         padding-left: 0px !important;
     }
 
@@ -158,9 +192,11 @@ export default class SkyObjectsTable extends Vue {
         }
     }
 
-    .diameter div {
-        display: flex;
-        justify-content: flex-end;
+    td {
+        & > div {
+            display: flex;
+            justify-content: flex-end;
+        }
     }
 }
 </style>
