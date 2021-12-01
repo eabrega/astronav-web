@@ -16,16 +16,16 @@
                 ></b-icon>
             </template>
             <template #cell(x)="data">
-                {{ localize(Number(data.item.x)) }}
+                {{ localize(Number(data.item.x), 2) }}
             </template>
             <template #cell(y)="data">
-                {{ localize(Number(data.item.y)) }}
+                {{ localize(Number(data.item.y), 2) }}
             </template>
             <template #cell(name)="data">
                 {{ SINONIMS.get(data.item.name) }}
             </template>
             <template #cell(phase)="data">
-                {{ localize(Number($store.getters.info(data.item.name).f)) }}
+                {{ localize(Number($store.getters.info(data.item.name).f), 3) }}
             </template>
             <template #cell(diametr)="data">
                 <AngularDiameter
@@ -37,7 +37,8 @@
                     <div v-b-tooltip.hover.top title="Звездная величина">
                         {{
                             localize(
-                                Number($store.getters.info(data.item.name).sm)
+                                Number($store.getters.info(data.item.name).sm),
+                                2
                             )
                         }}
                     </div>
@@ -124,11 +125,11 @@ export default class SkyObjectsTable extends Vue {
         else return "visiblity-object";
     }
 
-    private localize(value: number): string {
+    private localize(value: number, digitCount: number): string {
         return value.toLocaleString("ru-RU", {
             style: "decimal",
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
+            minimumFractionDigits: digitCount,
+            maximumFractionDigits: digitCount,
         });
     }
 }
