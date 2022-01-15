@@ -87,9 +87,16 @@ export default new Vuex.Store({
         setLon: ({ commit }, val) => {
             commit("SET_LON", val);
         },
+        // это обновление настроек а не даты!!!!!
         setDate: async ({ state, commit }, val: Date) => {
             commit("SET_IS_LOADING", true);
-            commit("SET_DATE", val);
+            commit("SET_DATE", new Date(
+                val.getFullYear(),
+                val.getMonth(),
+                val.getDate(),
+                new Date().getHours(),
+                new Date().getMinutes(),
+                new Date().getSeconds()));
 
             const objects = await Load(new DateParser(state.date).toString(), state.lat, state.lon, state.date.getTimezoneOffset()).then();
             const info = await LoadInfo(new DateParser(state.date).toString(), state.lat, state.lon).then();

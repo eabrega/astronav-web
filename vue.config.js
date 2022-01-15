@@ -4,20 +4,23 @@ const RobotstxtPlugin = require("robotstxt-webpack-plugin");
 
 const hostName = "https://astronav.ru"
 
+const allowPages = [
+    "/$",
+    "/skymap",
+    "/about"
+]
+
 const robotsOptions = {
     policy: [
         {
             userAgent: "Yandex",
-            allow: "/"
+            disallow: "/",
+            allow: allowPages
         },
         {
             userAgent: "*",
             disallow: "/",
-            allow: [
-                "/$",
-                "/skymap",
-                "/about"
-            ]
+            allow: allowPages
         }
     ],
     sitemap: `${hostName}/sitemap.xml`,
@@ -62,8 +65,8 @@ module.exports = {
         },
         optimization: {
             splitChunks: {
-                minSize: 10000,
-                maxSize: 250000,
+                minSize: 30000,
+                maxSize: 300000,
             }
         },
         plugins: [

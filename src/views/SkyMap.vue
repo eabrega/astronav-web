@@ -1,5 +1,6 @@
 <template>
     <div class="sky-map">
+        <InfoBar />
         <PlotterWrapper class="plotter" />
         <TimeLine />
         <SkyObjectsTable class="table" />
@@ -8,6 +9,7 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+import InfoBar from "@/components/Common/InfoBar.vue";
 import PlotterWrapper from "@/components/Map/PlotterWrapper.vue";
 import TimeLine from "@/components/Map/TimeLine.vue";
 import SkyObjectsTable from "@/components/Map/SkyObjectsTable.vue";
@@ -28,6 +30,7 @@ import SkyObjectsTable from "@/components/Map/SkyObjectsTable.vue";
         PlotterWrapper,
         TimeLine,
         SkyObjectsTable,
+        InfoBar
     },
 })
 export default class SkyMap extends Vue {

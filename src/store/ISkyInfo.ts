@@ -2,6 +2,7 @@ export interface ISkyInfoItem {
     name: string;
     d: number;
     f: number;
+    sm: number;
 }
 
 export interface ISkyInfo {

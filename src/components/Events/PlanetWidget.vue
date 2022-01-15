@@ -13,12 +13,20 @@
                 </span>
             </div>
             <div class="info-box">
-                <div class="event" v-for="(event, i) in skyObject.Events" :key="i">
+                <div
+                    class="event"
+                    v-for="(event, i) in skyObject.Events"
+                    :key="i"
+                >
                     <EventIcon :name="event.Event" />
-                    <div class="time">{{ event.Date.toLocaleTimeString() }}</div>
-                    <div class="position-leter">{{ ANGLE_LETTERS(event.A) }}</div>
+                    <div class="time">
+                        {{ event.Date.toLocaleTimeString().substr(0, 5) }}
+                    </div>
+                    <div class="position-leter">
+                        {{ ANGLE_LETTERS(event.A) }}
+                    </div>
                     <div class="position">
-                        <b>{{ event.A.toFixed(2) }}°</b>
+                        <b>{{ localize(event.A) }}°</b>
                     </div>
                 </div>
             </div>
@@ -58,8 +66,12 @@ export default class PlanetWidget extends Vue {
     }
 
     get STATUS(): string {
-        const sunsetDate = this.skyObject.Events.find((i) => i.Event == "Sunset")?.Date ?? null;
-        const sunriseDate = this.skyObject.Events.find((i) => i.Event == "Sunrise")?.Date ?? null;
+        const sunsetDate =
+            this.skyObject.Events.find((i) => i.Event == "Sunset")?.Date ??
+            null;
+        const sunriseDate =
+            this.skyObject.Events.find((i) => i.Event == "Sunrise")?.Date ??
+            null;
         const currentDate = this.$store.state.date as Date;
 
         if (!this.isToDay()) {
@@ -76,6 +88,13 @@ export default class PlanetWidget extends Vue {
         }
 
         return "";
+    }
+
+    private localize(value: Number): string {
+        return value.toLocaleString("ru-RU", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+        });
     }
 
     ANGLE_LETTERS(angle: number): string {
@@ -96,7 +115,10 @@ export default class PlanetWidget extends Vue {
         const currentDate = new Date();
         currentDate.setHours(0, 0, 0, 0);
         const requestDate = this.$store.state.date as Date;
-        return Math.abs(currentDate.getTime() - requestDate.getTime()) < 24 * 3600 * 1000;
+        return (
+            Math.abs(currentDate.getTime() - requestDate.getTime()) <
+            24 * 3600 * 1000
+        );
     }
 }
 </script>
@@ -104,7 +126,7 @@ export default class PlanetWidget extends Vue {
 <style lang="scss">
 .planet-box {
     scroll-snap-align: start;
-    min-width: 270px;
+    min-width: 250px;
     min-height: 135px;
     border: grayscale($color: #0a0a0a59);
     border-style: solid;
@@ -148,7 +170,7 @@ export default class PlanetWidget extends Vue {
                 display: flex;
                 flex-direction: row;
 
-               .time {
+                .time {
                     width: 40%;
                 }
 

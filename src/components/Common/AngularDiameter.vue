@@ -9,7 +9,7 @@
             {{ value.min }}'
         </div>
         <div class="sec" v-b-tooltip.hover title="Угловые секунды">
-            {{ value.sec }}"
+            {{ localize(value.sec) }}"
         </div>
     </div>
 </template>
@@ -25,6 +25,14 @@ export default class AngularDiameter extends Vue {
 
     constructor() {
         super();
+    }
+
+    private localize(value: number): string {
+        return value.toLocaleString("ru-RU", {
+            style: "decimal",
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 2
+        });
     }
 }
 </script>

@@ -16,19 +16,33 @@
                 ></b-icon>
             </template>
             <template #cell(x)="data">
-                {{ data.item.x.toFixed(2) }}
+                {{ localize(Number(data.item.x), 2) }}
             </template>
             <template #cell(y)="data">
-                {{ data.item.y.toFixed(2) }}
+                {{ localize(Number(data.item.y), 2) }}
             </template>
             <template #cell(name)="data">
                 {{ SINONIMS.get(data.item.name) }}
             </template>
             <template #cell(phase)="data">
-                {{ $store.getters.info(data.item.name).f.toFixed(2) }}
+                {{ localize(Number($store.getters.info(data.item.name).f), 3) }}
             </template>
             <template #cell(diametr)="data">
-                <AngularDiameter :value="$store.getters.info(data.item.name).d"/>
+                <AngularDiameter
+                    :value="$store.getters.info(data.item.name).d"
+                />
+            </template>
+            <template #cell(sm)="data">
+                <div>
+                    <div v-b-tooltip.hover.top title="Звездная величина">
+                        {{
+                            localize(
+                                Number($store.getters.info(data.item.name).sm),
+                                2
+                            )
+                        }}
+                    </div>
+                </div>
             </template>
             <template #table-busy>
                 <div class="text-center text-primary loading">
@@ -84,9 +98,14 @@ export default class SkyObjectsTable extends Vue {
                 class: "column-right-align",
             },
             {
+                key: "sm",
+                label: "Блеск",
+                class: "column-right-align tooltip-align",
+            },
+            {
                 key: "diametr",
                 label: "Размер",
-                class: "diameter",
+                class: "column-right-align tooltip-align",
             },
             {
                 key: "phase",
@@ -105,21 +124,47 @@ export default class SkyObjectsTable extends Vue {
         if (item.y < 0) return "unvisiblity-object";
         else return "visiblity-object";
     }
+
+    private localize(value: number, digitCount: number): string {
+        return value.toLocaleString("ru-RU", {
+            style: "decimal",
+            minimumFractionDigits: digitCount,
+            maximumFractionDigits: digitCount,
+        });
+    }
 }
 </script>
 <style lang="scss">
 .sky-objects {
+    --sr-only-padding-size: 20px;
     @media (max-width: 600px) {
         .v-column {
             display: none;
         }
 
+        --sr-only-padding-size: 15px;
         font-size: 0.8em;
+    }
+
+    @media (max-width: 400px) {
+        font-size: 0.7em;
+    }
+
+    th {
+        &.column-right-align {
+            text-align: right !important;
+            padding-right: var(--sr-only-padding-size) !important;
+            padding-left: 0px !important;
+        }
+
+        &.sr-only {
+            display: none;
+        }
     }
 
     .column-right-align {
         text-align: right !important;
-        padding-right: 20px !important;
+        padding-right: var(--sr-only-padding-size) !important;
         padding-left: 0px !important;
     }
 
@@ -133,14 +178,6 @@ export default class SkyObjectsTable extends Vue {
         font-weight: 500;
     }
 
-    .v-column {
-        width: 30px;
-    }
-
-    .b-table[aria-busy="true"] {
-        opacity: 0.6;
-    }
-
     .loading {
         padding-top: 40px;
         .align-middle {
@@ -148,9 +185,11 @@ export default class SkyObjectsTable extends Vue {
         }
     }
 
-    .diameter div{
-        display: flex;
-        justify-content: flex-end;
+    .tooltip-align {
+        & > div {
+            display: flex;
+            justify-content: flex-end;
+        }
     }
 }
 </style>
