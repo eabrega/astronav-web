@@ -40,11 +40,7 @@ export default class PlotterWrapper extends Vue {
 
     mounted() {
         if (this.plotter == null) {
-            let opt = {
-                cellSizeX: 10,
-                cellSizeY: 10,
-            };
-            this.plotter = new Plotter(opt);
+            this.plotter = new Plotter();
         }
 
         if (this.$store.getters.condition?.length != 0) {

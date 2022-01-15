@@ -1,91 +1,99 @@
-import { DrawObject } from "./drawObject";
-
 export class Grid {
-    private readonly _virtualGridSizeX: number = 360;
-    private readonly _virtualGridSizeY: number = 90;
-    private readonly _offsetGrid: number = 25;
-    private readonly _gridSizeX: number;
-    private readonly _gridSizeY: number;
-    private readonly _canvaSizeX: number;
-    private readonly _canvaSizeY: number;
-    private readonly _cellSizeX: number;
-    private readonly _cellSizeY: number;
+   // private _gridScale = 4.5;
+   // private _moveX = -20;
+    _gridX = 50;
+    _step = 15;
+    private _gridWidth: number;
+    private _gridHeight: number;
+    private readonly _canvaWidth: number;
+    private readonly _canvaHeight: number;
+    private readonly _gridPixelsWidth: number;
+    private readonly _gridPixelsHeight: number;
+    private readonly _grigCanvaOffsetLeft: number = 10;
+    private readonly _grigCanvaOffsetRight: number = 25;
+    private readonly _grigCanvaOffsetTop: number = 0;
+    private readonly _grigCanvaOffsetBottom: number = 30;
     private readonly _context: CanvasRenderingContext2D;
 
-    private get dX() {
-        return this._gridSizeX / (this._virtualGridSizeX / this._cellSizeX);
-    }
+    constructor(width: number, height: number, canva: HTMLCanvasElement) {
+        this._gridWidth = width;
+        this._gridHeight = height;
 
-    private get dY() {
-        return this._gridSizeY / (this._virtualGridSizeY / this._cellSizeY);
-    }
+        this._canvaWidth = canva.width;
+        this._canvaHeight = canva.height;
 
-    constructor(cellWidth: number, cellHeight: number, canvaId: string) {
-        let canva = document.getElementById(canvaId) as HTMLCanvasElement;
-        let context = canva.getContext("2d");
+        this._gridPixelsWidth = this._canvaWidth - (this._grigCanvaOffsetLeft + this._grigCanvaOffsetRight);
+        this._gridPixelsHeight = this._canvaHeight - (this._grigCanvaOffsetTop + this._grigCanvaOffsetBottom);
 
-        this._canvaSizeX = canva.width;
-        this._canvaSizeY = canva.height;
-
-        this._gridSizeX = this._canvaSizeX - this._offsetGrid * 2;
-        this._gridSizeY = this._canvaSizeY - this._offsetGrid * 2;
-
-        this._cellSizeY = cellHeight;
-        this._cellSizeX = cellWidth;
-
-        this._context = context!;
-
+        this._context = canva.getContext("2d")!;
         this.DrawGrid();
     }
 
-    public DrawPlanet(skyObject: DrawObject): void {
-        if (skyObject.Y < 0) return;
-        let xx = (skyObject.X / this._cellSizeX) * this.dX;
-        let yy = ((this._virtualGridSizeY - skyObject.Y) / this._cellSizeY) * this.dY
-        this._context.fillStyle = 'green';
-        this._context.beginPath();
-        this._context.arc((skyObject.X / this._cellSizeX) * this.dX, yy, 5, 0, 2 * Math.PI, false);
-        this._context.fill();
-        this._context.lineWidth = 1;
-        this._context.strokeStyle = '#003300';
-        this._context.stroke();
-        this.DrawText(xx + 10, yy - 10, skyObject.Name, 20, "green");
-    }
-
-    public DrawPlanetCollection(objects: Array<DrawObject>) {
-        objects.forEach(p => this.DrawPlanet(p));
-    }
-
     public Clear(): void {
-        this._context.clearRect(0, 0, this._canvaSizeX, this._canvaSizeY);
+        this._context.clearRect(0, 0, this._canvaWidth, this._canvaHeight);
+    }
+
+    public Zoom(scale: number) { 
+        if (scale > 0) {
+            this._gridX+=this._step
+        }
+        else { 
+            this._gridX-=this._step
+        }
+
+        console.log(this._gridX);
+        this.Clear();
+        this.DrawGrid();
+      //  this._gridX += scale;
     }
 
     public DrawGrid() {
-        for (let i = 0; i < this._virtualGridSizeX / this._cellSizeX + 1; i++) {
-            let step = this.dX * i;
-            if ((i * this._cellSizeX) % 90 == 0) {
-                this.DrawLine(step, 0, step, this._gridSizeY + 20, 2);
-                this.DrawText(step, this._gridSizeY + 40, (i * this._cellSizeX).toString(), 14, "red", "center")
-            } else {
-                this.DrawLine(step, 0, step, this._gridSizeY + 10);
-                this.DrawText(step, this._gridSizeY + 25, (i * this._cellSizeX).toString(), 10, "black", "center")
-            }
+        this.DrawGridLine(0, this._gridHeight, this._gridWidth, this._gridHeight);
+        this.DrawGridLine(this._gridWidth, 0, this._gridWidth, this._gridHeight);
+
+        for (let index = this._gridX; index < this._gridWidth + 1; index += this._step) {
+            this.DrawGridLine(index, 0, index, this._gridHeight);
+
+           // this.DrawLine(this.toCanvaX(index), this._gridPixelsHeight, this.toCanvaX(index), this._gridPixelsHeight + 11);
+            this.DrawText(this.toCanvaX(index), this._gridPixelsHeight + 11 + 10, index.toString(), 11, "black", "center");
         }
-        for (let i = 0; i < this._virtualGridSizeY / this._cellSizeY + 1; i++) {
-            let step = this.dY * i;
-            if ((i * this._cellSizeY) % 45 == 0) {
-                this.DrawLine(0, step, this._gridSizeX + 20, step, 2);
-                this.DrawText(this._gridSizeX + 25, step, (this._virtualGridSizeY - i * this._cellSizeY).toString(), 19, "red")
-            }
-            else {
-                this.DrawLine(0, step, this._gridSizeX + 10, step);
-                this.DrawText(this._gridSizeX + 20, step, (this._virtualGridSizeY - i * this._cellSizeY).toString(), 12, "black")
-            }
-        }
+
+        // for (let index = 0; index < this._gridHeight + 1; index += stepY) {
+        //     this.DrawGridLine(0, index, this._gridWidth, index);
+        // }
+
+        this.DrawGridLine(10,0,50,50);
+    }
+
+    public toCanvaX(x: number) {
+        return (this._grigCanvaOffsetLeft + ((x - this._gridX) * this._cellSizeX));
+    }
+
+    public toCanvaY(y: number) {
+        return this._grigCanvaOffsetTop + (this._gridPixelsHeight - y * this._cellSizeY);
+    }
+
+    get _cellSizeX() {
+        return this._gridPixelsWidth / this._gridWidth;
+    }
+
+    get _cellSizeY() {
+        return this._gridPixelsHeight / this._gridHeight;
+    }
+
+    private DrawGridLine(x1: number, y1: number, x2: number, y2: number, size: number = 1) {
+        this._context.beginPath();
+
+        this._context.moveTo(this.toCanvaX(x1), this.toCanvaY(y1));
+        this._context.lineTo(this.toCanvaX(x2), this.toCanvaY(y2));
+        this._context.lineWidth = size;
+        this._context.strokeStyle = "#9e9e9e";
+        this._context.stroke();
     }
 
     private DrawLine(x1: number, y1: number, x2: number, y2: number, size: number = 1) {
         this._context.beginPath();
+
         this._context.moveTo(x1, y1);
         this._context.lineTo(x2, y2);
         this._context.lineWidth = size;
