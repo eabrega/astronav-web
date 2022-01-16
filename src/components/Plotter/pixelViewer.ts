@@ -1,4 +1,3 @@
-import { Position } from "vue-router/types/router";
 import { Point } from "./point";
 
 export class PixelViewer {
@@ -11,9 +10,9 @@ export class PixelViewer {
     private readonly _canvaHeight: number;
     private readonly _gridPixelsWidth: number;
     private readonly _gridPixelsHeight: number;
-    private readonly _grigCanvaOffsetLeft: number = 10;
-    private readonly _grigCanvaOffsetRight: number = 25;
-    private readonly _grigCanvaOffsetTop: number = 0;
+    private readonly _grigCanvaOffsetLeft: number = 5;
+    private readonly _grigCanvaOffsetRight: number = 30;
+    private readonly _grigCanvaOffsetTop: number = 10;
     private readonly _grigCanvaOffsetBottom: number = 30;
 
     constructor(gridWidth: number, gridHeight: number, canva: HTMLCanvasElement) {
@@ -34,7 +33,7 @@ export class PixelViewer {
     }
 
     public toCanvaY(y: number) {
-        return this._grigCanvaOffsetTop + (this._gridPixelsHeight - y * this._cellSizeY);
+        return this._grigCanvaOffsetBottom + (y * this._cellSizeY);
     }
 
     public get GridX() {
@@ -54,7 +53,11 @@ export class PixelViewer {
     }
 
     public get GridWidthPixels() {
-        return this._gridPixelsWidth;
+        return this._gridPixelsWidth + this._grigCanvaOffsetLeft;
+    }
+
+    public get GridHeightPixels() {
+        return this._gridPixelsHeight + this._grigCanvaOffsetBottom;
     }
 
     private get _cellSizeX() {
@@ -70,14 +73,14 @@ export class PixelViewer {
     }
 
     public DrawOrdinatLine(x1: number, y1: number, x2: number, y2: number, size: number = 1) {
-        this.DrawLine(this.toCanvaX(x1), this.toCanvaY(y1), this.toCanvaX(x2), this.toCanvaY(y2));
+        this.DrawLine(this.toCanvaX(x1), this.toCanvaY(y1), this.toCanvaX(x2), this.toCanvaY(y2), size);
     }
 
     public DrawLine(x1: number, y1: number, x2: number, y2: number, size: number = 1) {
         this._context.beginPath();
 
-        this._context.moveTo(x1, y1);
-        this._context.lineTo(x2, y2);
+        this._context.moveTo(x1, this._canvaHeight - y1);
+        this._context.lineTo(x2, this._canvaHeight - y2);
         this._context.lineWidth = size;
         this._context.strokeStyle = "#9e9e9e";
         this._context.stroke();
@@ -95,7 +98,8 @@ export class PixelViewer {
         this._context.font = `bold ${size}px sans-serif`;
         this._context.textAlign = alignVertical;
         this._context.textBaseline = alignHorizontal;
-        this._context.fillText(text, x, y);
+
+        this._context.fillText(text, x, this._canvaHeight - y);
     }
 
     public DrawOrdinatText(x: number,
@@ -117,7 +121,7 @@ export class PixelViewer {
     public DrawObject(x: number, y: number): void {
         this._context.fillStyle = 'green';
         this._context.beginPath();
-        this._context.arc(x, y, 5, 0, 2 * Math.PI, false);
+        this._context.arc(x, this._canvaHeight - y, 5, 0, 2 * Math.PI, false);
         this._context.fill();
         this._context.lineWidth = 1;
         this._context.strokeStyle = '#003300';

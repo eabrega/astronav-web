@@ -2,24 +2,18 @@ import { Grid } from './grid'
 import { DrawObjectFrame, IDrawObjects } from './drawObjectsFrame'
 import { DrawObject } from "./drawObject";
 
-export interface IPlotterOptions {
-    cellSizeX: number;
-    cellSizeY: number;
-}
 export class Plotter {
     private _grid: Grid;
 
     private readonly _canva: HTMLCanvasElement;
 
-    private _frames: Array<DrawObjectFrame> | null;
+    private _frames: Array<DrawObjectFrame> | null = null;
 
     constructor(name: string) {
         this._canva = document.getElementById(name) as HTMLCanvasElement;
-        this._grid = new Grid(360, 90, this._canva);
-
-        this._frames = null;
-
         this._canva.addEventListener("wheel", (event: WheelEvent) => this.Scrolling(event));
+
+        this._grid = new Grid(360, 90, this._canva);
     }
 
     public set DataFrameSelect(frameId: number) {
@@ -48,5 +42,6 @@ export class Plotter {
     }
 
     private Scrolling(e: WheelEvent) {
+        console.log(10)
     }
 }
