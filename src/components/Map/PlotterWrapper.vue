@@ -29,23 +29,23 @@ export default class PlotterWrapper extends Vue {
 
     @Watch("CONDITION")
     conditionsUpdated() {
-        this.plotter!.UpdateDataset = this.CONDITION;
-        this.plotter?.DataFrameSelect(this.CURRENT_FRAME_ID);
+        this.plotter!.Dataset = this.CONDITION;
+        this.plotter!.DataFrameSelect = this.CURRENT_FRAME_ID;
     }
 
     @Watch("CURRENT_FRAME_ID")
     frameIdUpdated() {
-        this.plotter?.DataFrameSelect(this.CURRENT_FRAME_ID);
+        this.plotter!.DataFrameSelect = this.CURRENT_FRAME_ID;
     }
 
     mounted() {
         if (this.plotter == null) {
-            this.plotter = new Plotter();
+            this.plotter = new Plotter("canva");
         }
 
         if (this.$store.getters.condition?.length != 0) {
-            this.plotter!.UpdateDataset = this.CONDITION;
-            this.plotter?.DataFrameSelect(this.CURRENT_FRAME_ID);
+            this.plotter!.Dataset = this.CONDITION;
+            this.plotter!.DataFrameSelect = this.CURRENT_FRAME_ID;
         }
     }
 }
