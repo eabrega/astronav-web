@@ -12,10 +12,12 @@ export class PixelViewer {
     private readonly _gridPixelsHeight: number;
     private readonly _grigCanvaOffsetLeft: number = 5;
     private readonly _grigCanvaOffsetRight: number = 30;
-    private readonly _grigCanvaOffsetTop: number = 10;
+    private readonly _grigCanvaOffsetTop: number = 30;
     private readonly _grigCanvaOffsetBottom: number = 30;
 
-    constructor(gridWidth: number, gridHeight: number, canva: HTMLCanvasElement) {
+    constructor(gridStartX: number, gridWidth: number, gridHeight: number, canva: HTMLCanvasElement) {
+        this._gridX = gridStartX;
+
         this._gridWidth = gridWidth;
         this._gridHeight = gridHeight;
 
@@ -30,6 +32,10 @@ export class PixelViewer {
 
     public toCanvaX(x: number) {
         return (this._grigCanvaOffsetLeft + ((x - this._gridX) * this._cellSizeX));
+    }
+
+    public toGridX(xCanva: number) { 
+        return xCanva / this._cellSizeX;
     }
 
     public toCanvaY(y: number) {
@@ -60,7 +66,15 @@ export class PixelViewer {
         return this._gridPixelsHeight + this._grigCanvaOffsetBottom;
     }
 
-    private get _cellSizeX() {
+    public get GridStartPixelX() {
+        return this._grigCanvaOffsetLeft;
+    }
+
+    public get GridStartPixelsY() {
+        return this._grigCanvaOffsetBottom;
+    }
+
+    public get _cellSizeX() {
         return this._gridPixelsWidth / this._gridWidth;
     }
 
@@ -73,6 +87,8 @@ export class PixelViewer {
     }
 
     public DrawOrdinatLine(x1: number, y1: number, x2: number, y2: number, size: number = 1) {
+        if (!this.IsVisible) return;
+
         this.DrawLine(this.toCanvaX(x1), this.toCanvaY(y1), this.toCanvaX(x2), this.toCanvaY(y2), size);
     }
 
@@ -92,12 +108,12 @@ export class PixelViewer {
         text: string,
         size: number,
         color: string = "black",
-        alignVertical: CanvasTextAlign = "start",
-        alignHorizontal: CanvasTextBaseline = "middle") {
+        alignHorizontal: CanvasTextAlign = "start",
+        alignVertical: CanvasTextBaseline = "middle") {
         this._context.fillStyle = color;
         this._context.font = `bold ${size}px sans-serif`;
-        this._context.textAlign = alignVertical;
-        this._context.textBaseline = alignHorizontal;
+        this._context.textAlign = alignHorizontal;
+        this._context.textBaseline = alignVertical;
 
         this._context.fillText(text, x, this._canvaHeight - y);
     }
@@ -137,13 +153,15 @@ export class PixelViewer {
         this.DrawObject(xCanva, yCanva);
     }
 
-    private IsVisible(position: Point): boolean {
+    public IsVisible(position: Point): boolean {
         let xVisible = false;
         let yVisible = false;
 
-        if (position.X > this._gridX && position.X < this._gridWidth) xVisible = true;
+        if (position.X > this._gridX && position.X < this._gridWidth + this._gridX) xVisible = true;
         if (position.Y > 0 && position.Y < this._gridHeight) yVisible = true;
 
         return xVisible && yVisible;
+
+        return true;
     }
 }

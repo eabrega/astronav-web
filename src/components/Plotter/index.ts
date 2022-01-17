@@ -4,16 +4,13 @@ import { DrawObject } from "./drawObject";
 
 export class Plotter {
     private _grid: Grid;
-
-    private readonly _canva: HTMLCanvasElement;
-
+    
     private _frames: Array<DrawObjectFrame> | null = null;
-
+    private _frameId = 0;
     constructor(name: string) {
-        this._canva = document.getElementById(name) as HTMLCanvasElement;
-        this._canva.addEventListener("wheel", (event: WheelEvent) => this.Scrolling(event));
+        const canva = document.getElementById(name) as HTMLCanvasElement;
 
-        this._grid = new Grid(360, 90, this._canva);
+        this._grid = new Grid(360, 90, canva);
     }
 
     public set DataFrameSelect(frameId: number) {
@@ -27,9 +24,11 @@ export class Plotter {
             throw new Error(`Frame with id ${frameId} no found.`);
         }
 
+        this._frameId = id;
+
         this._grid.Clear();
         this._grid.DrawGrid();
-        this.DrawPlanetCollection(this._frames![frameId].Objects);
+        this.DrawPlanetCollection(this._frames![this._frameId].Objects);
     }
 
     public DrawPlanetCollection(objects: Array<DrawObject>) {
@@ -39,9 +38,5 @@ export class Plotter {
     public set Dataset(objects: Array<IDrawObjects>) {
         this._frames = objects.map(obj => new DrawObjectFrame(obj));
         this.DrawPlanetCollection(this._frames[0].Objects);
-    }
-
-    private Scrolling(e: WheelEvent) {
-        console.log(10)
     }
 }
