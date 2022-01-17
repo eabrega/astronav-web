@@ -1,5 +1,6 @@
 import { PixelViewer } from "./pixelViewer";
 import { Point } from "./point";
+import * as Viewer from "./viewer"
 
 export class Grid {
     private _viewer: PixelViewer;
@@ -25,25 +26,35 @@ export class Grid {
     }
 
     public DrawGrid() {
-        this._viewer.DrawLine(this._viewer.GridStartPixelX, this._viewer.GridStartPixelsY, this._viewer.GridStartPixelX, this._viewer.GridHeightPixels, 2);
-        this._viewer.DrawLine(this._viewer.GridStartPixelX, this._viewer.GridStartPixelsY, this._viewer.GridWidthPixels, this._viewer.GridStartPixelsY, 2);
-        this._viewer.DrawLine(this._viewer.GridStartPixelX, this._viewer.GridHeightPixels, this._viewer.GridWidthPixels, this._viewer.GridHeightPixels, 2);
-        this._viewer.DrawLine(this._viewer.GridWidthPixels, this._viewer.GridHeightPixels, this._viewer.GridWidthPixels, this._viewer.GridStartPixelsY, 2);
+        Viewer.DrawLine(this._canva, this._viewer.GridStartPixelX, this._viewer.GridStartPixelsY, this._viewer.GridStartPixelX, this._viewer.GridHeightPixels, 2);
+        Viewer.DrawLine(this._canva, this._viewer.GridStartPixelX, this._viewer.GridHeightPixels, this._viewer.GridWidthPixels, this._viewer.GridHeightPixels, 2);
+        Viewer.DrawLine(this._canva, this._viewer.GridStartPixelX, this._viewer.GridStartPixelsY, this._viewer.GridWidthPixels, this._viewer.GridStartPixelsY, 2);
+        Viewer.DrawLine(this._canva, this._viewer.GridWidthPixels, this._viewer.GridHeightPixels, this._viewer.GridWidthPixels, this._viewer.GridStartPixelsY, 2);
 
-        for (let index = this._viewer.GridX; index <= this._gridWidth; index += this._viewer.Step) {
+
+        // const step = this._viewer.GridWidthPixels / 36;
+        // console.log(this._viewer.GridWidthPixels, this._gridWidth);
+
+        // for (let index = this._viewer.GridStartPixelX; index < this._viewer.GridWidthPixels; index+=step) {
+           
+        //     this._viewer.DrawLine(index, this._viewer.GridStartPixelsY, index, this._viewer.GridHeightPixels);
+        //     this._viewer.DrawText(index, 5, this._viewer.toGridX(index).toFixed(1), 11, "black", "center")
+        // }
+
+        for (let index = this._viewer.GridX; index <= this._gridWidth; index += 10) {
             if (this._viewer.toCanvaX(index) > this._viewer.GridWidthPixels) break;
-            this._viewer.DrawLine(this._viewer.toCanvaX(index), this._viewer.GridStartPixelsY, this._viewer.toCanvaX(index), this._viewer.GridHeightPixels);
+            Viewer.DrawLine(this._canva, this._viewer.toCanvaX(index), this._viewer.GridStartPixelsY, this._viewer.toCanvaX(index), this._viewer.GridHeightPixels);
 
-            this._viewer.DrawLine(this._viewer.toCanvaX(index), 20, this._viewer.toCanvaX(index), 30);
-            this._viewer.DrawText(this._viewer.toCanvaX(index), 5, index.toFixed(0), 11, "black", "center")
+            Viewer.DrawLine(this._canva, this._viewer.toCanvaX(index), 20, this._viewer.toCanvaX(index), 30);
+            Viewer.DrawText(this._canva, this._viewer.toCanvaX(index), 5, index.toFixed(0), 11, "black", "center")
         }
 
-        for (let index = 0; index <= this._gridHeight; index += this._viewer.Step) {
+        for (let index = 0; index <= this._gridHeight; index += 10) {
             if (this._viewer.toCanvaY(index) > this._viewer.GridHeightPixels) break;
-            this._viewer.DrawLine(this._viewer.GridStartPixelX, this._viewer.toCanvaY(index), this._viewer.GridWidthPixels, this._viewer.toCanvaY(index));
+            Viewer.DrawLine(this._canva, this._viewer.GridStartPixelX, this._viewer.toCanvaY(index), this._viewer.GridWidthPixels, this._viewer.toCanvaY(index));
 
-            this._viewer.DrawLine(this._viewer.GridWidthPixels, this._viewer.toCanvaY(index), this._viewer.GridWidthPixels + 10, this._viewer.toCanvaY(index));
-            this._viewer.DrawText(this._viewer.GridWidthPixels + 20, this._viewer.toCanvaY(index),  index.toFixed(0), 11, "black", "center")
+            Viewer.DrawLine(this._canva, this._viewer.GridWidthPixels, this._viewer.toCanvaY(index), this._viewer.GridWidthPixels + 10, this._viewer.toCanvaY(index));
+            Viewer.DrawText(this._canva, this._viewer.GridWidthPixels + 20, this._viewer.toCanvaY(index),  index.toFixed(0), 11, "black", "center")
         }
 
         this._viewer.DrawOrdinatLine(0, 0, 40, 40);
@@ -51,7 +62,7 @@ export class Grid {
 
     public DrawGridObject(x: number, y: number, label: string) {
         if (this._viewer.IsVisible(new Point(x, y))) {
-            this._viewer.DrawText(this._viewer.toCanvaX(x) + 10, this._viewer.toCanvaY(y), label, 15.5, "green", "left", "middle")
+            Viewer.DrawText(this._canva, this._viewer.toCanvaX(x) + 10, this._viewer.toCanvaY(y), label, 15.5, "green", "left", "middle")
             this._viewer.DrawOrdinatObject(x, y);
         }
     }
