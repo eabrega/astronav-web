@@ -22,11 +22,12 @@ export class Grid {
         Viewer.DrawLine(this._canva, this._viewer.GridStartPixelX, this._viewer.GridStartPixelsY, this._viewer.GridWidthPixels, this._viewer.GridStartPixelsY, 2);
         Viewer.DrawLine(this._canva, this._viewer.GridWidthPixels, this._viewer.GridHeightPixels, this._viewer.GridWidthPixels, this._viewer.GridStartPixelsY, 2);
 
-        for (let index = this._viewer.Position.X; index <= this._gridWidth; index += 10) {
-            if (this._viewer.toCanvaX(index) > this._viewer.GridWidthPixels) break;
+         for (let index =0; index <= 360; index += 10) {
+            //if (this._viewer.toCanvaX(index) > this._viewer.GridWidthPixels) break;
+            //  if (this._viewer.toCanvaX(index) < this._viewer.GridStartPixelX) break;
             Viewer.DrawLine(this._canva, this._viewer.toCanvaX(index), this._viewer.GridStartPixelsY, this._viewer.toCanvaX(index), this._viewer.GridHeightPixels);
-
-            Viewer.DrawLine(this._canva, this._viewer.toCanvaX(index), 20, this._viewer.toCanvaX(index), 30);
+            //Viewer.DrawLine(this._canva, this._viewer._cellSizeX*index, this._viewer.GridStartPixelsY, this._viewer._cellSizeX*index, this._viewer.GridHeightPixels);
+            Viewer.DrawLine(this._canva, this._viewer.toCanvaX(index), 20, this._viewer.toCanvaX(index), 30);     
             Viewer.DrawText(this._canva, this._viewer.toCanvaX(index), 5, index.toFixed(0), 11, "black", "center")
         }
 
@@ -38,7 +39,6 @@ export class Grid {
             Viewer.DrawText(this._canva, this._viewer.GridWidthPixels + 20, this._viewer.toCanvaY(index), index.toFixed(0), 11, "black", "center")
         }
 
-        this._viewer.DrawOrdinatLine(0, 0, 40, 40);
     }
 
     public DrawGridObject(x: number, y: number, label: string) {
@@ -52,9 +52,13 @@ export class Grid {
         this._viewer.Clear();
     }
 
-    public set MoveGrid(position: Point) {
+    public MoveGrid(position: Point) {
         this._viewer.MoveFor(position);
         this.Clear();
         this.DrawGrid();
+    }
+
+    public toGridPosition(position: Point) {
+        return this._viewer.toGridPosition(position);
     }
 }
