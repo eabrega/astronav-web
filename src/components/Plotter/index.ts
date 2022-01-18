@@ -11,7 +11,7 @@ export class Plotter {
     private _frameId = 0;
     constructor(name: string) {
         const canva = document.getElementById(name) as HTMLCanvasElement;
-        this._grid = new Grid(360, 90, canva);
+        this._grid = new Grid(60, 90, canva);
 
        // canva.addEventListener("wheel", (event: WheelEvent) => this.Scrolling(event));
         canva.addEventListener("mousemove", (event: MouseEvent) => this.Moving(event));

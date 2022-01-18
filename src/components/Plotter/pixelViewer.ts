@@ -1,8 +1,11 @@
 import { Point, Size } from "./point";
 import * as Viewer from "./viewer"
 
-export class PixelViewer {
+export class PixelViewer
+{
+    //положение в пикселях
     private _position: Point;
+    //виртуальный размер в ординатах
     private readonly _size: Size;
     private readonly _context: CanvasRenderingContext2D;
     private readonly _canva: HTMLCanvasElement;
@@ -10,8 +13,8 @@ export class PixelViewer {
     private readonly _gridPixelsHeight: number;
     private readonly _grigCanvaOffsetLeft: number = 0;
     private readonly _grigCanvaOffsetRight: number = 30;
-    private readonly _grigCanvaOffsetTop: number = 10;
-    private readonly _grigCanvaOffsetBottom: number = 30;
+    private readonly _grigCanvaOffsetTop: number = 100;
+    private readonly _grigCanvaOffsetBottom: number = 130;
 
     constructor(position: Point, gridWidth: number, gridHeight: number, canva: HTMLCanvasElement) {
         this._position = position
@@ -34,8 +37,9 @@ export class PixelViewer {
 
     public toGridPosition(poz: Point): Point {
         const x = (this._position.X - poz.X + this._grigCanvaOffsetLeft) / this._cellSizeX
-        const y = ((poz.Y - this._grigCanvaOffsetBottom + this._position.Y) / this._cellSizeY);
+        const y = this._size.Height - (this._position.Y + poz.Y - this._grigCanvaOffsetTop) / this._cellSizeY
 
+        console.log("pizda", this._gridPixelsHeight);
         return new Point(x, y);
     }
 
@@ -80,7 +84,7 @@ export class PixelViewer {
     }
 
     public MoveFor(position: Point) {
-        const newPosition = new Point(this._position.X + position.X, this._position.Y + position.Y);
+        const newPosition = new Point(this._position.X + position.X, this._position.Y - position.Y);
         this._position = newPosition;
     }
 
