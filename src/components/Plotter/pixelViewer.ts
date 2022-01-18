@@ -1,26 +1,23 @@
-import { Point } from "./point";
+import { Point, Size } from "./point";
 import * as Viewer from "./viewer"
 
 export class PixelViewer {
-    _gridX = 0;
-    private _gridWidth: number;
-    private _gridHeight: number;
+    private _position: Point = new Point(0, 0);
+    private readonly _size: Size;
     private readonly _context: CanvasRenderingContext2D;
     private readonly _canva: HTMLCanvasElement;
     private readonly _canvaWidth: number;
     private readonly _canvaHeight: number;
     private readonly _gridPixelsWidth: number;
     private readonly _gridPixelsHeight: number;
-    private readonly _grigCanvaOffsetLeft: number = 50;
+    private readonly _grigCanvaOffsetLeft: number = 5;
     private readonly _grigCanvaOffsetRight: number = 30;
-    private readonly _grigCanvaOffsetTop: number = 30;
+    private readonly _grigCanvaOffsetTop: number = 0;
     private readonly _grigCanvaOffsetBottom: number = 30;
 
-    constructor(gridStartX: number, gridWidth: number, gridHeight: number, canva: HTMLCanvasElement) {
-        this._gridX = gridStartX;
-
-        this._gridWidth = Math.round(gridWidth);
-        this._gridHeight = Math.round(gridHeight);
+    constructor(position: Point, gridWidth: number, gridHeight: number, canva: HTMLCanvasElement) {
+        this._position = position
+        this._size = new Size(Math.round(gridWidth), Math.round(gridHeight));
 
         this._canvaWidth = canva.width;
         this._canvaHeight = canva.height;
@@ -33,23 +30,20 @@ export class PixelViewer {
     }
 
     public toCanvaX(x: number) {
-        return (this._grigCanvaOffsetLeft + ((x - this._gridX) * this._cellSizeX));
+        return (this._grigCanvaOffsetLeft + ((x - this._position.X) * this._cellSizeX));
     }
 
     public toCanvaY(y: number) {
         return this._grigCanvaOffsetBottom + (y * this._cellSizeY);
     }
 
-    public toGridX(xCanva: number): number {
-        return xCanva / this._cellSizeX;
+    public toGridX(xCanva: number, yCanva: number): Point {
+        const x = (xCanva - this._grigCanvaOffsetLeft) / this._cellSizeX + this._position.X
+        return new Point(x, yCanva);
     }
 
-    public toGridX2(xCanva: number): number {
-        return (xCanva - this._grigCanvaOffsetLeft) / this._cellSizeX + this.GridX;
-    }
-
-    public get GridX() {
-        return this._gridX;
+    public get Position() {
+        return this._position;
     }
 
     public get CanvaWidth() {
@@ -77,11 +71,20 @@ export class PixelViewer {
     }
 
     public get _cellSizeX() {
-        return this._gridPixelsWidth / this._gridWidth;
+        return this._gridPixelsWidth / this._size.Weight;
     }
 
     private get _cellSizeY() {
-        return this._gridPixelsHeight / this._gridHeight;
+        return this._gridPixelsHeight / this._size.Height;
+    }
+
+    public set Position(position: Point) {
+        this._position = position;
+    }
+
+    public MoveFor(position: Point) {
+        const newPosition = new Point(this._position.X + position.X, position.Y + position.Y);
+        this._position = newPosition;
     }
 
     public Clear(): void {
@@ -123,8 +126,8 @@ export class PixelViewer {
         let xVisible = false;
         let yVisible = false;
 
-        if (position.X > this._gridX && position.X < this._gridWidth + this._gridX) xVisible = true;
-        if (position.Y > 0 && position.Y < this._gridHeight) yVisible = true;
+        if (position.X > this._position.X && position.X < this._size.Weight + this._position.X) xVisible = true;
+        if (position.Y > 0 && position.Y < this._size.Height) yVisible = true;
 
         return xVisible && yVisible;
     }
