@@ -55,6 +55,6 @@ export class Plotter {
 
     private MouseDown(e: MouseEvent) {
         this._isMoving = true;
-        console.log("pizda", this._grid.toGridPosition(new Point(e.offsetX, e.offsetY)));
+        console.log("click", this._grid.toGridPosition(new Point(e.offsetX, e.offsetY)));
     }
 }

@@ -27,7 +27,7 @@ export class PixelViewer {
     }
 
     public toCanvaX(x: number) {
-        return (this._grigCanvaOffsetLeft + (x * this._cellSizeX)) + this._position.X;
+        return ((this._grigCanvaOffsetLeft + (x * this._cellSizeX)) + this._position.X);
     }
 
     public toCanvaY(y: number) {
@@ -78,7 +78,7 @@ export class PixelViewer {
     }
 
     public get _cellSizeX() {
-        return this._gridPixelsWidth / this._size.Width;
+        return (this._gridPixelsWidth / this._size.Width);
     }
 
     public get _cellSizeY() {
@@ -126,6 +126,13 @@ export class PixelViewer {
     }
 
     public IsVisible(position: Point): boolean {
-        return true;
+        let isVisibleX = false;
+        let isVisibleY = false;
+
+        var s = this.toGridPosition(position);
+
+     //   if (s.)
+
+        return isVisibleX && isVisibleY;
     }
 }
