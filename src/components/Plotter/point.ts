@@ -25,7 +25,7 @@ export class Size {
         this._height = height;
     }
 
-    public get Weight() {
+    public get Width() {
         return this._width;
     }
 

@@ -1,8 +1,7 @@
 import { Point, Size } from "./point";
 import * as Viewer from "./viewer"
 
-export class PixelViewer
-{
+export class PixelViewer {
     //положение в пикселях
     private _position: Point;
     //виртуальный размер в ординатах
@@ -11,10 +10,10 @@ export class PixelViewer
     private readonly _canva: HTMLCanvasElement;
     private readonly _gridPixelsWidth: number;
     private readonly _gridPixelsHeight: number;
-    private readonly _grigCanvaOffsetLeft: number = 0;
+    private readonly _grigCanvaOffsetLeft: number = 10;
     private readonly _grigCanvaOffsetRight: number = 30;
-    private readonly _grigCanvaOffsetTop: number = 100;
-    private readonly _grigCanvaOffsetBottom: number = 130;
+    private readonly _grigCanvaOffsetTop: number = 10;
+    private readonly _grigCanvaOffsetBottom: number = 30;
 
     constructor(position: Point, gridWidth: number, gridHeight: number, canva: HTMLCanvasElement) {
         this._position = position
@@ -36,15 +35,18 @@ export class PixelViewer
     }
 
     public toGridPosition(poz: Point): Point {
-        const x = (this._position.X - poz.X + this._grigCanvaOffsetLeft) / this._cellSizeX
-        const y = this._size.Height - (this._position.Y + poz.Y - this._grigCanvaOffsetTop) / this._cellSizeY
+        const x = ((poz.X - this._position.X - this._grigCanvaOffsetLeft) / this._cellSizeX)
+        const y = this._size.Height - ((this._position.Y + poz.Y - this._grigCanvaOffsetTop) / this._cellSizeY)
 
-        console.log("pizda", this._gridPixelsHeight);
         return new Point(x, y);
     }
 
     public get Position() {
         return this._position;
+    }
+
+    public set Position(position: Point) {
+        this._position = position;
     }
 
     public get Size() {
@@ -76,16 +78,16 @@ export class PixelViewer
     }
 
     public get _cellSizeX() {
-        return this._gridPixelsWidth / this._size.Weight;
+        return this._gridPixelsWidth / this._size.Width;
     }
 
-    private get _cellSizeY() {
+    public get _cellSizeY() {
         return this._gridPixelsHeight / this._size.Height;
     }
 
     public MoveFor(position: Point) {
         const newPosition = new Point(this._position.X + position.X, this._position.Y - position.Y);
-        this._position = newPosition;
+        this.Position = newPosition;
     }
 
     public Clear(): void {
