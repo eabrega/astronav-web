@@ -133,6 +133,7 @@ export class PixelViewer {
 
      //   if (s.)
 
+        return true;
         return isVisibleX && isVisibleY;
     }
 }

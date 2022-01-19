@@ -89,6 +89,15 @@ export class Grid {
         this.DrawGrid();
     }
 
+    public Zooming(scale: number) { 
+        
+
+
+        
+        this.Clear();
+        this.DrawGrid();
+    }
+
     public toGridPosition(position: Point) {
         return this._viewer.toGridPosition(position);
     }
