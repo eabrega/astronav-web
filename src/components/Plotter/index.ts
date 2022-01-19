@@ -5,13 +5,13 @@ import { Point } from './point';
 
 export class Plotter {
     private _isMoving = false;
-    private _scale = 0;
+    private _scale = 1;
     private _frames: Array<DrawObjectFrame> | null = null;
     private _frameId = 0;
     private _grid: Grid;
     constructor(name: string) {
         const canva = document.getElementById(name) as HTMLCanvasElement;
-        this._grid = new Grid(360, 90, 10, 10, canva);
+        this._grid = new Grid(360, 90, 15, 10, canva);
 
         canva.addEventListener("wheel", (event: WheelEvent) => this.Zoom(event));
         canva.addEventListener("mousemove", (event: MouseEvent) => this.Moving(event));
@@ -60,12 +60,14 @@ export class Plotter {
 
     private Zoom(e: WheelEvent) {
         if (e.deltaY > 0) {
-            this._scale += 0.1;
+            this._scale += 0.01;
         }
         else {
-            this._scale += -0.1;
+            this._scale += -0.05;
         }
-        
+ 
+        if (this._scale < 0.01) this._scale = 0.01;
+
         this._grid.Zooming(this._scale);
         this.DrawPlanetCollection(this._frames![this._frameId].Objects);
     }

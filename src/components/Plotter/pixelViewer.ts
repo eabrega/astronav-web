@@ -5,7 +5,8 @@ export class PixelViewer {
     //положение в пикселях
     private _position: Point;
     //виртуальный размер в ординатах
-    private readonly _size: Size;
+    private _size: Size;
+    private _scale: number;
     private readonly _context: CanvasRenderingContext2D;
     private readonly _canva: HTMLCanvasElement;
     private readonly _gridPixelsWidth: number;
@@ -17,6 +18,7 @@ export class PixelViewer {
 
     constructor(position: Point, gridWidth: number, gridHeight: number, canva: HTMLCanvasElement) {
         this._position = position
+        this._scale = 1;
         this._size = new Size(Math.round(gridWidth), Math.round(gridHeight));
 
         this._gridPixelsWidth = canva.width - (this._grigCanvaOffsetLeft + this._grigCanvaOffsetRight);
@@ -35,8 +37,8 @@ export class PixelViewer {
     }
 
     public toGridPosition(poz: Point): Point {
-        const x = ((poz.X - this._position.X - this._grigCanvaOffsetLeft) / this._cellSizeX)
-        const y = this._size.Height - ((this._position.Y + poz.Y - this._grigCanvaOffsetTop) / this._cellSizeY)
+        const x = ((poz.X - this._position.X - this._grigCanvaOffsetLeft) / this._cellSizeX) * this._scale
+        const y = (this._size.Height - ((this._position.Y + poz.Y - this._grigCanvaOffsetTop) / this._cellSizeY)) * (-1 * this._scale)
 
         return new Point(x, y);
     }
@@ -47,6 +49,10 @@ export class PixelViewer {
 
     public set Position(position: Point) {
         this._position = position;
+    }
+
+    public set Scale(scale: number) {
+        this._scale = scale;
     }
 
     public get Size() {
@@ -100,25 +106,27 @@ export class PixelViewer {
         Viewer.DrawLine(this._canva, this.toCanvaX(x1), this.toCanvaY(y1), this.toCanvaX(x2), this.toCanvaY(y2), size);
     }
 
-    public DrawOrdinatText(x: number,
+    public DrawOrdinatText(
+        x: number,
         y: number,
         text: string,
         size: number,
         color: string = "black",
         alignVertical: CanvasTextAlign = "start",
-        alignHorizontal: CanvasTextBaseline = "middle") {
+        alignHorizontal: CanvasTextBaseline = "middle",
+        offsetX = 0) {
 
-        const xCanva = this.toCanvaX(x);
-        const yCanva = this.toCanvaY(y);
+        const xCanva = this.toCanvaX(x / this._scale);
+        const yCanva = this.toCanvaY(y / this._scale);
 
         if (!this.IsVisible(new Point(x, y))) return;
 
-        Viewer.DrawText(this._canva, xCanva, yCanva, text, size, color, alignVertical, alignHorizontal);
+        Viewer.DrawText(this._canva, xCanva + offsetX, yCanva, text, size, color, alignVertical, alignHorizontal);
     }
 
     public DrawOrdinatObject(x: number, y: number): void {
-        const xCanva = this.toCanvaX(x);
-        const yCanva = this.toCanvaY(y);
+        const xCanva = this.toCanvaX(x / this._scale);
+        const yCanva = this.toCanvaY(y / this._scale);
 
         if (!this.IsVisible(new Point(x, y))) return;
 
@@ -131,7 +139,7 @@ export class PixelViewer {
 
         var s = this.toGridPosition(position);
 
-     //   if (s.)
+        //   if (s.)
 
         return true;
         return isVisibleX && isVisibleY;

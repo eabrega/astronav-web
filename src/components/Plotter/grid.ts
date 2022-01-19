@@ -4,6 +4,7 @@ import * as Viewer from "./viewer"
 
 export class Grid {
     private _viewer: PixelViewer;
+    private _scale: number = 1;
     private readonly _canva: HTMLCanvasElement;
     private _gridWidth: number;
     private _gridHeight: number;
@@ -37,14 +38,14 @@ export class Grid {
             if (index == 0) {
                 Viewer.DrawLine(this._canva, this._viewer.toCanvaX(index), this._viewer.GridStartPixelsY, this._viewer.toCanvaX(index), this._viewer.GridHeightPixels, 2);
 
-                Viewer.DrawLine(this._canva, this._viewer.toCanvaX(index), this._viewer.GridStartPixelsY, this._viewer.toCanvaX(index), 20, 3);
-                Viewer.DrawText(this._canva, this._viewer.toCanvaX(index), 5, index.toFixed(0), 13, "red", "center")
+                Viewer.DrawLine(this._canva, this._viewer.toCanvaX(index), this._viewer.GridStartPixelsY, this._viewer.toCanvaX(index), 20, 3);             
+                Viewer.DrawText(this._canva, this._viewer.toCanvaX(index), 5, (index).toFixed(0), 13, "red", "center")
             }
             else {
                 Viewer.DrawLine(this._canva, this._viewer.toCanvaX(index), this._viewer.GridStartPixelsY, this._viewer.toCanvaX(index), this._viewer.GridHeightPixels, 1);
 
                 Viewer.DrawLine(this._canva, this._viewer.toCanvaX(index), this._viewer.GridStartPixelsY, this._viewer.toCanvaX(index), 20, 3);
-                Viewer.DrawText(this._canva, this._viewer.toCanvaX(index), 5, index.toFixed(0), 11, "black", "center")
+                Viewer.DrawText(this._canva, this._viewer.toCanvaX(index), 5, (index*this._scale).toFixed(0), 11, "black", "center")
             }
         }
 
@@ -64,16 +65,17 @@ export class Grid {
                 Viewer.DrawLine(this._canva, this._viewer.GridStartPixelX, this._viewer.toCanvaY(index), this._viewer.GridWidthPixels, this._viewer.toCanvaY(index));
 
                 Viewer.DrawLine(this._canva, this._viewer.GridWidthPixels, this._viewer.toCanvaY(index), this._viewer.GridWidthPixels + 10, this._viewer.toCanvaY(index), 3);
-                Viewer.DrawText(this._canva, this._viewer.GridWidthPixels + 20, this._viewer.toCanvaY(index), index.toFixed(0), 11, "black", "center")
+                Viewer.DrawText(this._canva, this._viewer.GridWidthPixels + 20, this._viewer.toCanvaY(index), (index*this._scale).toFixed(0), 11, "black", "center")
             }
         }
     }
 
     public DrawGridObject(x: number, y: number, label: string) {
-        if (this._viewer.IsVisible(new Point(x, y))) {
-            Viewer.DrawText(this._canva, this._viewer.toCanvaX(x) + 10, this._viewer.toCanvaY(y), label, 15.5, "green", "left", "middle")
+       // if (this._viewer.IsVisible(new Point(x, y))) {
+            //Viewer.DrawText(this._canva, this._viewer.toCanvaX(x) + 10, this._viewer.toCanvaY(y), label, 15.5, "green", "left", "middle")
+            this._viewer.DrawOrdinatText(x,y,label, 15.5, "green", "left", "middle", 10)
             this._viewer.DrawOrdinatObject(x, y);
-        }
+      //  }
     }
 
     public Clear(): void {
@@ -90,10 +92,8 @@ export class Grid {
     }
 
     public Zooming(scale: number) { 
-        
-
-
-        
+        this._scale = scale;
+        this._viewer.Scale = scale;
         this.Clear();
         this.DrawGrid();
     }
