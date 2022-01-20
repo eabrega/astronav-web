@@ -1,7 +1,7 @@
 import { Grid } from './grid'
 import { DrawObjectFrame, IDrawObjects } from './drawObjectsFrame'
 import { DrawObject } from "./drawObject";
-import { Point } from './point';
+import { Point, Size } from './point';
 
 export class Plotter {
     private _isMoving = false;
@@ -11,12 +11,12 @@ export class Plotter {
     private _grid: Grid;
     constructor(name: string) {
         const canva = document.getElementById(name) as HTMLCanvasElement;
-        this._grid = new Grid(360, 90, 15, 10, canva);
+        this._grid = new Grid(new Size(360, 90), 15, 10, canva);
 
         canva.addEventListener("wheel", (event: WheelEvent) => this.Zoom(event));
         canva.addEventListener("mousemove", (event: MouseEvent) => this.Moving(event));
         canva.addEventListener("mousedown", (event: MouseEvent) => this.MouseDown(event));
-        canva.addEventListener("mouseup", e => { this._isMoving = false; }); //this.startX = this._viewer._gridX });
+        canva.addEventListener("mouseup", e => { this._isMoving = false; }); 
     }
 
     public set DataFrameSelect(frameId: number) {
@@ -66,7 +66,7 @@ export class Plotter {
             this._scale += -0.05;
         }
  
-        if (this._scale < 0.01) this._scale = 0.01;
+        if (this._scale < 0.05) this._scale = 0.05;
 
         this._grid.Zooming(this._scale);
         this.DrawPlanetCollection(this._frames![this._frameId].Objects);
