@@ -11,12 +11,12 @@ export class Plotter {
     private _grid: Grid;
     constructor(name: string) {
         const canva = document.getElementById(name) as HTMLCanvasElement;
-        this._grid = new Grid(new Size(360, 90), 15, 10, canva);
+        this._grid = new Grid(new Size(360, 90), 20, 10, canva);
 
         canva.addEventListener("wheel", (event: WheelEvent) => this.Zoom(event));
-        canva.addEventListener("mousemove", (event: MouseEvent) => this.Moving(event));
+        document.addEventListener("mousemove", (event: MouseEvent) => this.Moving(event));
         canva.addEventListener("mousedown", (event: MouseEvent) => this.MouseDown(event));
-        canva.addEventListener("mouseup", e => { this._isMoving = false; }); 
+        document.addEventListener("mouseup", e => { this._isMoving = false; }); 
     }
 
     public set DataFrameSelect(frameId: number) {
@@ -60,7 +60,7 @@ export class Plotter {
 
     private Zoom(e: WheelEvent) {
         if (e.deltaY > 0) {
-            this._scale += 0.01;
+            this._scale += 0.05;
         }
         else {
             this._scale += -0.05;

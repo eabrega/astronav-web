@@ -18,7 +18,7 @@ export class PixelViewer {
 
     constructor(position: Point, size: Size, canva: HTMLCanvasElement) {
         this._position = position
-        this._ordinatPosition = new Point(0,0);
+        this._ordinatPosition = new Point(0, 0);
         this._scale = 1;
         this._ordinatSize = size;
 
@@ -31,7 +31,7 @@ export class PixelViewer {
     }
 
     public toCanvaPosition(position: Point) {
-        const canvaX = ((this._grigCanvaOffsetLeft + (position.X * this.CellSize.Width)) + this._position.X);
+        const canvaX = this._grigCanvaOffsetLeft + (position.X * this.CellSize.Width) + this._position.X;
         const canvaY = this._grigCanvaOffsetBottom + (position.Y * this.CellSize.Height) + this._position.Y;
 
         return new Point(canvaX, canvaY);
@@ -60,33 +60,25 @@ export class PixelViewer {
         return this._ordinatSize;
     }
 
-    public get GridWidthPixels() {
-        return this._gridSizeByPixels.X + this._grigCanvaOffsetLeft;
+    public get GridCanvaSize() {
+        const width = this._gridSizeByPixels.X + this._grigCanvaOffsetLeft;
+        const height =  this._gridSizeByPixels.Y + this._grigCanvaOffsetBottom;
+
+        return new Size(width, height);
     }
 
-    public get GridHeightPixels() {
-        return this._gridSizeByPixels.Y + this._grigCanvaOffsetBottom;
-    }
-
-    public get GridStartPixelX() {
-        return this._grigCanvaOffsetLeft;
-    }
-
-    public get GridStartPixelsY() {
-        return this._grigCanvaOffsetBottom;
+    public get GridCanvaPosition() {
+        return new Point(this._grigCanvaOffsetLeft, this._grigCanvaOffsetBottom);
     }
 
     public get CellSize() {
-        const cellWidth = (this._gridSizeByPixels.X / this._ordinatSize.Width);
+        const cellWidth = this._gridSizeByPixels.X / this._ordinatSize.Width;
         const cellHeight = this._gridSizeByPixels.Y / this._ordinatSize.Height;
 
         return new Size(cellWidth, cellHeight);
     }
 
     public MoveFor(position: Point) {
-        //const ordinatX = Math.round(-1 * (this.Position.X / this.CellSize.Width) / this._ordinatStepX);
-        //const ordinatY = Math.round(-1 * (this.Position.Y / this.CellSize.Height) / this._ordinatStepY);
-
         const newPosition = new Point(this._position.X + position.X, this._position.Y - position.Y);
         this.Position = newPosition;
     }
@@ -121,14 +113,6 @@ export class PixelViewer {
     }
 
     public IsVisible(position: Point): boolean {
-        let isVisibleX = false;
-        let isVisibleY = false;
-
-        var s = this.toGridPosition(position);
-
-        //   if (s.)
-
         return true;
-        return isVisibleX && isVisibleY;
     }
 }
