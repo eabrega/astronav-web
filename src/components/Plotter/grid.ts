@@ -41,14 +41,14 @@ export class Grid {
             if (index == 0) {
                 Viewer.DrawLine(this._canva, canvaX, startPositionY, canvaX, gridCanvaHeight, 2);
 
-                Viewer.DrawLine(this._canva, canvaX, startPositionY, canvaX, 20, 3);
-                Viewer.DrawText(this._canva, canvaX, 5, (index).toFixed(0), 13, "red", "center")
+                Viewer.DrawLine(this._canva, canvaX, startPositionY, canvaX, startPositionY - 10, 3);
+                Viewer.DrawText(this._canva, canvaX, startPositionY - 20, (index).toFixed(0), 13, "red", "center")
             }
             else {
                 Viewer.DrawLine(this._canva, canvaX, startPositionY, canvaX, gridCanvaHeight, 1);
 
-                Viewer.DrawLine(this._canva, canvaX, startPositionY, canvaX, 20, 3);
-                Viewer.DrawText(this._canva, canvaX, 5, (index * this._scale).toFixed(0), 11, "black", "center")
+                Viewer.DrawLine(this._canva, canvaX, startPositionY, canvaX, startPositionY - 10, 3);
+                Viewer.DrawText(this._canva, canvaX, startPositionY - 20, (index * this._scale).toFixed(0), 11, "black", "center")
             }
         }
 
