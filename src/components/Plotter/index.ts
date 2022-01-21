@@ -4,11 +4,12 @@ import { DrawObject } from "./drawObject";
 import { Point, Size } from './point';
 
 export class Plotter {
+    private readonly _grid: Grid;
     private _isMoving = false;
     private _scale = 1;
     private _frames: Array<DrawObjectFrame> | null = null;
     private _frameId = 0;
-    private _grid: Grid;
+
     constructor(name: string) {
         const canva = document.getElementById(name) as HTMLCanvasElement;
         this._grid = new Grid(new Size(360, 90), 20, 10, canva);

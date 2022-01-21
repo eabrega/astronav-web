@@ -4,10 +4,10 @@ import * as Viewer from "./viewer"
 export class PixelViewer {
     //положение в пикселях
     private _position: Point;
-    private _ordinatPosition: Point;
+    private _ordinatPosition: Point = new Point(0, 0);
     //виртуальный размер в ординатах
     private _ordinatSize: Size;
-    private _scale: number;
+    private _scale: number = 1;
     private readonly _context: CanvasRenderingContext2D;
     private readonly _canva: HTMLCanvasElement;
     private readonly _gridSizeByPixels: Point;
@@ -18,8 +18,6 @@ export class PixelViewer {
 
     constructor(position: Point, size: Size, canva: HTMLCanvasElement) {
         this._position = position
-        this._ordinatPosition = new Point(0, 0);
-        this._scale = 1;
         this._ordinatSize = size;
 
         this._gridSizeByPixels = new Point(
@@ -62,7 +60,7 @@ export class PixelViewer {
 
     public get GridCanvaSize() {
         const width = this._gridSizeByPixels.X + this._grigCanvaOffsetLeft;
-        const height =  this._gridSizeByPixels.Y + this._grigCanvaOffsetBottom;
+        const height = this._gridSizeByPixels.Y + this._grigCanvaOffsetBottom;
 
         return new Size(width, height);
     }

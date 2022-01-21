@@ -36,7 +36,7 @@ export class Grid {
         for (let index = startX; index <= stopX; index += this._ordinatStepX) {
             const canvaX = this._viewer.toCanvaPosition(new Point(index, 0)).X;
 
-            if (canvaX < startPositionY) continue;
+            if (canvaX < startPositionX) continue;
             if (canvaX > gridCanvaWidth) break;
             if (index == 0) {
                 Viewer.DrawLine(this._canva, canvaX, startPositionY, canvaX, gridCanvaHeight, 2);
