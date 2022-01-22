@@ -12,7 +12,7 @@ export class Plotter {
 
     constructor(name: string) {
         const canva = document.getElementById(name) as HTMLCanvasElement;
-        this._grid = new Grid(new Size(360, 90), 20, 10, canva);
+        this._grid = new Grid(new Size(360, 90), 15, 10, canva);
 
         canva.addEventListener("wheel", (event: WheelEvent) => this.Zoom(event));
         document.addEventListener("mousemove", (event: MouseEvent) => this.Moving(event));

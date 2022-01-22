@@ -38,17 +38,12 @@ export class Grid {
 
             if (canvaX < startPositionX) continue;
             if (canvaX > gridCanvaWidth) break;
-            if (index == 0) {
-                Viewer.DrawLine(this._canva, canvaX, startPositionY, canvaX, gridCanvaHeight, 2);
 
-                Viewer.DrawLine(this._canva, canvaX, startPositionY, canvaX, startPositionY - 10, 3);
-                Viewer.DrawText(this._canva, canvaX, startPositionY - 20, (index).toFixed(0), 13, "red", "center")
+            if (index == 0 || index == 90 || index == 180 || index == 270) {
+                this.DrawOrdinatLine(canvaX, startPositionY, canvaX, gridCanvaHeight, 12, index, "red", "red", 12);
             }
             else {
-                Viewer.DrawLine(this._canva, canvaX, startPositionY, canvaX, gridCanvaHeight, 1);
-
-                Viewer.DrawLine(this._canva, canvaX, startPositionY, canvaX, startPositionY - 10, 3);
-                Viewer.DrawText(this._canva, canvaX, startPositionY - 20, (index * this._scale).toFixed(0), 11, "black", "center")
+                this.DrawOrdinatLine(canvaX, startPositionY, canvaX, gridCanvaHeight, 9, index, "gray", "gray", 11);
             }
         }
 
@@ -61,16 +56,10 @@ export class Grid {
             if (canvaY < startPositionY) continue;
             if (canvaY > gridCanvaHeight) break;
             if (index == 0) {
-                Viewer.DrawLine(this._canva, startPositionX, canvaY, gridCanvaWidth, canvaY, 2);
-
-                Viewer.DrawLine(this._canva, gridCanvaWidth, canvaY, gridCanvaWidth + 10, canvaY, 3);
-                Viewer.DrawText(this._canva, gridCanvaWidth + 20, canvaY, index.toFixed(0), 13, "red", "center")
+                this.DrawAbscissaLine(startPositionX, canvaY, gridCanvaWidth, canvaY, 12, index, "red", "red", 12);
             }
             else {
-                Viewer.DrawLine(this._canva, startPositionX, canvaY, gridCanvaWidth, canvaY);
-
-                Viewer.DrawLine(this._canva, gridCanvaWidth, canvaY, gridCanvaWidth + 10, canvaY, 3);
-                Viewer.DrawText(this._canva, gridCanvaWidth + 20, canvaY, (index * this._scale).toFixed(0), 11, "black", "center")
+                this.DrawAbscissaLine(startPositionX, canvaY, gridCanvaWidth, canvaY, 9, index, "gray", "gray", 11);
             }
         }
     }
@@ -102,5 +91,25 @@ export class Grid {
 
     public toGridPosition(position: Point) {
         return this._viewer.toGridPosition(position);
+    }
+
+    private DrawOrdinatLine(x1: number, y1: number, x2: number, y2: number, pineSize: number, index: number, colorText: string, colorLine: string, fontSize: number) {
+        Viewer.DrawLine(this._canva, x1, y1, x2, y2, 1, colorLine);
+
+        Viewer.DrawLine(this._canva, x1, y1, x2, y1 - pineSize, 3, colorLine);
+        Viewer.DrawText(this._canva, x1, y1 - pineSize - 5, (index * this._scale).toFixed(0), fontSize, colorText, "center", "top")
+
+        Viewer.DrawLine(this._canva, x1, y2, x2, y2 + pineSize, 3, colorLine);
+        Viewer.DrawText(this._canva, x1, y2 + pineSize + 5, (index * this._scale).toFixed(0), fontSize, colorText, "center", "bottom")
+    }
+
+    private DrawAbscissaLine(x1: number, y1: number, x2: number, y2: number, pineSize: number, index: number, colorText: string, colorLine: string, fontSize: number) {
+        Viewer.DrawLine(this._canva, x1, y1, x2, y2, 1, colorLine);
+
+        Viewer.DrawLine(this._canva, x1 - pineSize, y1, x1, y2, 3, colorLine);
+        Viewer.DrawText(this._canva, x1 - pineSize - 5, y1, (index * this._scale).toFixed(0), fontSize, colorText, "end", "middle")
+
+        Viewer.DrawLine(this._canva, x2, y1, x2 + pineSize, y1, 3, colorLine);
+        Viewer.DrawText(this._canva, x2 + pineSize + 5, y2, (index * this._scale).toFixed(0), fontSize, colorText, "start", "middle")
     }
 }

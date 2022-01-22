@@ -11,9 +11,9 @@ export class PixelViewer {
     private readonly _context: CanvasRenderingContext2D;
     private readonly _canva: HTMLCanvasElement;
     private readonly _gridSizeByPixels: Point;
-    private readonly _grigCanvaOffsetLeft: number = 10;
+    private readonly _grigCanvaOffsetLeft: number = 30;
     private readonly _grigCanvaOffsetRight: number = 30;
-    private readonly _grigCanvaOffsetTop: number = 10;
+    private readonly _grigCanvaOffsetTop: number = 30;
     private readonly _grigCanvaOffsetBottom: number = 30;
 
     constructor(position: Point, size: Size, canva: HTMLCanvasElement) {

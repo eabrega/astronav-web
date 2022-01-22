@@ -18,7 +18,7 @@ export function DrawText(
     context.fillText(text, x, context.canvas.height - y);
 }
 
-export function DrawLine(canva: HTMLCanvasElement, x1: number, y1: number, x2: number, y2: number, size: number = 1) {
+export function DrawLine(canva: HTMLCanvasElement, x1: number, y1: number, x2: number, y2: number, size: number = 1, color:string="#9e9e9e") {
     const context = canva.getContext("2d")!;
 
     context.beginPath();
@@ -26,7 +26,7 @@ export function DrawLine(canva: HTMLCanvasElement, x1: number, y1: number, x2: n
     context.moveTo(x1, context.canvas.height - y1);
     context.lineTo(x2, context.canvas.height - y2);
     context.lineWidth = size;
-    context.strokeStyle = "#9e9e9e";
+    context.strokeStyle = color;
     context.stroke();
 }
 
