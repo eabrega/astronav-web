@@ -12,7 +12,7 @@ export class Plotter {
 
     constructor(name: string) {
         const canva = document.getElementById(name) as HTMLCanvasElement;
-        this._grid = new Grid(new Size(360, 90), 15, 10, canva);
+        this._grid = new Grid(new Size(360, 90), canva);
 
         canva.addEventListener("wheel", (event: WheelEvent) => this.Zoom(event));
         document.addEventListener("mousemove", (event: MouseEvent) => this.Moving(event));
@@ -61,16 +61,16 @@ export class Plotter {
 
     private Zoom(e: WheelEvent) {
         if (e.deltaY > 0) {
-            this._scale += 0.05;
+            this._scale += 0.5;
         }
         else {
-            this._scale += -0.05;
+            this._scale += -0.5;
         }
 
         if (this._scale < 1) this._scale = 1;
-        if (this._scale > 5) this._scale = 5
+        if (this._scale > 17) this._scale = 17
 
-        this._grid.Zooming(this._scale, e.offsetX);
+        this._grid.Zooming(this._scale, new Point(e.offsetX, e.offsetY));
         this.DrawPlanetCollection(this._frames![this._frameId].Objects);
     }
 }

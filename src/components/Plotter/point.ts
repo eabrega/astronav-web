@@ -8,15 +8,19 @@ export class Point {
     }
 
     public get X() {
-        return this._x;
+        return this._x
     }
 
     public get Y() {
-        return this._y;
+        return this._y
     }
- 
-    public ToString() { 
+
+    public ToString() {
         return `X:${this._x} Y:${this._y}`;
+    }
+
+    static Scaled(point: Point, scale: number): Point {
+        return new Point(point.X * scale, point.Y * scale);
     }
 }
 
@@ -37,7 +41,7 @@ export class Size {
         return this._height;
     }
 
-    public ToString() { 
+    public ToString() {
         return `W:${this._width} H:${this._height}`;
     }
 }

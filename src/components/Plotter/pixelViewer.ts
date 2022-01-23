@@ -4,21 +4,20 @@ import * as Viewer from "./viewer"
 export class PixelViewer {
     //положение в пикселях
     private _position: Point;
-    //виртуальный размер в ординатах
-    //public _ordinatPosition: Point = new Point(0, 0);
-    private _ordinatSize: Size;
+    //размерность координатной сетки
+    private _gridSize: Size;
     private _scale: number = 1;
     private readonly _context: CanvasRenderingContext2D;
     private readonly _canva: HTMLCanvasElement;
     private readonly _gridCanvaSize: Size;
-    private readonly _grigCanvaOffsetLeft: number = 0;
-    private readonly _grigCanvaOffsetRight: number = 0;
-    private readonly _grigCanvaOffsetTop: number = 25;
-    private readonly _grigCanvaOffsetBottom: number = 25;
+    private readonly _grigCanvaOffsetLeft: number = 40;
+    private readonly _grigCanvaOffsetRight: number = 40;
+    private readonly _grigCanvaOffsetTop: number = 30;
+    private readonly _grigCanvaOffsetBottom: number = 30;
 
     constructor(position: Point, size: Size, canva: HTMLCanvasElement) {
         this._position = position
-        this._ordinatSize = size;
+        this._gridSize = size;
 
         this._gridCanvaSize = new Size(
             canva.width - this._grigCanvaOffsetLeft - this._grigCanvaOffsetRight,
@@ -36,8 +35,10 @@ export class PixelViewer {
     }
 
     public toGridPosition(position: Point): Point {
-        const x = ((position.X - this._position.X - this._grigCanvaOffsetLeft) / this.CellSize.Width) / this._scale
-        const y = (this._ordinatSize.Height - ((this._position.Y + position.Y + this._grigCanvaOffsetBottom) / this.CellSize.Height)) / (-1 * this._scale)
+        const x = (position.X - this._position.X - this._grigCanvaOffsetLeft) / this.CellSize.Width / this._scale
+
+        const canvaInvertY = -(position.Y - this._gridCanvaSize.Height);
+        const y = ((canvaInvertY - this._position.Y + this._grigCanvaOffsetTop) / this.CellSize.Height) / this._scale;
 
         return new Point(x, y);
     }
@@ -46,21 +47,24 @@ export class PixelViewer {
         return this._position;
     }
 
-    public set Position(position: Point) {
-        this._position = position;
+    public get OrdinatPosition() {
+        const oX = Math.round(-1 * (this.Position.X / this.CellSize.Width) / this._scale);
+        const oY = Math.round(-1 * (this.Position.Y / this.CellSize.Height) / this._scale);
+        return new Point(oX, oY);
     }
 
-    public get OrdinatPosition() {
-        const oX = Math.round(-1 * (this.Position.X / this.CellSize.Width)) / this._scale;
-        return new Point(oX, 0);
+    public get OrdinatSize() {
+        const oW = Math.round(this._gridSize.Width / this._scale);
+        const oH = Math.round(this._gridSize.Height / this._scale);
+        return new Size(oW, oH);
     }
 
     public set Scale(scale: number) {
         this._scale = scale;
     }
 
-    public get Size() {
-        return this._ordinatSize;
+    public get GridSize() {
+        return this._gridSize;
     }
 
     public get GridCanvaSize() {
@@ -72,29 +76,31 @@ export class PixelViewer {
     }
 
     public get CellSize() {
-        const cellWidth = this._gridCanvaSize.Width / this._ordinatSize.Width;
-        const cellHeight = this._gridCanvaSize.Height / this._ordinatSize.Height;
+        const cellWidth = this._gridCanvaSize.Width / this._gridSize.Width;
+        const cellHeight = this._gridCanvaSize.Height / this._gridSize.Height;
 
         return new Size(cellWidth, cellHeight);
     }
 
     public MoveFor(position: Point) {
         const newPosition = new Point(this._position.X + position.X, this._position.Y - position.Y);
-        this.Position = newPosition;
+        this._position = newPosition;
     }
 
-    public Zoom(scale: number, x: number) {
-        const point = this.toGridPosition(new Point(x, 0)).X * scale;
+    public Zoom(scale: number, mouse: Point) {
+        const point = Point.Scaled(this.toGridPosition(mouse), scale);
         this.Scale = scale;
-        const newPoint = this.toGridPosition(new Point(x, 0)).X * scale;
+        const newPoint = Point.Scaled(this.toGridPosition(mouse), scale);
 
-        const dX = (point - newPoint) * -this.CellSize.Width;
-        this.MoveFor(new Point(dX, 0));
+        const dX = (newPoint.X - point.X) * this.CellSize.Width;
+        const dY = (point.Y - newPoint.Y) * this.CellSize.Height
+        
+        this.MoveFor(new Point(dX, dY));
     }
 
     public Clear(): void {
         this._context.clearRect(0, 0, this._canva.width, this._canva.height);
-        this.DebugWindow();
+        //this.DebugWindow();
     }
 
     public DrawOrdinatText(
@@ -129,7 +135,8 @@ export class PixelViewer {
     public DebugWindow() {
         const params = [
             `oPos${this.OrdinatPosition.ToString()}`,
-            `oSiz${this._ordinatSize.ToString()}`,
+            `gridSiz${this._gridSize.ToString()}`,
+            `oSiz${this.OrdinatSize.ToString()}`,
             "---",
             `Scale:${this._scale.toString()}`,
             "---",
