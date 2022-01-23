@@ -14,6 +14,10 @@ export class Point {
     public get Y() {
         return this._y;
     }
+ 
+    public ToString() { 
+        return `X:${this._x} Y:${this._y}`;
+    }
 }
 
 export class Size {
@@ -31,5 +35,9 @@ export class Size {
 
     public get Height() {
         return this._height;
+    }
+
+    public ToString() { 
+        return `W:${this._width} H:${this._height}`;
     }
 }

@@ -3,7 +3,7 @@
         <InfoBar />
         <PlotterWrapper class="plotter" />
         <TimeLine />
-        <!-- <SkyObjectsTable class="table" /> -->
+        <SkyObjectsTable class="table" />
     </div>
 </template>
 

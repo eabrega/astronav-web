@@ -1,6 +1,6 @@
 <template>
     <div class="sky-plotter">
-        <canvas id="canva" width="1200" height="500"></canvas>
+        <canvas id="canva" width="1200" height="400"></canvas>
     </div>
 </template>
 
@@ -53,5 +53,6 @@ export default class PlotterWrapper extends Vue {
 <style scoped lang="scss">
 .sky-plotter {
     margin: 0px;
+   // background-color: blanchedalmond;
 }
 </style>

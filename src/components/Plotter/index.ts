@@ -17,7 +17,7 @@ export class Plotter {
         canva.addEventListener("wheel", (event: WheelEvent) => this.Zoom(event));
         document.addEventListener("mousemove", (event: MouseEvent) => this.Moving(event));
         canva.addEventListener("mousedown", (event: MouseEvent) => this.MouseDown(event));
-        document.addEventListener("mouseup", e => { this._isMoving = false; }); 
+        document.addEventListener("mouseup", e => { this._isMoving = false; });
     }
 
     public set DataFrameSelect(frameId: number) {
@@ -66,10 +66,11 @@ export class Plotter {
         else {
             this._scale += -0.05;
         }
- 
-        if (this._scale < 0.05) this._scale = 0.05;
 
-        this._grid.Zooming(this._scale);
+        if (this._scale < 1) this._scale = 1;
+        if (this._scale > 5) this._scale = 5
+
+        this._grid.Zooming(this._scale, e.offsetX);
         this.DrawPlanetCollection(this._frames![this._frameId].Objects);
     }
 }
