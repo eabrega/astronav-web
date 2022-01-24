@@ -8,7 +8,7 @@ on:
 
 env:
   NAME: astronav-web-dev
-  PORT: 30080
+  PORT: 7300
 
 jobs:
    build:
