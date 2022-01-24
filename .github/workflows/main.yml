@@ -24,7 +24,7 @@ jobs:
           git tag b$GITHUB_RUN_NUMBER
           git push origin --tags
       - name: SSH Remote Commands
-        uses: appleboy/ssh-action@v0.1.4
+        uses: appleboy/ssh-action@master
         env:
           TAG: '${{ github.run_number }}'
         with:
@@ -34,5 +34,5 @@ jobs:
           username: ${{ secrets.USER_NAME }}
           key: ${{ secrets.KEY }}
           script: |
-            docker rm -f "$NAME-1"
-            docker run -id -p 7010:80 --name "$NAME-1" eabrega/$NAME:$TAG
+            docker rm -f $NAME-1
+            docker run -id -p 7010:80 --name $NAME-1 eabrega/$NAME:$TAG
