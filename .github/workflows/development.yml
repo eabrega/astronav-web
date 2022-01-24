@@ -31,7 +31,7 @@ jobs:
         env:
           TAG: "${{ github.run_number }}"
         with:
-          envs: TAG, NAME, PORT
+          envs: TAG, NAME, DOCKER_PORT
           host: ${{ secrets.DEPLOY_SERVER_IP }}
           port: ${{ secrets.DEPLOY_SERVER_PORT }}
           username: ${{ secrets.USER_NAME }}
