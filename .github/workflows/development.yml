@@ -1,6 +1,9 @@
 name: Development
 
 on:
+  push:
+    branches:
+      - "*"
   label: 
     types:
       - "created"
