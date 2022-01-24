@@ -34,5 +34,5 @@ jobs:
           username: ${{ secrets.USER_NAME }}
           key: ${{ secrets.KEY }}
           script: |
-            docker rm -f $NAME-1
-            docker run -id -p 7010:80 --name $NAME-1 eabrega/$NAME:$TAG
+            docker rm -f "$NAME-1"
+            docker run -id -p 7010:80 --name "$NAME-1" eabrega/$NAME:$TAG
