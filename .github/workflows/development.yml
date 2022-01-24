@@ -3,14 +3,13 @@ name: Development
 on:
   push:
     branches:
-      - "*/**"
-  label: 
-    types:
-      - "created"
+      - '*'
+      - '!main'
 
 env:
   NAME: astronav-web-dev
   PORT: 30080
+
 jobs:
    build:
     runs-on: ubuntu-latest
@@ -39,4 +38,4 @@ jobs:
           key: ${{ secrets.KEY }}
           script: |
             docker rm -f "$NAME-1"
-            docker run -id -p $PORT:80 --name "$NAME-1" eabrega/$NAME:$TAG
+            docker run -id -p $PORT:80 --name $NAME-1 eabrega/$NAME:$TAG
