@@ -56,6 +56,5 @@ export default class PlotterWrapper extends Vue {
 <style scoped lang="scss">
 .sky-plotter {
     margin: 0px;
-    // background-color: blanchedalmond;
 }
 </style>
