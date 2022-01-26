@@ -1,4 +1,6 @@
-import { Point, Size } from "./point";
+import { IPlotterSettings } from "../IPlotterSettings";
+import { Point, Size } from "../point";
+import { IOffset, Offset } from "./IOffset";
 import * as Viewer from "./viewer"
 
 export class PixelViewer {
@@ -7,38 +9,51 @@ export class PixelViewer {
     //размерность координатной сетки
     private _gridSize: Size;
     private _scale: number = 1;
+    private readonly _settings: IPlotterSettings;
     private readonly _context: CanvasRenderingContext2D;
     private readonly _canva: HTMLCanvasElement;
     private readonly _gridCanvaSize: Size;
-    private readonly _grigCanvaOffsetLeft: number = 40;
-    private readonly _grigCanvaOffsetRight: number = 40;
-    private readonly _grigCanvaOffsetTop: number = 30;
-    private readonly _grigCanvaOffsetBottom: number = 30;
+    private readonly _gridCanvaOffsetLeft: number = 0;
+    private readonly _gridCanvaOffsetRight: number = 0;
+    private readonly _gridCanvaOffsetTop: number = 0;
+    private readonly _gridCanvaOffsetBottom: number = 0;
 
-    constructor(position: Point, size: Size, canva: HTMLCanvasElement) {
-        this._position = position
-        this._gridSize = size;
+    private readonly _lesftStopPosition: number;
+    private readonly _rightStopPosition: number;
+
+    constructor(canva: HTMLCanvasElement, settings: IPlotterSettings, offsets: Array<IOffset> | null = null) {
+        this._settings = settings;
+        this._position = new Point(0, 0);
+        this._gridSize = settings.gridSize;
+
+        this._gridCanvaOffsetTop = offsets?.find(x => x.offset == Offset.Top)?.size ?? 0;
+        this._gridCanvaOffsetBottom = offsets?.find(x => x.offset == Offset.Bottom)?.size ?? 0;
+        this._gridCanvaOffsetLeft = offsets?.find(x => x.offset == Offset.Left)?.size ?? 0;
+        this._gridCanvaOffsetRight = offsets?.find(x => x.offset == Offset.Right)?.size ?? 0;
 
         this._gridCanvaSize = new Size(
-            canva.width - this._grigCanvaOffsetLeft - this._grigCanvaOffsetRight,
-            canva.height - this._grigCanvaOffsetTop - this._grigCanvaOffsetBottom);
+            canva.width - this._gridCanvaOffsetLeft - this._gridCanvaOffsetRight,
+            canva.height - this._gridCanvaOffsetTop - this._gridCanvaOffsetBottom);
 
         this._canva = canva;
         this._context = canva.getContext("2d")!;
+
+        this._lesftStopPosition = this.toCanvaPosition(new Point(0, 0)).X - this._gridCanvaOffsetLeft;
+        this._rightStopPosition = this.toCanvaPosition(new Point(this._gridSize.Width, 0)).X - this._gridCanvaOffsetRight;
     }
 
     public toCanvaPosition(position: Point) {
-        const x = this._grigCanvaOffsetLeft + ((position.X * this._scale) * this.CellSize.Width) + this._position.X;
-        const y = this._grigCanvaOffsetBottom + ((position.Y * this._scale) * this.CellSize.Height) + this._position.Y;
+        const x = this._gridCanvaOffsetLeft + ((position.X * this._scale) * this.CellSize.Width) + this._position.X;
+        const y = this._gridCanvaOffsetBottom + ((position.Y * this._scale) * this.CellSize.Height) + this._position.Y;
 
         return new Point(x, y);
     }
 
     public toGridPosition(position: Point): Point {
-        const x = (position.X - this._position.X - this._grigCanvaOffsetLeft) / this.CellSize.Width / this._scale
+        const x = (position.X - this._position.X - this.GridCanvaPosition.X) / this.CellSize.Width / this._scale
 
         const canvaInvertY = -(position.Y - this._gridCanvaSize.Height);
-        const y = ((canvaInvertY - this._position.Y + this._grigCanvaOffsetTop) / this.CellSize.Height) / this._scale;
+        const y = ((canvaInvertY - this._position.Y + this.GridCanvaPosition.Y) / this.CellSize.Height) / this._scale;
 
         return new Point(x, y);
     }
@@ -72,7 +87,7 @@ export class PixelViewer {
     }
 
     public get GridCanvaPosition() {
-        return new Point(this._grigCanvaOffsetLeft, this._grigCanvaOffsetBottom);
+        return new Point(this._gridCanvaOffsetLeft, this._gridCanvaOffsetBottom);
     }
 
     public get CellSize() {
@@ -82,8 +97,8 @@ export class PixelViewer {
         return new Size(cellWidth, cellHeight);
     }
 
-    public MoveFor(position: Point) {
-        const newPosition = new Point(this._position.X + position.X, this._position.Y - position.Y);
+    public MoveFor(acceleration: Point) {
+        const newPosition = new Point(this._position.X + acceleration.X, this._position.Y - acceleration.Y);
         this._position = newPosition;
     }
 
@@ -94,13 +109,15 @@ export class PixelViewer {
 
         const dX = (newPoint.X - point.X) * this.CellSize.Width;
         const dY = (point.Y - newPoint.Y) * this.CellSize.Height
-        
+
         this.MoveFor(new Point(dX, dY));
     }
 
     public Clear(): void {
         this._context.clearRect(0, 0, this._canva.width, this._canva.height);
-        //this.DebugWindow();
+        if (this._settings.isDebug) {
+            this.DebugWindow();
+        }
     }
 
     public DrawOrdinatText(

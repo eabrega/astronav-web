@@ -1,7 +1,8 @@
 import { Grid } from './grid'
 import { DrawObjectFrame, IDrawObjects } from './drawObjectsFrame'
 import { DrawObject } from "./drawObject";
-import { Point, Size } from './point';
+import { Point } from './point';
+import { IPlotterSettings } from './IPlotterSettings';
 
 export class Plotter {
     private readonly _grid: Grid;
@@ -10,9 +11,9 @@ export class Plotter {
     private _frames: Array<DrawObjectFrame> | null = null;
     private _frameId = 0;
 
-    constructor(name: string) {
+    constructor(name: string, settings: IPlotterSettings) {
         const canva = document.getElementById(name) as HTMLCanvasElement;
-        this._grid = new Grid(new Size(360, 90), canva);
+        this._grid = new Grid(canva, settings);
 
         canva.addEventListener("wheel", (event: WheelEvent) => this.Zoom(event));
         document.addEventListener("mousemove", (event: MouseEvent) => this.Moving(event));

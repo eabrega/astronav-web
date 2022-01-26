@@ -7,10 +7,13 @@
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
 import { Plotter } from "@/components/Plotter/index";
+import { GridLinear, GridType, IPlotterSettings } from "../Plotter/IPlotterSettings";
+import { Size } from "../Plotter/point";
 
 @Component
 export default class PlotterWrapper extends Vue {
     plotter: Plotter | null = null;
+    _settings: IPlotterSettings | null = null;
     constructor() {
         super();
     }
@@ -43,7 +46,14 @@ export default class PlotterWrapper extends Vue {
             (this.$refs.select as HTMLCanvasElement).width = 1200;
             (this.$refs.select as HTMLCanvasElement).height = 500;
 
-            this.plotter = new Plotter("canva");
+            this._settings = {
+                isDebug: true,
+                gridSize: new Size(360, 90),
+                gridType:[GridType.FixedY, GridType.InfinityX],
+                gridLinears: [ GridLinear.Top, GridLinear.Left, GridLinear.Bottom, GridLinear.Right ]
+            };
+
+            this.plotter = new Plotter("canva", this._settings);
         }
 
         if (this.$store.getters.condition?.length != 0) {
