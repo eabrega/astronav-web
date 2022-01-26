@@ -93,7 +93,7 @@ export default class SkyObjectsTable extends Vue {
             },
             {
                 key: "y",
-                label: "Угол места",
+                label: "Высота",
                 sortable: true,
                 class: "column-right-align",
             },

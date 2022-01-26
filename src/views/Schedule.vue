@@ -10,7 +10,7 @@
         </div>
         <div class="schedule-events">
             <EventsList title="Восходы" name="Sunrise" />
-            <EventsList title="Закаты" name="Sunset" />
+            <EventsList title="Заходы" name="Sunset" />
         </div>
     </div>
 </template>
