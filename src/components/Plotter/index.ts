@@ -21,7 +21,7 @@ export class Plotter {
         document.addEventListener("mouseup", e => { this._isMoving = false; });
     }
 
-    public set DataFrameSelect(frameId: number) {
+    set DataFrameSelect(frameId: number) {
         if (isNaN(Number(frameId))) {
             throw new Error(`FrameId mast be integer!`)
         }
@@ -39,11 +39,11 @@ export class Plotter {
         this.DrawPlanetCollection(this._frames![this._frameId].Objects);
     }
 
-    public DrawPlanetCollection(objects: Array<DrawObject>) {
+    DrawPlanetCollection(objects: Array<DrawObject>) {
         objects.forEach(p => this._grid.DrawGridObject(p.X, p.Y, p.Name));
     }
 
-    public set Dataset(objects: Array<IDrawObjects>) {
+    set Dataset(objects: Array<IDrawObjects>) {
         this._frames = objects.map(obj => new DrawObjectFrame(obj));
         this.DrawPlanetCollection(this._frames[0].Objects);
     }
@@ -57,7 +57,7 @@ export class Plotter {
 
     private MouseDown(e: MouseEvent) {
         this._isMoving = true;
-        console.log("click", this._grid.toGridPosition(new Point(e.offsetX, e.offsetY)));
+        console.log("click", this._grid.ToGridPosition(new Point(e.offsetX, e.offsetY)));
     }
 
     private Zoom(e: WheelEvent) {
@@ -69,7 +69,7 @@ export class Plotter {
         }
 
         if (this._scale < 1) this._scale = 1;
-        if (this._scale > 17) this._scale = 17
+        if (this._scale > 107) this._scale = 107
 
         this._grid.Zooming(this._scale, new Point(e.offsetX, e.offsetY));
         this.DrawPlanetCollection(this._frames![this._frameId].Objects);

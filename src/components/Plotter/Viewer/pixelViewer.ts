@@ -6,9 +6,9 @@ import * as Viewer from "./viewer"
 export class PixelViewer {
     //положение в пикселях
     private _position: Point;
-    //размерность координатной сетки
-    private _gridSize: Size;
     private _scale: number = 1;
+    //размерность координатной сетки
+    private readonly _gridSize: Size;
     private readonly _settings: IPlotterSettings;
     private readonly _context: CanvasRenderingContext2D;
     private readonly _canva: HTMLCanvasElement;
@@ -38,18 +38,18 @@ export class PixelViewer {
         this._canva = canva;
         this._context = canva.getContext("2d")!;
 
-        this._lesftStopPosition = this.toCanvaPosition(new Point(0, 0)).X - this._gridCanvaOffsetLeft;
-        this._rightStopPosition = this.toCanvaPosition(new Point(this._gridSize.Width, 0)).X - this._gridCanvaOffsetRight;
+        this._lesftStopPosition = this.GetCanvaPosition(new Point(0, 0)).X - this._gridCanvaOffsetLeft;
+        this._rightStopPosition = this.GetCanvaPosition(new Point(this._gridSize.Width, 0)).X - this._gridCanvaOffsetRight;
     }
 
-    public toCanvaPosition(position: Point) {
+    GetCanvaPosition(position: Point) {
         const x = this._gridCanvaOffsetLeft + ((position.X * this._scale) * this.CellSize.Width) + this._position.X;
         const y = this._gridCanvaOffsetBottom + ((position.Y * this._scale) * this.CellSize.Height) + this._position.Y;
 
         return new Point(x, y);
     }
 
-    public toGridPosition(position: Point): Point {
+    GetGridPosition(position: Point): Point {
         const x = (position.X - this._position.X - this.GridCanvaPosition.X) / this.CellSize.Width / this._scale
 
         const canvaInvertY = -(position.Y - this._gridCanvaSize.Height);
@@ -58,54 +58,43 @@ export class PixelViewer {
         return new Point(x, y);
     }
 
-    public get Position() {
-        return this._position;
-    }
-
-    public get OrdinatPosition() {
-        const oX = Math.round(-1 * (this.Position.X / this.CellSize.Width) / this._scale);
-        const oY = Math.round(-1 * (this.Position.Y / this.CellSize.Height) / this._scale);
+    
+    get GridPosition() {
+        const oX = Math.round(-1 * (this._position.X / this.CellSize.Width) / this._scale);
+        const oY = Math.round(-1 * (this._position.Y / this.CellSize.Height) / this._scale);
         return new Point(oX, oY);
     }
 
-    public get OrdinatSize() {
-        const oW = Math.round(this._gridSize.Width / this._scale);
-        const oH = Math.round(this._gridSize.Height / this._scale);
+    get OrdinatSize() {
+        const oW = this._gridSize.Width / this._scale;
+        const oH = this._gridSize.Height / this._scale;
         return new Size(oW, oH);
     }
 
-    public set Scale(scale: number) {
-        this._scale = scale;
-    }
-
-    public get GridSize() {
-        return this._gridSize;
-    }
-
-    public get GridCanvaSize() {
+    get GridCanvaSize() {
         return this._gridCanvaSize;
     }
 
-    public get GridCanvaPosition() {
+    get GridCanvaPosition() {
         return new Point(this._gridCanvaOffsetLeft, this._gridCanvaOffsetBottom);
     }
 
-    public get CellSize() {
+    get CellSize() {
         const cellWidth = this._gridCanvaSize.Width / this._gridSize.Width;
         const cellHeight = this._gridCanvaSize.Height / this._gridSize.Height;
 
         return new Size(cellWidth, cellHeight);
     }
 
-    public MoveFor(acceleration: Point) {
+    MoveFor(acceleration: Point) {
         const newPosition = new Point(this._position.X + acceleration.X, this._position.Y - acceleration.Y);
         this._position = newPosition;
     }
 
-    public Zoom(scale: number, mouse: Point) {
-        const point = Point.Scaled(this.toGridPosition(mouse), scale);
-        this.Scale = scale;
-        const newPoint = Point.Scaled(this.toGridPosition(mouse), scale);
+    Zoom(scale: number, mouse: Point) {
+        const point = Point.Scaled(this.GetGridPosition(mouse), scale);
+        this._scale = scale;
+        const newPoint = Point.Scaled(this.GetGridPosition(mouse), scale);
 
         const dX = (newPoint.X - point.X) * this.CellSize.Width;
         const dY = (point.Y - newPoint.Y) * this.CellSize.Height
@@ -113,14 +102,14 @@ export class PixelViewer {
         this.MoveFor(new Point(dX, dY));
     }
 
-    public Clear(): void {
+    Clear(): void {
         this._context.clearRect(0, 0, this._canva.width, this._canva.height);
         if (this._settings.isDebug) {
             this.DebugWindow();
         }
     }
 
-    public DrawOrdinatText(
+    DrawOrdinatText(
         x: number,
         y: number,
         text: string,
@@ -130,28 +119,28 @@ export class PixelViewer {
         alignHorizontal: CanvasTextBaseline = "middle",
         offsetX = 0) {
 
-        const canvaXY = this.toCanvaPosition(new Point(x, y));
+        const canvaXY = this.GetCanvaPosition(new Point(x, y));
 
         if (!this.IsVisible(new Point(x, y))) return;
 
         Viewer.DrawText(this._canva, canvaXY.X + offsetX, canvaXY.Y, text, size, color, alignVertical, alignHorizontal);
     }
 
-    public DrawOrdinatObject(x: number, y: number): void {
-        const canvaXY = this.toCanvaPosition(new Point(x, y));
+    DrawOrdinatObject(x: number, y: number): void {
+        const canvaXY = this.GetCanvaPosition(new Point(x, y));
 
         if (!this.IsVisible(new Point(x, y))) return;
 
         Viewer.DrawObject(this._canva, canvaXY.X, canvaXY.Y);
     }
 
-    public IsVisible(position: Point): boolean {
+    IsVisible(position: Point): boolean {
         return true;
     }
 
-    public DebugWindow() {
+    DebugWindow() {
         const params = [
-            `oPos${this.OrdinatPosition.ToString()}`,
+            `oPos${this.GridPosition.ToString()}`,
             `gridSiz${this._gridSize.ToString()}`,
             `oSiz${this.OrdinatSize.ToString()}`,
             "---",

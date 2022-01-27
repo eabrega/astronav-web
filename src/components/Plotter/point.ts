@@ -7,15 +7,15 @@ export class Point {
         this._y = y;
     }
 
-    public get X() {
+    get X() {
         return this._x
     }
 
-    public get Y() {
+    get Y() {
         return this._y
     }
 
-    public ToString() {
+    ToString() {
         return `X:${this._x} Y:${this._y}`;
     }
 
@@ -33,15 +33,15 @@ export class Size {
         this._height = height;
     }
 
-    public get Width() {
+    get Width() {
         return this._width;
     }
 
-    public get Height() {
+    get Height() {
         return this._height;
     }
 
-    public ToString() {
+    ToString() {
         return `W:${this._width} H:${this._height}`;
     }
 }
