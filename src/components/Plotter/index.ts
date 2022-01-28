@@ -69,7 +69,7 @@ export class Plotter {
         }
 
         if (this._scale < 1) this._scale = 1;
-        if (this._scale > 107) this._scale = 107
+        if (this._scale > 100) this._scale = 100
 
         this._grid.Zooming(this._scale, new Point(e.offsetX, e.offsetY));
         this.DrawPlanetCollection(this._frames![this._frameId].Objects);
