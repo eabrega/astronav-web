@@ -13,11 +13,17 @@ export class Grid {
     private readonly _isHasBottomLinears: boolean;
     private readonly _isHasLeftLinears: boolean;
     private readonly _isHasRightLinears: boolean;
-    private gridStepX = 10;
+    private readonly _mainGridStepX = 100;
+    private readonly _extensionGridStepX = 40;
+    private gridStepX: number;
+
+    //private gridStepY = 45;
 
     constructor(canva: HTMLCanvasElement, settings: IPlotterSettings) {
         this._canva = canva;
         this._settings = settings;
+
+        this.gridStepX = this._mainGridStepX / (this._canva.width / this._settings.gridSize.Width);
 
         this._isHasTopLinears = settings.gridLinears.includes(GridLinear.Top);
         this._isHasBottomLinears = settings.gridLinears.includes(GridLinear.Bottom);
@@ -39,80 +45,65 @@ export class Grid {
         Viewer.DrawLine(this._canva, startPositionX, startPositionY, stopPositionX, startPositionY, 2, "LightSlateGrey");
         Viewer.DrawLine(this._canva, stopPositionX, stopPositionY, stopPositionX, startPositionY, 2, "LightSlateGrey");
 
-        const delta = this._viewer.GridSize.Width / this.gridStepX
-        if (delta < 5) {
+        const constantGridStepX = (this._mainGridStepX / (this._canva.width / this._settings.gridSize.Width))
+        const deltaX = ((this._viewer.GridSize.Width / this.gridStepX) / (this._settings.gridSize.Width / constantGridStepX)) * 100;
+
+        if (deltaX < 50) {
             this.gridStepX = this.gridStepX / 2;
         }
-        if(delta>10){
+        if (deltaX > 100) {
             this.gridStepX = this.gridStepX * 2;
         }
 
         const startX = Math.round(this._viewer.GridZeroPont.X / this.gridStepX) * this.gridStepX
-        const stopX = startX + this._viewer.GridSize.Width;     
-      
-        const minCellPixSize = 35 //(px)
+        const stopX = startX + this._viewer.GridSize.Width;
 
-        for (let index = startX; index <= stopX + this.gridStepX; index += this.gridStepX) {
+        for (let index = startX - this.gridStepX; index <= stopX + this.gridStepX; index += this.gridStepX) {
             const x = this._viewer.GetCanvaPosition(new Point(index, 0)).X
-
-             //if (x < startPositionX) continue;
-             //if (x > stopPositionX) break;
 
             if (index == 0) {
                 this.DrawOrdinatLine(x, startPositionY, x, stopPositionY, 11, index, "red", "red", 12);
             } else {
-
                 this.DrawOrdinatLine(x, startPositionY, x, stopPositionY, 8, index, "gray", "Silver", 11);
             }
 
             const dX2 = this._viewer.GetCanvaPosition(new Point(index + this.gridStepX, 0)).X
-            const t1 = Math.round((dX2 - x) / minCellPixSize);
+            const t1 = Math.round((dX2 - x) / this._extensionGridStepX);
             const t = (dX2 - x) / t1;
 
-            console.log(dX2 - x, t);
-
             for (let i = x + t; i < dX2; i += t) {
-                this.DrawOrdinatLine(i, startPositionY, i, stopPositionY, 8, this._viewer.GetGridPosition(new Point(i,0)).X, "Gainsboro", "Gainsboro", 11);
+                   this.DrawOrdinatLine(i, startPositionY, i, stopPositionY, 8, this._viewer.GetGridPosition(new Point(i, 0)).X, "Gainsboro", "Gainsboro", 11);
             }
-
-
         }
 
-        const gridStepY = 10 /// (this._scale/2) //(px)
+        // const deltaY = this._viewer.GridSize.Height / this.gridStepY
+        // if (deltaY < 5) {
+        //     this.gridStepY = this.gridStepY / 2;
+        // }
+        // if (deltaY > 10) {
+        //     this.gridStepY = this.gridStepY * 2;
+        // }
 
-        const startY = Math.round(this._viewer.GridZeroPont.Y / gridStepY) * gridStepY
-        const stopY = startY + this._viewer.GridSize.Height;
+        // const startY = Math.round(this._viewer.GridZeroPont.Y / this.gridStepY) * this.gridStepY
+        // const stopY = startY + this._viewer.GridSize.Height;
 
-        // for (let index = startY; index <= stopY; index += gridStepY) {
+        // for (let index = startY; index <= stopY; index += this.gridStepY) {
         //     const y = this._viewer.GetCanvaPosition(new Point(0, index)).Y
-
-        //     // if (y < startPositionY) continue;
-        //     // if (y > stopPositionY) break;
 
         //     if (index == 0) {
         //         this.DrawAbscissaLine(startPositionX, y, stopPositionX, y, 11, index, "red", "red", 11);
         //     } else {
         //         this.DrawAbscissaLine(startPositionX, y, stopPositionX, y, 8, index, "gray", "Silver", 11);
         //     }
-        //     const dY2 = this._viewer.GetCanvaPosition(new Point(0, index + gridStepY)).Y
-        //     const t = (dY2 - y) / Math.round(this._scale)
+        //     const dY2 = this._viewer.GetCanvaPosition(new Point(0, index + this.gridStepY)).Y
+        //     const t1 = Math.round((dY2 - y) / minCellPixSize);
+        //     const t = (dY2 - y) / t1
 
-        //     // for (let i = y + t; i < dY2 - 1; i += t) {
-        //     //     this.DrawAbscissaLine(startPositionX, i, stopPositionX, i, 8, 0, "Gainsboro", "Gainsboro", 11);
-        //     // }
-        // }      
-
-        // const axisCount = this._canva.width / gridStep;
-
-        // console.log(axisCount)
-
-        // for (let i = 0; i < axisCount; i++) {
-        //     const a = i * gridStep;
-        //     //const x = this._viewer.GetCanvaPosition(new Point(a, 0)).X
-        //     this.DrawOrdinatLine(a, startPositionY, a, stopPositionY, 8, 0, "gray", "Silver", 11);
-
+        //     for (let i = y + t; i < dY2; i += t) {
+        //         const point = this._viewer.GetGridPosition(new Point(0, index)).Y
+        //         this.DrawAbscissaLine(startPositionX, i, stopPositionX, i, 8, point, "Gainsboro", "Gainsboro", 11);
+        //     }
         // }
-
     }
 
     DrawGridObject(x: number, y: number, label: string) {
@@ -130,16 +121,19 @@ export class Grid {
         this.DrawGrid();
     }
 
+    Click(mousePosition: Point): Array<Point> {
+        const axis = this._viewer.GetGridPosition(mousePosition);
+        const pixels = this._viewer.GetCanvaPosition(axis);
+
+        return [axis, pixels];
+    }
+
     Zooming(scale: number, mouse: Point) {
         this._scale = scale;
         this._viewer.Zoom(scale, mouse);
 
         this.Clear();
         this.DrawGrid();
-    }
-
-    ToGridPosition(position: Point) {
-        return this._viewer.GetGridPosition(position);
     }
 
     private DrawOrdinatLine(x1: number, y1: number, x2: number, y2: number, pineSize: number, index: number, colorText: string, colorLine: string, fontSize: number) {
@@ -161,7 +155,7 @@ export class Grid {
 
         if (this._isHasLeftLinears) {
             Viewer.DrawLine(this._canva, x1 - pineSize, y1, x1, y2, 3, colorLine);
-            Viewer.DrawText(this._canva, x1 - pineSize - 5, y1, (index).toFixed(0), fontSize, colorText, "end", "middle")
+            Viewer.DrawText(this._canva, x1 - pineSize - 5, y1, (index).toFixed(1), fontSize, colorText, "end", "middle")
         }
 
         if (this._isHasRightLinears) {

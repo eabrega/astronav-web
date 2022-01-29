@@ -35,7 +35,7 @@ export class PixelViewer {
 
     GetCanvaPosition(position: Point) {
         const x = this._gridCanvaOffsetLeft + ((position.X * this._scale) * this._cellSize.Width) + this._position.X;
-        const y = this._gridCanvaOffsetBottom + ((position.Y * this._scale) * this._cellSize.Height) + this._position.Y;
+        const y =  this._gridCanvaOffsetBottom + ((position.Y * this._scale) * this._cellSize.Height) + this._position.Y;
 
         return new Point(x, y);
     }
@@ -51,7 +51,7 @@ export class PixelViewer {
 
     get GridZeroPont() {
         const oX = -1 * (this._position.X / this._cellSize.Width) / this._scale;
-        const oY = Math.round(-1 * (this._position.Y / this._cellSize.Height) / this._scale);
+        const oY = -1 * (this._position.Y / this._cellSize.Height) / this._scale;
         return new Point(oX, oY);
     }
 

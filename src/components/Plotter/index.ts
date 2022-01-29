@@ -57,7 +57,10 @@ export class Plotter {
 
     private MouseDown(e: MouseEvent) {
         this._isMoving = true;
-        console.log("click", this._grid.ToGridPosition(new Point(e.offsetX, e.offsetY)));
+        const points = this._grid.Click(new Point(e.offsetX, e.offsetY))
+
+        console.log("clickAxis", points[0]);
+        //console.log("clickPixels", points[1]);
     }
 
     private Zoom(e: WheelEvent) {

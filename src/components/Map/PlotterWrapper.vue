@@ -48,7 +48,7 @@ export default class PlotterWrapper extends Vue {
 
             this._settings = {
                 isDebug: true,
-                gridSize: new Size(100, 90),
+                gridSize: new Size(180, 90),
                 gridType:[GridType.FixedY, GridType.InfinityX],
                 gridLinears: [ GridLinear.Top, GridLinear.Left, GridLinear.Bottom, GridLinear.Right ]
             };
