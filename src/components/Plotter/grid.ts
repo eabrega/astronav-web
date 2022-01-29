@@ -15,15 +15,18 @@ export class Grid {
     private readonly _isHasRightLinears: boolean;
     private readonly _mainGridStepX = 100;
     private readonly _extensionGridStepX = 40;
+    private readonly _mainGridStepY = 100;
+    private readonly _extensionGridStepY = 40;
     private gridStepX: number;
+    private gridStepY: number;
 
-    //private gridStepY = 45;
 
     constructor(canva: HTMLCanvasElement, settings: IPlotterSettings) {
         this._canva = canva;
         this._settings = settings;
 
         this.gridStepX = this._mainGridStepX / (this._canva.width / this._settings.gridSize.Width);
+        this.gridStepY = this._mainGridStepY / (this._canva.height / this._settings.gridSize.Height);
 
         this._isHasTopLinears = settings.gridLinears.includes(GridLinear.Top);
         this._isHasBottomLinears = settings.gridLinears.includes(GridLinear.Bottom);
@@ -76,34 +79,37 @@ export class Grid {
             }
         }
 
-        // const deltaY = this._viewer.GridSize.Height / this.gridStepY
-        // if (deltaY < 5) {
-        //     this.gridStepY = this.gridStepY / 2;
-        // }
-        // if (deltaY > 10) {
-        //     this.gridStepY = this.gridStepY * 2;
-        // }
+        const constantGridStepY = (this._mainGridStepY / (this._canva.height / this._settings.gridSize.Height))
+        const deltaY = ((this._viewer.GridSize.Height / this.gridStepY) / (this._settings.gridSize.Height / constantGridStepY)) * 100;
 
-        // const startY = Math.round(this._viewer.GridZeroPont.Y / this.gridStepY) * this.gridStepY
-        // const stopY = startY + this._viewer.GridSize.Height;
+        if (deltaY < 50) {
+            this.gridStepY = this.gridStepY / 2;
+        }
+        if (deltaY > 100) {
+            this.gridStepY = this.gridStepY * 2;
+        }
 
-        // for (let index = startY; index <= stopY; index += this.gridStepY) {
-        //     const y = this._viewer.GetCanvaPosition(new Point(0, index)).Y
+        const startY = Math.round(this._viewer.GridZeroPont.Y / this.gridStepY) * this.gridStepY
+        const stopY = startY + this._viewer.GridSize.Height;
 
-        //     if (index == 0) {
-        //         this.DrawAbscissaLine(startPositionX, y, stopPositionX, y, 11, index, "red", "red", 11);
-        //     } else {
-        //         this.DrawAbscissaLine(startPositionX, y, stopPositionX, y, 8, index, "gray", "Silver", 11);
-        //     }
-        //     const dY2 = this._viewer.GetCanvaPosition(new Point(0, index + this.gridStepY)).Y
-        //     const t1 = Math.round((dY2 - y) / minCellPixSize);
-        //     const t = (dY2 - y) / t1
+        for (let index = startY; index <= stopY; index += this.gridStepY) {
+            const y = this._viewer.GetCanvaPosition(new Point(0, index)).Y
 
-        //     for (let i = y + t; i < dY2; i += t) {
-        //         const point = this._viewer.GetGridPosition(new Point(0, index)).Y
-        //         this.DrawAbscissaLine(startPositionX, i, stopPositionX, i, 8, point, "Gainsboro", "Gainsboro", 11);
-        //     }
-        // }
+            if (index == 0) {
+                this.DrawAbscissaLine(startPositionX, y, stopPositionX, y, 11, index, "red", "red", 11);
+            } else {
+                this.DrawAbscissaLine(startPositionX, y, stopPositionX, y, 8, index, "gray", "Silver", 11);
+            }
+            const dY2 = this._viewer.GetCanvaPosition(new Point(0, index + this.gridStepY)).Y
+            const t1 = Math.round((y - dY2) / this._extensionGridStepY);
+            const t = (y - dY2) / t1
+            console.log(index);
+            for (let i = y + t; i < dY2; i += t) {
+                //console.log(i);
+                const point = this._viewer.GetGridPosition(new Point(0, i)).Y
+                this.DrawAbscissaLine(startPositionX, i, stopPositionX, i, 8, 0, "Gainsboro", "Gainsboro", 11);
+            }
+        }
     }
 
     DrawGridObject(x: number, y: number, label: string) {
@@ -136,31 +142,31 @@ export class Grid {
         this.DrawGrid();
     }
 
-    private DrawOrdinatLine(x1: number, y1: number, x2: number, y2: number, pineSize: number, index: number, colorText: string, colorLine: string, fontSize: number) {
+    private DrawOrdinatLine(x1: number, y1: number, x2: number, y2: number, pineSize: number, axis: number, colorText: string, colorLine: string, fontSize: number) {
         Viewer.DrawLine(this._canva, x1, y1, x2, y2, 1, colorLine);
 
         if (this._isHasBottomLinears) {
             Viewer.DrawLine(this._canva, x1, y1, x2, y1 - pineSize, 3, colorLine);
-            Viewer.DrawText(this._canva, x1, y1 - pineSize - 5, (index).toFixed(1), fontSize, colorText, "center", "top")
+            Viewer.DrawText(this._canva, x1, y1 - pineSize - 5, (axis).toFixed(1), fontSize, colorText, "center", "top")
         }
 
         if (this._isHasTopLinears) {
             Viewer.DrawLine(this._canva, x1, y2, x2, y2 + pineSize, 3, colorLine);
-            Viewer.DrawText(this._canva, x1, y2 + pineSize + 5, (index).toFixed(0), fontSize, colorText, "center", "bottom")
+            Viewer.DrawText(this._canva, x1, y2 + pineSize + 5, (axis).toFixed(0), fontSize, colorText, "center", "bottom")
         }
     }
 
-    private DrawAbscissaLine(x1: number, y1: number, x2: number, y2: number, pineSize: number, index: number, colorText: string, colorLine: string, fontSize: number) {
+    private DrawAbscissaLine(x1: number, y1: number, x2: number, y2: number, pineSize: number, axis: number, colorText: string, colorLine: string, fontSize: number) {
         Viewer.DrawLine(this._canva, x1, y1, x2, y2, 1, colorLine);
 
         if (this._isHasLeftLinears) {
             Viewer.DrawLine(this._canva, x1 - pineSize, y1, x1, y2, 3, colorLine);
-            Viewer.DrawText(this._canva, x1 - pineSize - 5, y1, (index).toFixed(1), fontSize, colorText, "end", "middle")
+            Viewer.DrawText(this._canva, x1 - pineSize - 5, y1, (axis).toFixed(1), fontSize, colorText, "end", "middle")
         }
 
         if (this._isHasRightLinears) {
             Viewer.DrawLine(this._canva, x2, y1, x2 + pineSize, y1, 3, colorLine);
-            Viewer.DrawText(this._canva, x2 + pineSize + 5, y2, (index).toFixed(0), fontSize, colorText, "start", "middle")
+            Viewer.DrawText(this._canva, x2 + pineSize + 5, y2, (axis).toFixed(0), fontSize, colorText, "start", "middle")
         }
     }
 
