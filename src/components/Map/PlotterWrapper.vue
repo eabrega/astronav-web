@@ -44,7 +44,7 @@ export default class PlotterWrapper extends Vue {
 
     mounted() {
         if (this.plotter == null) {
-            (this.$refs.select as HTMLCanvasElement).width = 1000;
+            (this.$refs.select as HTMLCanvasElement).width = 1200;
             (this.$refs.select as HTMLCanvasElement).height = 500;
 
             this._settings = {
