@@ -66,11 +66,11 @@ export class PixelViewer {
         return this._gridCanvaSize;
     }
 
-    get GridCanvaPosition():CanvaPoint {
+    get GridCanvaPosition(): CanvaPoint {
         return new CanvaPoint(this._gridCanvaOffsetLeft, this._gridCanvaOffsetBottom);
     }
 
-    public get _cellSize() {
+    get _cellSize() {
         const cellWidth = this._gridCanvaSize.Width / this._settings.gridSize.Width;
         const cellHeight = this._gridCanvaSize.Height / this._settings.gridSize.Height;
 
@@ -124,14 +124,15 @@ export class PixelViewer {
     }
 
     IsVisible(position: CanvaPoint): boolean {
-        console.log(position.X)
         const isVisibleX =
-            position.X > this.GridCanvaPosition.X &&
-            position.X <= this.GridZeroPoint.X + 900;
+            position.X >= this.GridCanvaPosition.X &&
+            position.X <= this.GridCanvaPosition.X + this._gridCanvaSize.Width
 
-        const IsVisibleY = true;
+        const isVisibleY =
+            position.Y > this.GridCanvaPosition.Y &&
+            position.Y <= this.GridCanvaPosition.Y + this._gridCanvaSize.Height
 
-        return isVisibleX && IsVisibleY;
+        return isVisibleX && isVisibleY;
     }
 
     private DebugWindow() {

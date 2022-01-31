@@ -60,8 +60,8 @@ export class Plotter {
         this._isMoving = true;
         const points = this._grid.Click(new CanvaPoint(e.offsetX, e.offsetY))
 
-        console.log("clickAxis", points[0]);
-        //console.log("clickPixels", points[1]);
+        //console.log("clickAxis", points[0]);
+        console.log("clickPixels", points[1]);
     }
 
     private Zoom(e: WheelEvent) {

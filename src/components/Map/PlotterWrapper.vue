@@ -48,7 +48,7 @@ export default class PlotterWrapper extends Vue {
             (this.$refs.select as HTMLCanvasElement).height = 500;
 
             this._settings = {
-                isDebug: true,
+                isDebug: false,
                 gridSize: new Size(180, 90),
                 gridType:[GridType.FixedY, GridType.InfinityX],
                 gridLinears: [ GridLinear.Top, GridLinear.Left, GridLinear.Bottom, GridLinear.Right ]
