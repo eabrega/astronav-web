@@ -8,7 +8,8 @@
 import { Component, Vue, Watch } from "vue-property-decorator";
 import { Plotter } from "@/components/Plotter/index";
 import { GridLinear, GridType, IPlotterSettings } from "../Plotter/IPlotterSettings";
-import { Size } from "../Plotter/point";
+import { Size } from "../Plotter/Sizes/size";
+
 
 @Component
 export default class PlotterWrapper extends Vue {
@@ -47,7 +48,7 @@ export default class PlotterWrapper extends Vue {
             (this.$refs.select as HTMLCanvasElement).height = 500;
 
             this._settings = {
-                isDebug: false,
+                isDebug: true,
                 gridSize: new Size(180, 90),
                 gridType:[GridType.FixedY, GridType.InfinityX],
                 gridLinears: [ GridLinear.Top, GridLinear.Left, GridLinear.Bottom, GridLinear.Right ]

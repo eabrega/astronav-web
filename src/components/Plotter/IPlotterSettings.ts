@@ -1,4 +1,4 @@
-import { Size } from "./point";
+import { Size } from "./Sizes/size";
 
 export interface IPlotterSettings {
     isDebug?: boolean | undefined;

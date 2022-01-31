@@ -1,11 +1,12 @@
 import { IPlotterSettings } from "../IPlotterSettings";
-import { Point, Size } from "../point";
+import { AxisPoint } from "../Points/axisPoint";
+import { CanvaPoint } from "../Points/canvaPoint";
+import { Size } from "../Sizes/size";
 import { IOffset, Offset } from "./IOffset";
 import * as Viewer from "./viewer"
 
 export class PixelViewer {
-    //положение в пикселях
-    private _position: Point;
+    private _position: CanvaPoint;
     private _scale: number = 1;
     private readonly _settings: IPlotterSettings;
     private readonly _context: CanvasRenderingContext2D;
@@ -18,7 +19,7 @@ export class PixelViewer {
 
     constructor(canva: HTMLCanvasElement, settings: IPlotterSettings, offsets: Array<IOffset> | null = null) {
         this._settings = settings;
-        this._position = new Point(0, 0);
+        this._position = new CanvaPoint(0, 0);
 
         this._gridCanvaOffsetTop = offsets?.find(x => x.offset == Offset.Top)?.size ?? 0;
         this._gridCanvaOffsetBottom = offsets?.find(x => x.offset == Offset.Bottom)?.size ?? 0;
@@ -33,26 +34,26 @@ export class PixelViewer {
         this._context = canva.getContext("2d", { alpha: true })!;
     }
 
-    GetCanvaPosition(position: Point) {
+    GetCanvaPosition(position: AxisPoint): CanvaPoint {
         const x = this._gridCanvaOffsetLeft + ((position.X * this._scale) * this._cellSize.Width) + this._position.X;
         const y = this._gridCanvaOffsetBottom + ((position.Y * this._scale) * this._cellSize.Height) + this._position.Y;
 
-        return new Point(x, y);
+        return new CanvaPoint(x, y);
     }
 
-    GetGridPosition(position: Point): Point {
+    GetGridPosition(position: CanvaPoint): AxisPoint {
         const x = (position.X - this._position.X - this.GridCanvaPosition.X) / this._cellSize.Width / this._scale
 
         const canvaInvertY = -(position.Y - this._gridCanvaSize.Height);
         const y = ((canvaInvertY - this._position.Y + this.GridCanvaPosition.Y) / this._cellSize.Height) / this._scale;
 
-        return new Point(x, y);
+        return new AxisPoint(x, y);
     }
 
-    get GridZeroPont() {
+    get GridZeroPoint() {
         const oX = -((this._position.X / this._cellSize.Width) / this._scale);
         const oY = -((this._position.Y / this._cellSize.Height) / this._scale);
-        return new Point(oX, oY);
+        return new AxisPoint(oX, oY);
     }
 
     get GridSize() {
@@ -65,8 +66,8 @@ export class PixelViewer {
         return this._gridCanvaSize;
     }
 
-    get GridCanvaPosition() {
-        return new Point(this._gridCanvaOffsetLeft, this._gridCanvaOffsetBottom);
+    get GridCanvaPosition():CanvaPoint {
+        return new CanvaPoint(this._gridCanvaOffsetLeft, this._gridCanvaOffsetBottom);
     }
 
     public get _cellSize() {
@@ -76,20 +77,22 @@ export class PixelViewer {
         return new Size(cellWidth, cellHeight);
     }
 
-    MoveCanvasFor(acceleration: Point) {
-        const newPosition = new Point(this._position.X + acceleration.X, this._position.Y - acceleration.Y);
+    MoveCanvasFor(acceleration: CanvaPoint) {
+        const newPosition = new CanvaPoint(this._position.X + acceleration.X, this._position.Y - acceleration.Y);
         this._position = newPosition;
     }
 
-    Zoom(scale: number, mouse: Point) {
-        const point = Point.Scaled(this.GetGridPosition(mouse), scale);
+    Zoom(scale: number, mouse: CanvaPoint) {
+        const gridMousePoint = this.GetGridPosition(mouse);
+        const point = CanvaPoint.Scaled(new CanvaPoint(gridMousePoint.X, gridMousePoint.Y), scale);
         this._scale = scale;
-        const newPoint = Point.Scaled(this.GetGridPosition(mouse), scale);
+        const newGridMousePoint = this.GetGridPosition(mouse);
+        const newPoint = CanvaPoint.Scaled(new CanvaPoint(newGridMousePoint.X, newGridMousePoint.Y), scale);
 
         const dX = (newPoint.X - point.X) * this._cellSize.Width;
         const dY = (point.Y - newPoint.Y) * this._cellSize.Height
 
-        this.MoveCanvasFor(new Point(dX, dY));
+        this.MoveCanvasFor(new CanvaPoint(dX, dY));
     }
 
     Clear(): void {
@@ -100,37 +103,40 @@ export class PixelViewer {
     }
 
     DrawOrdinatText(
-        x: number,
-        y: number,
+        p: AxisPoint,
         text: string,
         size: number,
         color: string = "black",
         alignVertical: CanvasTextAlign = "start",
         alignHorizontal: CanvasTextBaseline = "middle",
         offsetX = 0) {
+        const canvaXY = this.GetCanvaPosition(p);
 
-        const canvaXY = this.GetCanvaPosition(new Point(x, y));
-
-        if (!this.IsVisible(new Point(x, y))) return;
-
+        if (!this.IsVisible(canvaXY)) return;
         Viewer.DrawText(this._canva, canvaXY.X + offsetX, canvaXY.Y, text, size, color, alignVertical, alignHorizontal);
     }
 
-    DrawOrdinatObject(x: number, y: number): void {
-        const canvaXY = this.GetCanvaPosition(new Point(x, y));
+    DrawOrdinatObject(p: AxisPoint): void {
+        const canvaXY = this.GetCanvaPosition(p);
 
-        if (!this.IsVisible(new Point(x, y))) return;
-
+        if (!this.IsVisible(canvaXY)) return;
         Viewer.DrawObject(this._canva, canvaXY.X, canvaXY.Y);
     }
 
-    IsVisible(position: Point): boolean {
-        return true;
+    IsVisible(position: CanvaPoint): boolean {
+        console.log(position.X)
+        const isVisibleX =
+            position.X > this.GridCanvaPosition.X &&
+            position.X <= this.GridZeroPoint.X + 900;
+
+        const IsVisibleY = true;
+
+        return isVisibleX && IsVisibleY;
     }
 
     private DebugWindow() {
         const params = [
-            `zeroPoint: ${this.GridZeroPont.ToString()}`,
+            `zeroPoint: ${this.GridZeroPoint.ToString()}`,
             `gridSiz:      ${this.GridSize.ToString()}`,
             "---",
             `Scale:${this._scale.toString()}`,

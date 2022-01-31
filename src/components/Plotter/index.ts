@@ -1,8 +1,9 @@
 import { Grid } from './grid'
 import { DrawObjectFrame, IDrawObjects } from './drawObjectsFrame'
 import { DrawObject } from "./drawObject";
-import { Point } from './point';
 import { IPlotterSettings } from './IPlotterSettings';
+import { CanvaPoint } from './Points/canvaPoint';
+import { AxisPoint } from './Points/axisPoint';
 
 export class Plotter {
     private readonly _grid: Grid;
@@ -40,7 +41,7 @@ export class Plotter {
     }
 
     DrawPlanetCollection(objects: Array<DrawObject>) {
-        objects.forEach(p => this._grid.DrawGridObject(p.X, p.Y, p.Name));
+        objects.forEach(p => this._grid.DrawGridObject(new AxisPoint(p.X, p.Y), p.Name));
     }
 
     set Dataset(objects: Array<IDrawObjects>) {
@@ -50,14 +51,14 @@ export class Plotter {
 
     private Moving(e: MouseEvent) {
         if (this._isMoving) {
-            this._grid.MoveGrid(new Point(e.movementX, e.movementY));
+            this._grid.MoveGrid(new CanvaPoint(e.movementX, e.movementY));
             this.DrawPlanetCollection(this._frames![this._frameId].Objects);
         }
     }
 
     private MouseDown(e: MouseEvent) {
         this._isMoving = true;
-        const points = this._grid.Click(new Point(e.offsetX, e.offsetY))
+        const points = this._grid.Click(new CanvaPoint(e.offsetX, e.offsetY))
 
         console.log("clickAxis", points[0]);
         //console.log("clickPixels", points[1]);
@@ -74,7 +75,7 @@ export class Plotter {
         if (this._scale < 1) this._scale = 1;
         if (this._scale > 100) this._scale = 100
 
-        this._grid.Zooming(this._scale, new Point(e.offsetX, e.offsetY));
+        this._grid.Zooming(this._scale, new CanvaPoint(e.offsetX, e.offsetY));
         this.DrawPlanetCollection(this._frames![this._frameId].Objects);
     }
 }
