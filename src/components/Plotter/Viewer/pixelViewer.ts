@@ -129,7 +129,7 @@ export class PixelViewer {
             position.X <= this.GridCanvaPosition.X + this._gridCanvaSize.Width
 
         const isVisibleY =
-            position.Y > this.GridCanvaPosition.Y &&
+            position.Y >= this.GridCanvaPosition.Y &&
             position.Y <= this.GridCanvaPosition.Y + this._gridCanvaSize.Height
 
         return isVisibleX && isVisibleY;

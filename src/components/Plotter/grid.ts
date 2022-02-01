@@ -96,7 +96,7 @@ export class Grid {
         const startY = Math.round(this._viewer.GridZeroPoint.Y / this.gridStepY) * this.gridStepY
         const stopY = startY + this._viewer.GridSize.Height;
 
-        for (let index = startY; index <= stopY; index += this.gridStepY) {
+        for (let index = startY - this.gridStepY; index <= stopY + this.gridStepY; index += this.gridStepY) {
             const y = this._viewer.GetCanvaPosition(new AxisPoint(0, index)).Y
 
             const p1 = new CanvaPoint(startPositionX, y)
