@@ -1,3 +1,5 @@
+import { AxisMover } from "../AxisMover/axisMover";
+import { MoveDirection } from "../AxisMover/moveDirection";
 import { IPlotterSettings } from "../IPlotterSettings";
 import { AxisPoint } from "../Points/axisPoint";
 import { CanvaPoint } from "../Points/canvaPoint";
@@ -16,6 +18,7 @@ export class PixelViewer {
     private readonly _gridCanvaOffsetRight: number = 0;
     private readonly _gridCanvaOffsetTop: number = 0;
     private readonly _gridCanvaOffsetBottom: number = 0;
+    private readonly _axisMover: AxisMover;
 
     constructor(canva: HTMLCanvasElement, settings: IPlotterSettings, offsets: Array<IOffset> | null = null) {
         this._settings = settings;
@@ -32,6 +35,8 @@ export class PixelViewer {
 
         this._canva = canva;
         this._context = canva.getContext("2d", { alpha: true })!;
+
+        this._axisMover = new AxisMover(settings);
     }
 
     GetCanvaPosition(position: AxisPoint): CanvaPoint {
@@ -78,7 +83,7 @@ export class PixelViewer {
     }
 
     MoveCanvasFor(acceleration: CanvaPoint) {
-        const newPosition = new CanvaPoint(this._position.X + acceleration.X, this._position.Y - acceleration.Y);
+        const newPosition = this._axisMover.PositionMapper(acceleration, this._position);
         this._position = newPosition;
     }
 
