@@ -149,6 +149,28 @@ export default class InfoBar extends Vue {
 <style lang="scss">
 $font-size: 1.2em;
 
+@media print {
+    .info_bar {
+        padding-top: 40px;
+        padding-bottom: 10px;
+    }
+    .info_bar-panel {
+        display: contents;
+        border: 0;
+        background-color: transparent;
+        font-size: 1.5em;
+    }
+
+    .date-block__time {
+        padding-left: 20px;
+    }
+
+    .btn1,
+    .btn2 {
+        display: none;
+    }
+}
+
 .info_bar {
     display: flex;
     flex-wrap: wrap;
@@ -221,11 +243,6 @@ $font-size: 1.2em;
                 }
             }
 
-            // .btn1,
-            // .btn2 {
-            //     align-self: center;
-            //     height: 40px;
-            // }
             .btn1 {
                 grid-area: btn1;
                 margin-left: -25px;

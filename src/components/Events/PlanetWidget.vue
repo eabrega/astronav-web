@@ -137,7 +137,6 @@ export default class PlanetWidget extends Vue {
     padding-bottom: 10px;
     padding-top: 10px;
     background-color: rgba(0, 140, 255, 0.158);
-    margin-right: 20px;
     display: flex;
     flex-direction: column;
     justify-content: stretch;
