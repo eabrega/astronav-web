@@ -3,7 +3,7 @@ import { Size } from "./Sizes/size";
 export interface IPlotterSettings {
     isDebug?: boolean | undefined;
     gridSize: Size;
-    gridType: Array<GridType>;
+    axisConstraint: Array<GridType>;
     gridLinears: Array<GridLinear>;
 }
 
@@ -15,8 +15,6 @@ export enum GridLinear {
 }
 
 export enum GridType { 
-    InfinityX,
-    InfinityY,
     FixedX,
     FixedY,
     LoopX,

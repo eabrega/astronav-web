@@ -16,7 +16,7 @@ export class CanvaPoint {
     }
 
     ToString() {
-        return `X:${this._x} Y:${this._y}`;
+        return `X:${this._x.toFixed(3)} Y:${this._y.toFixed(3)}`;
     }
 
     static Scaled(point: CanvaPoint, scale: number): CanvaPoint {

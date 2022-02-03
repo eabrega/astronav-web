@@ -39,8 +39,8 @@ export class Grid {
     }
 
     DrawGrid() {
-        const startPositionX = this._viewer.GridCanvaPosition.X;
-        const startPositionY = this._viewer.GridCanvaPosition.Y;
+        const startPositionX = this._viewer.GridCanvaStartPosition.X;
+        const startPositionY = this._viewer.GridCanvaStartPosition.Y;
         const stopPositionX = this._viewer.GridCanvaSize.Width + startPositionX;
         const stopPositionY = this._viewer.GridCanvaSize.Height + startPositionY;
 

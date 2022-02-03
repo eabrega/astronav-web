@@ -16,6 +16,6 @@ export class Size {
     }
 
     ToString() {
-        return `W:${this._width} H:${this._height}`;
+        return `W:${this._width.toFixed(3)} H:${this._height.toFixed(3)}`;
     }
 }
