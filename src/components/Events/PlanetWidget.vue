@@ -84,7 +84,7 @@ export default class PlanetWidget extends Vue {
                 : currentDate > sunriseDate! || currentDate < sunsetDate!;
 
         if (!isHideSet) {
-            return "За горизонтом";
+            return "Под горизонтом";
         }
 
         return "";
@@ -126,14 +126,14 @@ export default class PlanetWidget extends Vue {
 <style lang="scss">
 .planet-box {
     scroll-snap-align: start;
-    min-width: 250px;
+    min-width: 240px;
     min-height: 135px;
     border: grayscale($color: #0a0a0a59);
     border-style: solid;
     border-width: 1px;
     border-radius: 15px;
-    padding-left: 20px;
-    padding-right: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
     padding-bottom: 10px;
     padding-top: 10px;
     background-color: rgba(0, 140, 255, 0.158);
@@ -149,18 +149,17 @@ export default class PlanetWidget extends Vue {
     }
     .planet {
         .planet-name {
-            padding: 0px;
             display: flex;
             justify-content: space-between;
-            display: flex;
             font-size: 1.5em;
-            .status {
-                display: flex;
-                font-size: 0.5em;
-                font-weight: 600;
-            }
         }
-
+        .status {
+            display: flex;
+            padding-left: 10px;
+            justify-content: flex-end;
+            font-size: 0.45em;
+            font-weight: 600;
+        }
         .info-box {
             width: 100%;
 

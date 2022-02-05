@@ -21,7 +21,7 @@ jobs:
         run: |
           docker build -t eabrega/$NAME:$GITHUB_RUN_NUMBER .
           docker push eabrega/$NAME:$GITHUB_RUN_NUMBER
-          git tag b$GITHUB_RUN_NUMBER
+          git tag prod$GITHUB_RUN_NUMBER
           git push origin --tags
       - name: SSH Remote Commands
         uses: appleboy/ssh-action@master

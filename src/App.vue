@@ -87,7 +87,7 @@ export default class App extends Vue {
 </script>
 
 <style lang="scss">
-@import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;600&display=swap");
 @import url("https://unpkg.com/leaflet@1.6.0/dist/leaflet.css");
 @import "node_modules/bootstrap/scss/bootstrap.scss";
 @import "node_modules/bootstrap-vue/src/index.scss";
