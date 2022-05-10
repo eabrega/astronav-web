@@ -125,7 +125,7 @@ export default class SkyObjectsTable extends Vue {
         else return "visiblity-object";
     }
 
-    private localize(value: number, digitCount: number): string {
+    localize(value: number, digitCount: number): string {
         return value.toLocaleString("ru-RU", {
             style: "decimal",
             minimumFractionDigits: digitCount,

@@ -5,7 +5,7 @@
     </div>
 </template>
 
-<script>
+<script lang="ts">
 export default {
     metaInfo: {
         title: "404 NotFound",
@@ -24,3 +24,5 @@ export default {
     }
 }
 </style>
+
+
