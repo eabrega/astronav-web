@@ -11,9 +11,9 @@ env:
   DOCKER_PORT: 7301
 
 jobs:
-   build:
+  build:
     runs-on: ubuntu-latest
-    steps:  
+    steps:
       - name: Login
         uses: docker/login-action@v1.6.0
         with:
@@ -29,7 +29,7 @@ jobs:
       - name: SSH Remote Commands
         uses: appleboy/ssh-action@master
         env:
-          TAG: '${{ github.run_number }}'
+          TAG: "${{ github.run_number }}"
         with:
           envs: TAG, NAME, DOCKER_PORT
           host: ${{ secrets.DEPLOY_SERVER_IP }}
