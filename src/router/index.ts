@@ -15,6 +15,11 @@ const routes: Array<RouteConfig> = [
         component: () => import('../views/SkyMap.vue')
     },
     {
+        path: '/summary',
+        name: 'Summary',
+        component: () => import('../views/Summary.vue')
+    },
+    {
         path: '/about',
         name: 'About',
         component: () => import('../views/About.vue')

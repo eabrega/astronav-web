@@ -32,7 +32,7 @@ export default class EventRow extends Vue {
         return this.skyObject.Time < new Date();
     }
 
-    private localize(value: number): string {
+    localize(value: number): string {
         return value.toLocaleString("ru-RU", {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2,

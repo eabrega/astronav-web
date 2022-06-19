@@ -7,6 +7,7 @@ const hostName = "https://astronav.ru"
 const allowPages = [
     "/$",
     "/skymap",
+    "/summary",
     "/about",
     "/sitemap.xml"
 ]
@@ -51,6 +52,12 @@ module.exports = {
                     changefreq: 'weekly',
                 },
                 {
+                    loc: '/summary',
+                    lastmod: 'Mart 14, 2022',
+                    priority: 0.8,
+                    changefreq: 'weekly',
+                },
+                {
                     loc: '/about',
                     lastmod: 'May 29, 2021',
                     priority: 0.2,
@@ -73,7 +80,7 @@ module.exports = {
         plugins: [
             new PrerenderSPAPlugin({
                 staticDir: path.join(__dirname, 'dist'),
-                routes: ['/', '/about', '/skymap', '/404'],
+                routes: ['/', '/about', '/skymap', '/summary', '/404'],
                 renderer: new PrerenderSPAPlugin.PuppeteerRenderer({
                     injectProperty: 'prerenderInjected',
                     inject: "false"

@@ -8,6 +8,7 @@
                 <b-navbar-nav>
                     <b-nav-item to="/">Расписание</b-nav-item>
                     <b-nav-item to="/skymap">Карта</b-nav-item>
+                    <b-nav-item to="/summary">Сводка</b-nav-item>
                     <b-nav-item to="/about">О проекте</b-nav-item>
                 </b-navbar-nav>
                 <b-navbar-nav class="ml-auto">
