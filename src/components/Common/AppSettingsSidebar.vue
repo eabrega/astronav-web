@@ -1,73 +1,28 @@
 <template>
     <div class="app-settings-sidebar">
-        <b-sidebar
-            @shown="show"
-            id="app-settings-sidebar"
-            title="Настройки"
-            width="450px"
-            backdrop-variant="dark"
-            backdrop
-            shadow
-            right
-        >
+        <b-sidebar @shown="show" id="app-settings-sidebar" title="Настройки" width="450px" backdrop-variant="dark"
+            backdrop shadow right>
             <div class="px-3 py-2">
                 <b-input-group prepend="Широта" class="mt-3">
-                    <b-form-input
-                        class="input-latlon"
-                        v-model.number="Lat"
-                        :state="isLatValid"
-                        type="number"
-                        step="0.001"
-                        debounce="500"
-                    ></b-form-input>
+                    <b-form-input class="input-latlon" v-model.number="Lat" :state="isLatValid" type="number"
+                        step="0.001" debounce="500"></b-form-input>
                 </b-input-group>
                 <b-input-group prepend="Долгота" class="mt-3">
-                    <b-form-input
-                        class="input-latlon"
-                        v-model.number="Lon"
-                        :state="isLonValid"
-                        type="number"
-                        step="0.001"
-                        debounce="500"
-                    ></b-form-input>
+                    <b-form-input class="input-latlon" v-model.number="Lon" :state="isLonValid" type="number"
+                        step="0.001" debounce="500"></b-form-input>
                 </b-input-group>
 
-                <l-map
-                    id="map"
-                    ref="map"
-                    :center="center"
-                    :zoom="15"
-                    @click="click"
-                >
-                    <l-tile-layer
-                        :url="url"
-                        :attribution="attribution"
-                    ></l-tile-layer>
+                <l-map id="map" ref="map" :center="center" :zoom="15" @click="click">
+                    <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
                     <l-marker ref="marker" :lat-lng="center"></l-marker>
                 </l-map>
 
                 <b-input-group prepend="Дата" class="mt-3">
-                    <b-form-input
-                        v-model="CurrentDate"
-                        type="date"
-                        debounce="500"
-                        class="input-date"
-                    ></b-form-input>
+                    <b-form-input v-model="CurrentDate" type="date" debounce="500" class="input-date"></b-form-input>
                 </b-input-group>
-                <b-button
-                    class="mt-4"
-                    v-on:click="update"
-                    v-b-toggle.app-settings-sidebar
-                    variant="success"
-                    >Cохранить</b-button
-                >
-                <b-form-checkbox
-                    v-model="isChacked"
-                    class="mt-4 input-latlon"
-                    size="lg"
-                    name="check-button"
-                    switch
-                >
+                <b-button class="mt-4" v-on:click="update" v-b-toggle.app-settings-sidebar variant="success">Cохранить
+                </b-button>
+                <b-form-checkbox v-model="isChacked" class="mt-4 input-latlon" size="lg" name="check-button" switch>
                     <span>Скрывать подсказки</span>
                 </b-form-checkbox>
             </div>
@@ -183,6 +138,16 @@ export default class AppSettingsSidebar extends Vue {
         margin-top: 15px;
         height: 290px;
         border-radius: 5px;
+    }
+
+    .leaflet-control-attribution {
+        &>a:nth-of-type(1) {
+            display: none;
+        }
+
+        &>span {
+            display: none;
+        }
     }
 }
 </style>
