@@ -51,6 +51,7 @@ export default class SkyMap extends Vue {
 .sky-map {
     .plotter {
         margin-bottom: 20px;
+        overflow-x: auto;
     }
 
     .table {

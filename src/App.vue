@@ -18,29 +18,21 @@
                 </b-navbar-nav>
             </b-collapse>
         </b-navbar>
-
         <div class="main">
-            <div class="wrap">
-                <AppSettingsSidebar />
+            <AppSettingsSidebar />
 
-                <b-alert
-                    variant="success"
-                    v-model="isShowMessageBox"
-                    dismissible
-                >
-                    На странице представленна информация об астрономических
-                    объектах видимых с учетом вашего
-                    <b-link v-b-toggle.app-settings-sidebar>
-                        местоположения </b-link
-                    >.
-                    <br />
-                    Выбранное местоположение сохранится в настройках браузера.
-                    <br />
-                    Вы всегда можете изменить отображение подсказок в
-                    <b-link v-b-toggle.app-settings-sidebar>настройках</b-link>.
-                </b-alert>
-                <router-view />
-            </div>
+            <b-alert variant="success" v-model="isShowMessageBox" dismissible>
+                На странице представленна информация об астрономических
+                объектах видимых с учетом вашего
+                <b-link v-b-toggle.app-settings-sidebar>
+                    местоположения </b-link>.
+                <br />
+                Выбранное местоположение сохранится в настройках браузера.
+                <br />
+                Вы всегда можете изменить отображение подсказок в
+                <b-link v-b-toggle.app-settings-sidebar>настройках</b-link>.
+            </b-alert>
+            <router-view />
         </div>
     </div>
 </template>
@@ -96,7 +88,7 @@ export default class App extends Vue {
 :root {
     --main-margin: 20px;
     --min-size: calc(320px - var(--main-margin) * 2);
-    --max-size: 1200px;
+    --max-size: 1240px;
 }
 
 @media (max-width: 440px) {
@@ -112,30 +104,32 @@ export default class App extends Vue {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     color: #2c3e50;
+
     h1 {
         font-size: 1.7em;
         padding-top: 20px;
         padding-bottom: 10px;
     }
+
     h2 {
         font-size: 1.6em;
         padding-top: 20px;
         padding-bottom: 15px;
     }
+
     p {
         font-size: 1.1em;
         padding-top: 5px;
     }
 
     .main {
-        display: flex;
-        justify-content: center;
+        margin: 0 auto;
+        max-width: calc(var(--max-size));
+        min-width: calc(var(--min-size) - var(--main-margin));
 
-        .wrap {
-            max-width: calc(var(--max-size));
-            min-width: calc(var(--min-size) - var(--main-margin));
-            margin-left: var(--main-margin);
-            margin-right: var(--main-margin);
+        padding: {
+            left: var(--main-margin);
+            right: var(--main-margin);
         }
     }
 
@@ -172,6 +166,7 @@ export default class App extends Vue {
         font-size: 1.5em;
         color: #2c3e50;
         padding-left: 0px !important;
+
         &.router-link-exact-active {
             color: #42b983 !important;
         }

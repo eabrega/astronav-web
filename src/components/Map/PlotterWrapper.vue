@@ -50,8 +50,8 @@ export default class PlotterWrapper extends Vue {
             this._settings = {
                 isDebug: false,
                 gridSize: new Size(360, 90),
-                axisConstraint:[GridType.FixedY, GridType.FixedX],
-                gridLinears: [ GridLinear.Top, GridLinear.Left, GridLinear.Bottom, GridLinear.Right ]
+                axisConstraint: [GridType.FixedY, GridType.FixedX],
+                gridLinears: [GridLinear.Top, GridLinear.Left, GridLinear.Bottom, GridLinear.Right]
             };
 
             this.plotter = new Plotter("canva", this._settings);

@@ -107,7 +107,7 @@ export default class Schedule extends Vue {
         flex-flow: row nowrap;
         overflow-x: auto;
         margin-bottom: var(--main-margin);
-        padding-bottom: 10px;
+        padding-bottom: 15px;
         scroll-snap-type: x mandatory;
     }
 }

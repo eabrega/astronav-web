@@ -8,12 +8,7 @@
         </b-alert>
         <b-alert class="info_bar-panel" variant="secondary" show>
             <div class="date-panel">
-                <b-button
-                    class="btn1"
-                    size="sm"
-                    @click="yesterday"
-                    variant="secondary"
-                >
+                <b-button class="btn1" size="sm" @click="yesterday" variant="secondary">
                     Вчера
                 </b-button>
                 <div class="date-block">
@@ -25,12 +20,7 @@
                         {{ DATE_SUFFIX }}
                     </div>
                 </div>
-                <b-button
-                    class="btn2"
-                    size="sm"
-                    @click="tomorrow"
-                    variant="secondary"
-                >
+                <b-button class="btn2" size="sm" @click="tomorrow" variant="secondary">
                     Завтра
                 </b-button>
             </div>
@@ -154,6 +144,7 @@ $font-size: 1.2em;
         padding-top: 40px;
         padding-bottom: 10px;
     }
+
     .info_bar-panel {
         display: contents;
         border: 0;
@@ -196,7 +187,7 @@ $font-size: 1.2em;
             }
         }
 
-        @media (max-width: 400px) {
+        @media (max-width: 440px) {
             font-size: 0.9em !important;
 
             .date-block__suffix {
@@ -231,11 +222,13 @@ $font-size: 1.2em;
                     min-width: 110px;
                     justify-content: center;
                 }
+
                 .date-block__suffix {
                     min-width: 110px;
                     display: flex;
                     justify-content: center;
                 }
+
                 .date-block__time {
                     min-width: 90px;
                     display: flex;
