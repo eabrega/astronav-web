@@ -7,7 +7,7 @@ import { AxisPoint } from './Points/axisPoint';
 
 export class Plotter {
     private readonly _grid: Grid;
-    private _isMoving = false;
+    private _isMoved = false;
     private _scale = 1;
     private _frames: Array<DrawObjectFrame> | null = null;
     private _frameId = 0;
@@ -16,10 +16,16 @@ export class Plotter {
         const canva = document.getElementById(name) as HTMLCanvasElement;
         this._grid = new Grid(canva, settings);
 
-        canva.addEventListener("wheel", (event: WheelEvent) => this.Zoom(event));
-        document.addEventListener("mousemove", (event: MouseEvent) => this.Moving(event));
-        canva.addEventListener("mousedown", (event: MouseEvent) => this.MouseDown(event));
-        document.addEventListener("mouseup", e => { this._isMoving = false; });
+        if (settings?.isZooming) {
+            canva.addEventListener("wheel", (event: WheelEvent) => this.Zoom(event));
+        }
+        if (settings?.isMoving) {
+            document.addEventListener("mousemove", (event: MouseEvent) => this.Moving(event));
+        }
+        if (settings?.isMoving || settings?.isClicked) {
+            canva.addEventListener("mousedown", (event: MouseEvent) => this.MouseDown(event));
+            document.addEventListener("mouseup", e => { this._isMoved = false; });
+        }
     }
 
     set DataFrameSelect(frameId: number) {
@@ -50,14 +56,14 @@ export class Plotter {
     }
 
     private Moving(e: MouseEvent) {
-        if (this._isMoving) {
+        if (this._isMoved) {
             this._grid.MoveGrid(new CanvaPoint(e.movementX, e.movementY));
             this.DrawPlanetCollection(this._frames![this._frameId].Objects);
         }
     }
 
     private MouseDown(e: MouseEvent) {
-        this._isMoving = true;
+        this._isMoved = true;
         const points = this._grid.Click(new CanvaPoint(e.offsetX, e.offsetY))
 
         //console.log("clickAxis", points[0]);

@@ -18,15 +18,13 @@ import { IDrawObject } from "../Plotter/drawObject";
 @Component
 export default class DaySummary extends Vue {
     static count: number = 0;
+    count: number = DaySummary.count++;
 
-    count: number = 0;
     plotter: Plotter | null = null;
     //_settings: IPlotterSettings;
 
     constructor() {
         super();
-        DaySummary.count++;
-        this.count = DaySummary.count;
     }
 
     ttt() {
@@ -39,9 +37,10 @@ export default class DaySummary extends Vue {
         this.plotter = new Plotter(
             this.ttt(), {
             isDebug: false,
+            isClicked: true,
             gridSize: new Size(700, 40),
             axisConstraint: [GridType.FixedY, GridType.FixedX],
-            gridLinears: [] //[GridLinear.Right, GridLinear.Left, GridLinear.Bottom]
+            gridLinears: [GridLinear.Left]
         });
 
         const object = this.event;

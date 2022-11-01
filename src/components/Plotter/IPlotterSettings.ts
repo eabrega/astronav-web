@@ -1,7 +1,10 @@
 import { Size } from "./Sizes/size";
 
 export interface IPlotterSettings {
-    isDebug?: boolean | undefined;
+    isDebug?: boolean;
+    isZooming?: boolean;
+    isMoving?: boolean;
+    isClicked?: boolean;
     gridSize: Size;
     axisConstraint: Array<GridType>;
     gridLinears: Array<GridLinear>;
@@ -14,7 +17,7 @@ export enum GridLinear {
     Right
 }
 
-export enum GridType { 
+export enum GridType {
     FixedX,
     FixedY,
     LoopX,
