@@ -12,6 +12,11 @@
                         step="0.001" debounce="500"></b-form-input>
                 </b-input-group>
 
+                <b-button class="mt-4" v-on:click="coords" variant="primary"
+                    v-if="$store.state.geolocation.IsAvialable">Определить
+                    место положения
+                </b-button>
+
                 <l-map id="map" ref="map" :center="center" :zoom="15" @click="click">
                     <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
                     <l-marker ref="marker" :lat-lng="center"></l-marker>
@@ -64,6 +69,7 @@ export default class AppSettingsSidebar extends Vue {
     get isLonValid(): boolean {
         return Math.abs(this.lon) <= 180;
     }
+
 
     set Lat(val: number) {
         this.lat = val;
@@ -119,6 +125,12 @@ export default class AppSettingsSidebar extends Vue {
 
         this.lat = parseFloat(e.latlng.lat.toFixed(3));
         this.lon = parseFloat(e.latlng.lng.toFixed(3));
+    }
+
+    coords() {
+        this.$store.state.geolocation.UpdateCoorgs();
+        this.lat = this.$store.state.geolocation.Lat.toFixed(3);
+        this.lon = this.$store.state.geolocation.Lon.toFixed(3);
     }
 
     constructor() {
