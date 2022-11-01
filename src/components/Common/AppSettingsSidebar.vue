@@ -12,8 +12,7 @@
                         step="0.001" debounce="500"></b-form-input>
                 </b-input-group>
 
-                <b-button class="mt-4" v-on:click="coords" variant="primary"
-                    v-if="$store.state.geolocation.IsAvialable">Определить
+                <b-button class="mt-4" v-on:click="coords" variant="primary" v-if="geolocation.IsAvialable">Определить
                     место положения
                 </b-button>
 
@@ -41,6 +40,7 @@ import DateParser from "./DateParser";
 import store from "@/store";
 import L from "leaflet";
 import { LMap, LTileLayer, LMarker } from "vue2-leaflet";
+import Geo from "@/components/Common/Geolocation";
 @Component({
     components: {
         LMap,
@@ -51,6 +51,7 @@ import { LMap, LTileLayer, LMarker } from "vue2-leaflet";
 export default class AppSettingsSidebar extends Vue {
     private lat = store.state.lat;
     private lon = store.state.lon;
+    readonly geolocation = new Geo();
 
     private date = new DateParser(store.state.date).toString();
 
@@ -69,7 +70,6 @@ export default class AppSettingsSidebar extends Vue {
     get isLonValid(): boolean {
         return Math.abs(this.lon) <= 180;
     }
-
 
     set Lat(val: number) {
         this.lat = val;
@@ -127,10 +127,13 @@ export default class AppSettingsSidebar extends Vue {
         this.lon = parseFloat(e.latlng.lng.toFixed(3));
     }
 
-    coords() {
-        this.$store.state.geolocation.UpdateCoorgs();
-        this.lat = this.$store.state.geolocation.Lat.toFixed(3);
-        this.lon = this.$store.state.geolocation.Lon.toFixed(3);
+    async coords() {
+        this.geolocation.UpdateCoorgs()
+            .then((c) => {
+                this.lat = c.latitude;
+                this.lon = c.longitude;
+            })
+            .catch((i) => console.log(i));
     }
 
     constructor() {
