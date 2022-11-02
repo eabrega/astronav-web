@@ -47,7 +47,7 @@ import EventIcon from "@/components/Events/EventIcon.vue";
 })
 export default class PlanetWidget extends Vue {
     @Prop(SkyEvent)
-    private skyObject!: SkyEvent;
+    skyObject!: SkyEvent;
 
     constructor() {
         super();
@@ -90,7 +90,7 @@ export default class PlanetWidget extends Vue {
         return "";
     }
 
-    private localize(value: Number): string {
+    localize(value: Number): string {
         return value.toLocaleString("ru-RU", {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2,

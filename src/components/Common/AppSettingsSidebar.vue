@@ -16,10 +16,12 @@
                     Определить место положения
                 </b-button>
 
-                <l-map id="map" ref="map" :center="center" :zoom="15" @click="click">
+                <!-- <l-map id="map" ref="map" :center="center" :zoom="15" @click="click">
                     <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
                     <l-marker ref="marker" :lat-lng="center"></l-marker>
-                </l-map>
+                </l-map> -->
+
+                <OpenStreetMapWrapper ref="map" v-on:mapClick="test" />
 
                 <b-input-group prepend="Дата" class="mt-3">
                     <b-form-input v-model="CurrentDate" type="date" debounce="500" class="input-date"></b-form-input>
@@ -47,14 +49,16 @@
 import { Component, Vue } from "vue-property-decorator";
 import DateParser from "./DateParser";
 import store from "@/store";
-import L from "leaflet";
-import { LMap, LTileLayer, LMarker } from "vue2-leaflet";
+//import L from "leaflet";
+// import { LMap, LTileLayer, LMarker } from "vue2-leaflet";
 import Geo from "@/components/Common/Geolocation";
+import OpenStreetMapWrapper, { ICoords } from "./OpenStreetMapWrapper.vue";
 @Component({
     components: {
-        LMap,
-        LTileLayer,
-        LMarker,
+        // LMap,
+        // LTileLayer,
+        // LMarker,
+        OpenStreetMapWrapper
     },
 })
 export default class AppSettingsSidebar extends Vue {
@@ -62,6 +66,11 @@ export default class AppSettingsSidebar extends Vue {
     private lon = store.state.lon;
     readonly geolocation = new Geo();
     private date = new DateParser(store.state.date).toString();
+
+    test(i: ICoords) {
+        this.lat = i.lat;
+        this.lon = i.lon;
+    }
 
     get CurrentDate(): string {
         return new DateParser(this.date).toString();
@@ -112,28 +121,28 @@ export default class AppSettingsSidebar extends Vue {
         }
     }
 
-    get url(): string {
-        return "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
-    }
+    // get url(): string {
+    //     return "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
+    // }
 
-    get attribution() {
-        return '&copy; <a target="_blank" href="http://osm.org/copyright">OpenStreetMap</a> contributors';
-    }
+    // get attribution() {
+    //     return '&copy; <a target="_blank" href="http://osm.org/copyright">OpenStreetMap</a> contributors';
+    // }
 
-    get center() {
-        return [this.lat, this.lon];
-    }
+    // get center() {
+    //     return [this.lat, this.lon];
+    // }
 
     show() {
-        (this.$refs.map as LMap).mapObject.invalidateSize();
+        (this.$refs.map as OpenStreetMapWrapper).show();
     }
 
-    click(e: L.LeafletMouseEvent) {
-        (this.$refs.marker as LMarker).setLatLng(e.latlng);
+    // click(e: L.LeafletMouseEvent) {
+    //     (this.$refs.marker as LMarker).setLatLng(e.latlng);
 
-        this.lat = parseFloat(e.latlng.lat.toFixed(3));
-        this.lon = parseFloat(e.latlng.lng.toFixed(3));
-    }
+    //     this.lat = parseFloat(e.latlng.lat.toFixed(3));
+    //     this.lon = parseFloat(e.latlng.lng.toFixed(3));
+    // }
 
     async coords() {
         this.geolocation.UpdateCoorgs()
@@ -159,20 +168,20 @@ export default class AppSettingsSidebar extends Vue {
         font-weight: 550;
     }
 
-    #map {
-        margin-top: 15px;
-        height: 290px;
-        border-radius: 5px;
-    }
+    // #map {
+    //     margin-top: 15px;
+    //     height: 290px;
+    //     border-radius: 5px;
+    // }
 
-    .leaflet-control-attribution {
-        &>a:nth-of-type(1) {
-            display: none;
-        }
+    // .leaflet-control-attribution {
+    //     &>a:nth-of-type(1) {
+    //         display: none;
+    //     }
 
-        &>span {
-            display: none;
-        }
-    }
+    //     &>span {
+    //         display: none;
+    //     }
+    // }
 }
 </style>
