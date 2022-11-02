@@ -12,7 +12,7 @@
                         step="0.001" debounce="500"></b-form-input>
                 </b-input-group>
 
-                <b-button class="mt-4" v-on:click="coords" variant="primary" v-if="geolocation.IsAvialable">
+                <b-button class="mt-4" v-on:click="coords" variant="primary" block v-if="geolocation.IsAvialable">
                     Определить место положения
                 </b-button>
 
