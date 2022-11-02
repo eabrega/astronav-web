@@ -8,8 +8,6 @@ export default class GeolocationApiWrapper {
         else {
             this._isAvialable = false;
         }
-
-        console.log(navigator);
     }
 
     get IsAvialable() {
@@ -20,7 +18,7 @@ export default class GeolocationApiWrapper {
         const position = await new Promise((resolve: PositionCallback, reject: PositionErrorCallback) => {
             navigator.geolocation.getCurrentPosition(resolve, reject);
         });
-       
+
         return position.coords;
     }
 }
