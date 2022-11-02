@@ -4,11 +4,11 @@
             backdrop shadow right>
             <div class="px-3 py-2">
                 <b-input-group prepend="Широта" class="mt-3">
-                    <b-form-input class="input-latlon" v-model.number="Lat" :state="isLatValid" type="number"
+                    <b-form-input class="input-latlon" name="lat" v-model.number="Lat" :state="isLatValid" type="number"
                         step="0.001" debounce="500"></b-form-input>
                 </b-input-group>
                 <b-input-group prepend="Долгота" class="mt-3">
-                    <b-form-input class="input-latlon" v-model.number="Lon" :state="isLonValid" type="number"
+                    <b-form-input class="input-latlon" name="lon" v-model.number="Lon" :state="isLonValid" type="number"
                         step="0.001" debounce="500"></b-form-input>
                 </b-input-group>
 
