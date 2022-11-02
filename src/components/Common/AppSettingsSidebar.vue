@@ -4,13 +4,17 @@
             backdrop shadow right>
             <div class="px-3 py-2">
                 <b-input-group prepend="Широта" class="mt-3">
-                    <b-form-input class="input-latlon" v-model.number="Lat" :state="isLatValid" type="number"
+                    <b-form-input class="input-latlon" name="lat" v-model.number="Lat" :state="isLatValid" type="number"
                         step="0.001" debounce="500"></b-form-input>
                 </b-input-group>
                 <b-input-group prepend="Долгота" class="mt-3">
-                    <b-form-input class="input-latlon" v-model.number="Lon" :state="isLonValid" type="number"
+                    <b-form-input class="input-latlon" name="lon" v-model.number="Lon" :state="isLonValid" type="number"
                         step="0.001" debounce="500"></b-form-input>
                 </b-input-group>
+
+                <b-button class="mt-4" v-on:click="coords" variant="primary" block v-if="geolocation.IsAvialable">
+                    Определить место положения
+                </b-button>
 
                 <l-map id="map" ref="map" :center="center" :zoom="15" @click="click">
                     <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
@@ -25,6 +29,15 @@
                 <b-form-checkbox v-model="isChacked" class="mt-4 input-latlon" size="lg" name="check-button" switch>
                     <span>Скрывать подсказки</span>
                 </b-form-checkbox>
+
+                <b-modal id="modal-1" title="Ошибка!" ok-only header-bg-variant="warning">
+                    <p class="my-2">Определение геопозиции запрещено настройками безопасности вашего браузера, для
+                        изменения настроек можно воспользоваться
+                        <a
+                            href="https://yandex.ru/yandsearch?text=%D0%BA%D0%B0%D0%BA+%D0%B2%D0%BA%D0%BB%D1%8E%D1%87%D0%B8%D1%82%D1%8C+%D0%B3%D0%B5%D0%BE%D0%BF%D0%BE%D0%B7%D0%B8%D1%86%D0%B8%D1%8E+%D0%B2+%D0%B1%D1%80%D0%B0%D1%83%D0%B7%D0%B5%D1%80%D0%B5&from=os&lr=20728">инструкцией</a>.
+
+                    </p>
+                </b-modal>
             </div>
         </b-sidebar>
     </div>
@@ -36,6 +49,7 @@ import DateParser from "./DateParser";
 import store from "@/store";
 import L from "leaflet";
 import { LMap, LTileLayer, LMarker } from "vue2-leaflet";
+import Geo from "@/components/Common/Geolocation";
 @Component({
     components: {
         LMap,
@@ -46,7 +60,7 @@ import { LMap, LTileLayer, LMarker } from "vue2-leaflet";
 export default class AppSettingsSidebar extends Vue {
     private lat = store.state.lat;
     private lon = store.state.lon;
-
+    readonly geolocation = new Geo();
     private date = new DateParser(store.state.date).toString();
 
     get CurrentDate(): string {
@@ -119,6 +133,17 @@ export default class AppSettingsSidebar extends Vue {
 
         this.lat = parseFloat(e.latlng.lat.toFixed(3));
         this.lon = parseFloat(e.latlng.lng.toFixed(3));
+    }
+
+    async coords() {
+        this.geolocation.UpdateCoorgs()
+            .then((c) => {
+                this.lat = parseFloat(c.latitude.toFixed(3));
+                this.lon = parseFloat(c.longitude.toFixed(3));
+            })
+            .catch((i: GeolocationPositionError) => {
+                this.$bvModal.show(`modal-${i.code}`);
+            });
     }
 
     constructor() {
