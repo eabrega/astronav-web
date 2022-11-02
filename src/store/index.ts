@@ -4,11 +4,14 @@ import { IDrawObjects } from "canvas-chart-ts/dist/drawObjectsFrame";
 import { ISkyEvent, ISkyInfo, ISkyInfoItem } from "@/store/ISkyInfo"
 import DateParser from "@/components/Common/DateParser";
 import IUserSettings from "@/store/userSettings";
+import Geo from '@/components/Common/Geolocation'
+import GeolocationApiWrapper from "@/components/Common/Geolocation";
 
 Vue.use(Vuex);
 
 export interface IState {
     userSettings: IUserSettings;
+    geolocation: GeolocationApiWrapper;
     date: Date;
     isLoading: boolean;
     condition: Array<IDrawObjects>;
@@ -24,6 +27,7 @@ export default new Vuex.Store({
     state: {
         date: new Date(),
         isLoading: false,
+        geolocation: new Geo(),
         condition: Array<IDrawObjects>(),
         events: Array<ISkyEvent>(),
         info: Array<ISkyInfoItem>(),

@@ -136,7 +136,7 @@ export default class InfoBar extends Vue {
         }, 1000);
     }
 
-    private localize(value: number): string {
+    localize(value: number): string {
         return value.toLocaleString("ru-RU", {
             style: "decimal",
             minimumFractionDigits: 0,
