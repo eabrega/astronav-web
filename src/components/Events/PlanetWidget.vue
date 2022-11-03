@@ -26,7 +26,7 @@
                         {{ ANGLE_LETTERS(event.A) }}
                     </div>
                     <div class="position">
-                        <b>{{ localize(event.A) }}°</b>
+                        <b>{{ localize(event.A, 2, 2) }}°</b>
                     </div>
                 </div>
             </div>
@@ -36,8 +36,9 @@
 
 <script lang="ts">
 import { SkyEvent } from "@/store/ISkyInfo";
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Mixins, Prop } from "vue-property-decorator";
 import { Locale } from "@/store/constants";
+import LocalizeHelpers from '@/helpers/mappers'
 import EventIcon from "@/components/Events/EventIcon.vue";
 
 @Component({
@@ -45,7 +46,7 @@ import EventIcon from "@/components/Events/EventIcon.vue";
         EventIcon,
     },
 })
-export default class PlanetWidget extends Vue {
+export default class PlanetWidget extends Mixins(LocalizeHelpers) {
     @Prop(SkyEvent)
     skyObject!: SkyEvent;
 
@@ -88,13 +89,6 @@ export default class PlanetWidget extends Vue {
         }
 
         return "";
-    }
-
-    localize(value: Number): string {
-        return value.toLocaleString("ru-RU", {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-        });
     }
 
     ANGLE_LETTERS(angle: number): string {
