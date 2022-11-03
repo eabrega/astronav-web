@@ -1,17 +1,17 @@
 <template>
     <div class="osm-wrapper">
-        <l-map id="map" ref="map" :center="center" :zoom="15" @click="click">
-            <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
-            <l-marker ref="marker" :lat-lng="center"></l-marker>
+        <l-map id="map" ref="map" :center="MAP_CENTER" :zoom="15" @click="click">
+            <l-tile-layer :url="URL" :attribution="CONTRIBUTION"></l-tile-layer>
+            <l-marker ref="marker" :lat-lng="MAP_CENTER"></l-marker>
         </l-map>
     </div>
 </template>
 
 <script lang="ts">
-import { Component, Emit, Vue } from "vue-property-decorator";
-import store from "@/store";
+import { Component, Emit, Prop, Vue, Watch } from "vue-property-decorator";
 import L from "leaflet";
 import { LMap, LTileLayer, LMarker } from "vue2-leaflet";
+import { ICoords } from "@/components/Common/ICoords";
 @Component({
     components: {
         LMap,
@@ -20,32 +20,40 @@ import { LMap, LTileLayer, LMarker } from "vue2-leaflet";
     },
 })
 export default class OpenStreetMapWrapper extends Vue {
-    private lat = store.state.lat;
-    private lon = store.state.lon;
+    @Prop()
+    public Coordinates!: ICoords;
+
+    private lat = this.Coordinates!.lat;
+    private lon = this.Coordinates!.lon;
+
+    @Watch("Coordinates")
+    updateCoordinates(val: ICoords) {
+        this.lat = val.lat;
+        this.lon = val.lon;
+    }
 
     @Emit("mapClick")
     mapClick(lat: number, lon: number): ICoords {
         return {
-            lat,
-            lon
+            lat: lat,
+            lon: lon
         }
     }
 
-    get url(): string {
+    get URL(): string {
         return "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
     }
 
-    get attribution() {
+    get CONTRIBUTION() {
         return '&copy; <a target="_blank" href="http://osm.org/copyright">OpenStreetMap</a> contributors';
     }
 
-    get center() {
+    get MAP_CENTER() {
         return [this.lat, this.lon];
     }
 
-    show() {
+    mapReRender() {
         (this.$refs.map as LMap).mapObject.invalidateSize();
-        console.log("PIZDA");
     }
 
     click(e: L.LeafletMouseEvent) {
@@ -60,10 +68,6 @@ export default class OpenStreetMapWrapper extends Vue {
     constructor() {
         super();
     }
-}
-export interface ICoords {
-    lat: number,
-    lon: number
 }
 
 </script>

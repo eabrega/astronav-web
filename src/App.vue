@@ -45,7 +45,7 @@
 </template>
 
 <script lang="ts">
-import AppSettingsSidebar from "@/components/Common/AppSettingsSidebar.vue";
+import AppSettingsSidebar from "@/components/SideBar/AppSettingsSidebar.vue";
 import { Component, Vue } from "vue-property-decorator";
 @Component({
     name: "App",
