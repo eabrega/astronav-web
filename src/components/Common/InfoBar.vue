@@ -29,11 +29,10 @@
 </template>
 
 <script lang="ts">
-import Helpers from "@/helpers/mappers";
-import { Component, Mixins } from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 
 @Component
-export default class InfoBar extends Mixins(Helpers) {
+export default class InfoBar extends Vue {
     private time = new Date();
 
     mounted() {

@@ -10,17 +10,15 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue } from "vue-property-decorator";
 import IAngularDiameter from "./IAngularDiameter";
-import Helpers from "@/helpers/mappers"
 @Component
-export default class AngularDiameter extends Mixins(Helpers) {
+export default class AngularDiameter extends Vue{
     @Prop()
     value!: IAngularDiameter;
 
     constructor() {
         super();
-
     }
 }
 </script>

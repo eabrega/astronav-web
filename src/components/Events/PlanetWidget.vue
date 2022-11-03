@@ -36,9 +36,8 @@
 
 <script lang="ts">
 import { SkyEvent } from "@/store/ISkyInfo";
-import { Component, Mixins, Prop } from "vue-property-decorator";
+import { Component, Vue, Prop } from "vue-property-decorator";
 import { Locale } from "@/store/constants";
-import LocalizeHelpers from '@/helpers/mappers'
 import EventIcon from "@/components/Events/EventIcon.vue";
 
 @Component({
@@ -46,7 +45,7 @@ import EventIcon from "@/components/Events/EventIcon.vue";
         EventIcon,
     },
 })
-export default class PlanetWidget extends Mixins(LocalizeHelpers) {
+export default class PlanetWidget extends Vue {
     @Prop(SkyEvent)
     skyObject!: SkyEvent;
 

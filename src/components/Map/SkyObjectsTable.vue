@@ -38,17 +38,16 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Vue } from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 import { Locale } from "@/store/constants";
 import AngularDiameter from "@/components/Common/AngularDiameter.vue";
-import LocalizeHelpers from '@/helpers/mappers'
 
 @Component({
     components: {
         AngularDiameter,
     },
 })
-export default class SkyObjectsTable extends Mixins(LocalizeHelpers) {
+export default class SkyObjectsTable extends Vue{
     constructor() {
         super();
     }

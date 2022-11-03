@@ -12,12 +12,11 @@
 
 <script lang="ts">
 import { PlainEventItem } from "@/components/Events/PlainEventItem";
-import { Component, Mixins, Prop } from "vue-property-decorator";
+import { Component, Vue, Prop } from "vue-property-decorator";
 import { Locale } from "@/store/constants";
-import LocalizeHelpers from '@/helpers/mappers'
 
 @Component
-export default class EventRow extends Mixins(LocalizeHelpers) {
+export default class EventRow extends Vue {
     @Prop()
     skyObject!: PlainEventItem;
 
