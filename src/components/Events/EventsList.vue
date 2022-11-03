@@ -1,8 +1,8 @@
 <template>
-    <b-card class="events-card" :header="this.title" header-tag="header">
+    <b-card class="events-card" :header="title" header-tag="header">
         <b-card-text>
             <EventRow
-                v-for="(item, index) in getEventsList(this.name)"
+                v-for="(item, index) in getEventsList(name)"
                 :key="index"
                 :sky-object="item"
             />

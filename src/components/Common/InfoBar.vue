@@ -2,18 +2,13 @@
     <div class="info_bar">
         <b-alert class="info_bar-panel" variant="secondary" show>
             <div class="latlon">
-                <span>Широта: {{ localize($store.state.lat) }}</span>
-                <span>Долгота: {{ localize($store.state.lon) }}</span>
+                <span>Широта: {{ localize($store.state.lat, 0, 3) }}</span>
+                <span>Долгота: {{ localize($store.state.lon, 0, 3) }}</span>
             </div>
         </b-alert>
         <b-alert class="info_bar-panel" variant="secondary" show>
             <div class="date-panel">
-                <b-button
-                    class="btn1"
-                    size="sm"
-                    @click="yesterday"
-                    variant="secondary"
-                >
+                <b-button class="btn1" size="sm" @click="yesterday" variant="secondary">
                     Вчера
                 </b-button>
                 <div class="date-block">
@@ -25,12 +20,7 @@
                         {{ DATE_SUFFIX }}
                     </div>
                 </div>
-                <b-button
-                    class="btn2"
-                    size="sm"
-                    @click="tomorrow"
-                    variant="secondary"
-                >
+                <b-button class="btn2" size="sm" @click="tomorrow" variant="secondary">
                     Завтра
                 </b-button>
             </div>
@@ -39,10 +29,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import Helpers from "@/helpers/mappers";
+import { Component, Mixins } from "vue-property-decorator";
 
 @Component
-export default class InfoBar extends Vue {
+export default class InfoBar extends Mixins(Helpers) {
     private time = new Date();
 
     mounted() {
@@ -135,14 +126,6 @@ export default class InfoBar extends Vue {
             this.time = new Date();
         }, 1000);
     }
-
-    localize(value: number): string {
-        return value.toLocaleString("ru-RU", {
-            style: "decimal",
-            minimumFractionDigits: 0,
-            maximumFractionDigits: 3,
-        });
-    }
 }
 </script>
 
@@ -154,6 +137,7 @@ $font-size: 1.2em;
         padding-top: 40px;
         padding-bottom: 10px;
     }
+
     .info_bar-panel {
         display: contents;
         border: 0;
@@ -231,11 +215,13 @@ $font-size: 1.2em;
                     min-width: 110px;
                     justify-content: center;
                 }
+
                 .date-block__suffix {
                     min-width: 110px;
                     display: flex;
                     justify-content: center;
                 }
+
                 .date-block__time {
                     min-width: 90px;
                     display: flex;

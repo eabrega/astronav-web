@@ -5,18 +5,19 @@
             {{ skyObject.Time.toLocaleTimeString().substr(0, 5) }}
         </div>
         <div class="position">
-            <b>{{ localize(skyObject.A) }}°</b>
+            <b>{{ localize(skyObject.A, 2, 2) }}°</b>
         </div>
     </div>
 </template>
 
 <script lang="ts">
 import { PlainEventItem } from "@/components/Events/PlainEventItem";
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Mixins, Prop } from "vue-property-decorator";
 import { Locale } from "@/store/constants";
+import LocalizeHelpers from '@/helpers/mappers'
 
 @Component
-export default class EventRow extends Vue {
+export default class EventRow extends Mixins(LocalizeHelpers) {
     @Prop()
     skyObject!: PlainEventItem;
 
@@ -30,13 +31,6 @@ export default class EventRow extends Vue {
 
     get IS_COMPLETED() {
         return this.skyObject.Time < new Date();
-    }
-
-    private localize(value: number): string {
-        return value.toLocaleString("ru-RU", {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-        });
     }
 }
 </script>

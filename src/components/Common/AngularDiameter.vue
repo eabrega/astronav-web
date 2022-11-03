@@ -10,24 +10,17 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
-import IAngularDiameter from "./AngularDiameter";
-
+import { Component, Mixins, Prop, Vue } from "vue-property-decorator";
+import IAngularDiameter from "./IAngularDiameter";
+import Helpers from "@/helpers/mappers"
 @Component
-export default class AngularDiameter extends Vue {
+export default class AngularDiameter extends Mixins(Helpers) {
     @Prop()
     value!: IAngularDiameter;
 
     constructor() {
         super();
-    }
 
-    localize(value: number, min: number, max: number): string {
-        return value.toLocaleString("ru-RU", {
-            style: "decimal",
-            minimumFractionDigits: min,
-            maximumFractionDigits: max,
-        });
     }
 }
 </script>
