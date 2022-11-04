@@ -15,9 +15,9 @@ export class Grid {
     private readonly _isHasLeftLinears: boolean;
     private readonly _isHasRightLinears: boolean;
     private readonly _mainGridStepX = 100;
-    private readonly _extensionGridStepX = 40;
+    private readonly _extensionGridStepX = 50;
     private readonly _mainGridStepY = 100;
-    private readonly _extensionGridStepY = 40;
+    private readonly _extensionGridStepY = 45;
     private gridStepX: number;
     private gridStepY: number;
 
@@ -79,7 +79,10 @@ export class Grid {
             const t = (dX2 - x) / t1;
 
             for (let i = x + t; i < dX2; i += t) {
-                this.DrawOrdinatLine(new CanvaPoint(i, startPositionY), new CanvaPoint(i, stopPositionY), 8, this._viewer.GetGridPosition(new CanvaPoint(i, 0)).X, "Gainsboro", "Gainsboro", 11);
+                const number = this._viewer.GetGridPosition(new CanvaPoint(i, 0)).X;
+                const p1 = new CanvaPoint(i, startPositionY);
+                const p2 = new CanvaPoint(i, stopPositionY);
+                this.DrawOrdinatLine(p1, p2, 8, number, "Gainsboro", "Gainsboro", 11);
             }
         }
 
@@ -109,14 +112,12 @@ export class Grid {
             const dY2 = this._viewer.GetCanvaPosition(new AxisPoint(0, index + this.gridStepY)).Y
             const t1 = Math.round((y - dY2) / this._extensionGridStepY);
             const t = (y - dY2) / t1
-            //console.log(index);
-            for (let i = y + t; i < dY2; i += t) {
-                //console.log(i);
-                const y = this._viewer.GetGridPosition(new CanvaPoint(0, i)).Y
 
+            for (let i = y + t; i < dY2; i += t) {
                 const p1 = new CanvaPoint(startPositionX, i)
                 const p2 = new CanvaPoint(stopPositionX, i)
-                this.DrawAbscissaLine(p1, p2, 8, 0, "Gainsboro", "Gainsboro", 11);
+                const number = this._viewer.GetGridPosition(new CanvaPoint(0, this._canva.height - i)).Y;
+                this.DrawAbscissaLine(p1, p2, 8, number, "Gainsboro", "Gainsboro", 11);
             }
         }
     }
@@ -140,6 +141,8 @@ export class Grid {
         const axis = this._viewer.GetGridPosition(mousePosition);
         const pixels = this._viewer.GetCanvaPosition(axis);
 
+        console.log(axis);
+
         return [axis, pixels];
     }
 
@@ -157,12 +160,12 @@ export class Grid {
 
         if (this._isHasBottomLinears) {
             Viewer.DrawLine(this._canva, p1.X, p1.Y, p2.X, p1.Y - pineSize, 3, colorLine);
-            Viewer.DrawText(this._canva, p1.X, p1.Y - pineSize - 5, (axis).toFixed(1), fontSize, colorText, "center", "top")
+            Viewer.DrawText(this._canva, p1.X, p1.Y - pineSize - 5, (axis).toFixed(this._settings.gridAccuracy), fontSize, colorText, "center", "top")
         }
 
         if (this._isHasTopLinears) {
             Viewer.DrawLine(this._canva, p1.X, p2.Y, p2.X, p2.Y + pineSize, 3, colorLine);
-            Viewer.DrawText(this._canva, p1.X, p2.Y + pineSize + 5, (axis).toFixed(0), fontSize, colorText, "center", "bottom")
+            Viewer.DrawText(this._canva, p1.X, p2.Y + pineSize + 5, (axis).toFixed(this._settings.gridAccuracy), fontSize, colorText, "center", "bottom")
         }
     }
 
@@ -172,12 +175,12 @@ export class Grid {
 
         if (this._isHasLeftLinears) {
             Viewer.DrawLine(this._canva, p1.X - pineSize, p1.Y, p1.X, p2.Y, 3, colorLine);
-            Viewer.DrawText(this._canva, p1.X - pineSize - 5, p1.Y, (axis).toFixed(1), fontSize, colorText, "end", "middle")
+            Viewer.DrawText(this._canva, p1.X - pineSize - 5, p1.Y, (axis).toFixed(this._settings.gridAccuracy), fontSize, colorText, "end", "middle")
         }
 
         if (this._isHasRightLinears) {
             Viewer.DrawLine(this._canva, p2.X, p1.Y, p2.X + pineSize, p1.Y, 3, colorLine);
-            Viewer.DrawText(this._canva, p2.X + pineSize + 5, p2.Y, (axis).toFixed(0), fontSize, colorText, "start", "middle")
+            Viewer.DrawText(this._canva, p2.X + pineSize + 5, p2.Y, (axis).toFixed(this._settings.gridAccuracy), fontSize, colorText, "start", "middle")
         }
     }
 

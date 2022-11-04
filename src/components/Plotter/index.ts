@@ -18,7 +18,10 @@ export class Plotter {
 
         canva.addEventListener("wheel", (event: WheelEvent) => this.Zoom(event));
         document.addEventListener("mousemove", (event: MouseEvent) => this.Moving(event));
+        
         canva.addEventListener("mousedown", (event: MouseEvent) => this.MouseDown(event));
+        canva.addEventListener("touchend", (event: TouchEvent) => this.MouseDown(event));
+
         document.addEventListener("mouseup", e => { this._isMoving = false; });
     }
 
@@ -56,12 +59,16 @@ export class Plotter {
         }
     }
 
-    private MouseDown(e: MouseEvent) {
-        this._isMoving = true;
-        const points = this._grid.Click(new CanvaPoint(e.offsetX, e.offsetY))
-
-        //console.log("clickAxis", points[0]);
-        console.log("clickPixels", points[1]);
+    private MouseDown(e: MouseEvent | TouchEvent) {
+        e.preventDefault();
+        if (e instanceof MouseEvent) {
+            this._isMoving = true;
+            const points = this._grid.Click(new CanvaPoint(e.offsetX, e.offsetY))
+            //console.log("clickAxis", points[0]);
+        }
+        else { 
+            //console.log(e.changedTouches[0].pageX, e.changedTouches[0].pageY,);
+        }
     }
 
     private Zoom(e: WheelEvent) {

@@ -2,8 +2,7 @@
     <div class="sky-map">
         <InfoBar />
         <PlotterWrapper class="plotter" />
-        <TimeLine />
-   
+        <TimeLine /> 
         <SkyObjectsTable class="table" />
     </div>
 </template>

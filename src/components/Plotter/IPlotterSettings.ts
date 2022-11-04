@@ -3,6 +3,7 @@ import { Size } from "./Sizes/size";
 export interface IPlotterSettings {
     isDebug?: boolean | undefined;
     gridSize: Size;
+    gridAccuracy: number;
     axisConstraint: Array<GridType>;
     gridLinears: Array<GridLinear>;
 }
