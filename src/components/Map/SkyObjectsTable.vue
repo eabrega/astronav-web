@@ -1,46 +1,29 @@
 <template>
     <div class="sky-objects">
-        <b-table
-            small
-            hover
-            :items="$store.getters.currentCondition"
-            :fields="FIELDS"
-            :tbody-tr-class="isHidden"
-            :busy="IS_BUSY"
-            responsive="sm"
-        >
+        <b-table small hover :items="$store.getters.currentCondition" :fields="FIELDS" :tbody-tr-class="isHidden"
+            :busy="IS_BUSY" responsive="sm">
             <template #cell(visible)="data">
-                <b-icon
-                    :icon="+data.item.y > 0 ? 'eye' : 'eye-slash'"
-                    scale="1.1"
-                ></b-icon>
+                <b-icon :icon="+data.item.y > 0 ? 'eye' : 'eye-slash'" scale="1.1"></b-icon>
             </template>
             <template #cell(x)="data">
-                {{ localize(Number(data.item.x), 2) }}
+                {{ localize(Number(data.item.x), 2, 2) }}
             </template>
             <template #cell(y)="data">
-                {{ localize(Number(data.item.y), 2) }}
+                {{ localize(Number(data.item.y), 2, 2) }}
             </template>
             <template #cell(name)="data">
                 {{ SINONIMS.get(data.item.name) }}
             </template>
             <template #cell(phase)="data">
-                {{ localize(Number($store.getters.info(data.item.name).f), 3) }}
+                {{ localize(Number($store.getters.info(data.item.name).f), 3, 3) }}
             </template>
             <template #cell(diametr)="data">
-                <AngularDiameter
-                    :value="$store.getters.info(data.item.name).d"
-                />
+                <AngularDiameter :value="$store.getters.info(data.item.name).d" />
             </template>
             <template #cell(sm)="data">
                 <div>
                     <div v-b-tooltip.hover.top title="Звездная величина">
-                        {{
-                            localize(
-                                Number($store.getters.info(data.item.name).sm),
-                                2
-                            )
-                        }}
+                        {{ localize(Number($store.getters.info(data.item.name).sm), 2, 2) }}
                     </div>
                 </div>
             </template>
@@ -64,7 +47,7 @@ import AngularDiameter from "@/components/Common/AngularDiameter.vue";
         AngularDiameter,
     },
 })
-export default class SkyObjectsTable extends Vue {
+export default class SkyObjectsTable extends Vue{
     constructor() {
         super();
     }
@@ -124,19 +107,12 @@ export default class SkyObjectsTable extends Vue {
         if (item.y < 0) return "unvisiblity-object";
         else return "visiblity-object";
     }
-
-    localize(value: number, digitCount: number): string {
-        return value.toLocaleString("ru-RU", {
-            style: "decimal",
-            minimumFractionDigits: digitCount,
-            maximumFractionDigits: digitCount,
-        });
-    }
 }
 </script>
 <style lang="scss">
 .sky-objects {
     --sr-only-padding-size: 20px;
+
     @media (max-width: 600px) {
         .v-column {
             display: none;
@@ -180,13 +156,14 @@ export default class SkyObjectsTable extends Vue {
 
     .loading {
         padding-top: 40px;
+
         .align-middle {
             margin-right: 10px;
         }
     }
 
     .tooltip-align {
-        & > div {
+        &>div {
             display: flex;
             justify-content: flex-end;
         }

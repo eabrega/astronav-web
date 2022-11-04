@@ -26,7 +26,7 @@
                         {{ ANGLE_LETTERS(event.A) }}
                     </div>
                     <div class="position">
-                        <b>{{ localize(event.A) }}°</b>
+                        <b>{{ localize(event.A, 2, 2) }}°</b>
                     </div>
                 </div>
             </div>
@@ -36,7 +36,7 @@
 
 <script lang="ts">
 import { SkyEvent } from "@/store/ISkyInfo";
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Vue, Prop } from "vue-property-decorator";
 import { Locale } from "@/store/constants";
 import EventIcon from "@/components/Events/EventIcon.vue";
 
@@ -47,7 +47,7 @@ import EventIcon from "@/components/Events/EventIcon.vue";
 })
 export default class PlanetWidget extends Vue {
     @Prop(SkyEvent)
-    private skyObject!: SkyEvent;
+    skyObject!: SkyEvent;
 
     constructor() {
         super();
@@ -84,17 +84,10 @@ export default class PlanetWidget extends Vue {
                 : currentDate > sunriseDate! || currentDate < sunsetDate!;
 
         if (!isHideSet) {
-            return "За горизонтом";
+            return "Под горизонтом";
         }
 
         return "";
-    }
-
-    private localize(value: Number): string {
-        return value.toLocaleString("ru-RU", {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-        });
     }
 
     ANGLE_LETTERS(angle: number): string {
@@ -126,18 +119,17 @@ export default class PlanetWidget extends Vue {
 <style lang="scss">
 .planet-box {
     scroll-snap-align: start;
-    min-width: 250px;
+    min-width: 240px;
     min-height: 135px;
     border: grayscale($color: #0a0a0a59);
     border-style: solid;
     border-width: 1px;
     border-radius: 15px;
-    padding-left: 20px;
-    padding-right: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
     padding-bottom: 10px;
     padding-top: 10px;
     background-color: rgba(0, 140, 255, 0.158);
-    margin-right: 20px;
     display: flex;
     flex-direction: column;
     justify-content: stretch;
@@ -150,18 +142,17 @@ export default class PlanetWidget extends Vue {
     }
     .planet {
         .planet-name {
-            padding: 0px;
             display: flex;
             justify-content: space-between;
-            display: flex;
             font-size: 1.5em;
-            .status {
-                display: flex;
-                font-size: 0.5em;
-                font-weight: 600;
-            }
         }
-
+        .status {
+            display: flex;
+            padding-left: 10px;
+            justify-content: flex-end;
+            font-size: 0.45em;
+            font-weight: 600;
+        }
         .info-box {
             width: 100%;
 

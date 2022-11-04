@@ -49,7 +49,6 @@ import { ISkyEvent, SkyEvent } from "@/store/ISkyInfo";
         InfoBar,
     },
 })
-
 export default class Schedule extends Vue {
     constructor() {
         super();
@@ -82,6 +81,28 @@ export default class Schedule extends Vue {
     }
 
     .planets-widgets {
+        @media print {
+            flex-flow: wrap;
+            margin-bottom: 0px;
+            
+            & > :nth-child(n) {
+                margin-right: 10px;
+                margin-bottom: 10px;
+            }
+
+            & > :nth-last-child(1) {
+                margin-right: 0px;
+            }
+        }
+
+        & > :nth-child(n) {
+            margin-right: 20px;
+        }
+
+        & > :nth-last-child(1) {
+            margin-right: 0px;
+        }
+
         display: flex;
         flex-flow: row nowrap;
         overflow-x: auto;

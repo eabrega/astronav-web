@@ -22,16 +22,11 @@
             <div class="wrap">
                 <AppSettingsSidebar />
 
-                <b-alert
-                    variant="success"
-                    v-model="isShowMessageBox"
-                    dismissible
-                >
+                <b-alert variant="success" v-model="isShowMessageBox" dismissible>
                     На странице представленна информация об астрономических
                     объектах видимых с учетом вашего
                     <b-link v-b-toggle.app-settings-sidebar>
-                        местоположения </b-link
-                    >.
+                        местоположения </b-link>.
                     <br />
                     Выбранное местоположение сохранится в настройках браузера.
                     <br />
@@ -45,7 +40,7 @@
 </template>
 
 <script lang="ts">
-import AppSettingsSidebar from "@/components/Common/AppSettingsSidebar.vue";
+import AppSettingsSidebar from "@/components/SideBar/AppSettingsSidebar.vue";
 import { Component, Vue } from "vue-property-decorator";
 @Component({
     name: "App",
@@ -87,7 +82,7 @@ export default class App extends Vue {
 </script>
 
 <style lang="scss">
-@import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;600&display=swap");
 @import url("https://unpkg.com/leaflet@1.6.0/dist/leaflet.css");
 @import "node_modules/bootstrap/scss/bootstrap.scss";
 @import "node_modules/bootstrap-vue/src/index.scss";
@@ -111,16 +106,19 @@ export default class App extends Vue {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     color: #2c3e50;
+
     h1 {
         font-size: 1.7em;
         padding-top: 20px;
         padding-bottom: 10px;
     }
+
     h2 {
         font-size: 1.6em;
         padding-top: 20px;
         padding-bottom: 15px;
     }
+
     p {
         font-size: 1.1em;
         padding-top: 5px;
@@ -171,6 +169,7 @@ export default class App extends Vue {
         font-size: 1.5em;
         color: #2c3e50;
         padding-left: 0px !important;
+
         &.router-link-exact-active {
             color: #42b983 !important;
         }

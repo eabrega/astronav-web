@@ -7,7 +7,8 @@ const hostName = "https://astronav.ru"
 const allowPages = [
     "/$",
     "/skymap",
-    "/about"
+    "/about",
+    "/sitemap.xml"
 ]
 
 const robotsOptions = {

@@ -2,18 +2,13 @@
     <div class="info_bar">
         <b-alert class="info_bar-panel" variant="secondary" show>
             <div class="latlon">
-                <span>Широта: {{ localize($store.state.lat) }}</span>
-                <span>Долгота: {{ localize($store.state.lon) }}</span>
+                <span>Широта: {{ localize($store.state.lat, 0, 3) }}</span>
+                <span>Долгота: {{ localize($store.state.lon, 0, 3) }}</span>
             </div>
         </b-alert>
         <b-alert class="info_bar-panel" variant="secondary" show>
             <div class="date-panel">
-                <b-button
-                    class="btn1"
-                    size="sm"
-                    @click="yesterday"
-                    variant="secondary"
-                >
+                <b-button class="btn1" size="sm" @click="yesterday" variant="secondary">
                     Вчера
                 </b-button>
                 <div class="date-block">
@@ -25,12 +20,7 @@
                         {{ DATE_SUFFIX }}
                     </div>
                 </div>
-                <b-button
-                    class="btn2"
-                    size="sm"
-                    @click="tomorrow"
-                    variant="secondary"
-                >
+                <b-button class="btn2" size="sm" @click="tomorrow" variant="secondary">
                     Завтра
                 </b-button>
             </div>
@@ -135,19 +125,34 @@ export default class InfoBar extends Vue {
             this.time = new Date();
         }, 1000);
     }
-
-    private localize(value: number): string {
-        return value.toLocaleString("ru-RU", {
-            style: "decimal",
-            minimumFractionDigits: 0,
-            maximumFractionDigits: 3,
-        });
-    }
 }
 </script>
 
 <style lang="scss">
 $font-size: 1.2em;
+
+@media print {
+    .info_bar {
+        padding-top: 40px;
+        padding-bottom: 10px;
+    }
+
+    .info_bar-panel {
+        display: contents;
+        border: 0;
+        background-color: transparent;
+        font-size: 1.5em;
+    }
+
+    .date-block__time {
+        padding-left: 20px;
+    }
+
+    .btn1,
+    .btn2 {
+        display: none;
+    }
+}
 
 .info_bar {
     display: flex;
@@ -209,11 +214,13 @@ $font-size: 1.2em;
                     min-width: 110px;
                     justify-content: center;
                 }
+
                 .date-block__suffix {
                     min-width: 110px;
                     display: flex;
                     justify-content: center;
                 }
+
                 .date-block__time {
                     min-width: 90px;
                     display: flex;
@@ -221,11 +228,6 @@ $font-size: 1.2em;
                 }
             }
 
-            // .btn1,
-            // .btn2 {
-            //     align-self: center;
-            //     height: 40px;
-            // }
             .btn1 {
                 grid-area: btn1;
                 margin-left: -25px;
