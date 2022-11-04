@@ -39,7 +39,7 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import { Locale } from "@/store/constants";
+import { Constants } from "@/store/constants";
 import AngularDiameter from "@/components/Common/AngularDiameter.vue";
 
 @Component({
@@ -53,7 +53,7 @@ export default class SkyObjectsTable extends Vue{
     }
 
     get SINONIMS() {
-        return Locale.PLANET_RUS;
+        return Constants.PLANET_RUS;
     }
 
     get FIELDS() {

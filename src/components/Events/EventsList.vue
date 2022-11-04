@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts">
-import { PlainEventItem } from "@/components/Events/PlainEventItem";
+import { EventItem } from "@/components/Events/EventItem";
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { ISkyEvent } from "@/store/ISkyInfo";
 import EventRow from "@/components/Events/EventRow.vue";
@@ -34,15 +34,15 @@ export default class EventsList extends Vue {
     getEventsList(eventName: string) {
         return Array.from<ISkyEvent>(this.$store.state.events)
             .filter((x) => x.events.find((x) => x.event == eventName))
-            .flatMap((x) => this.plainEventItemDecorator(x, eventName))
+            .flatMap((x) => this.eventItemDecorator(x, eventName))
             .sort((a, b) => a.Time.getTime() - b.Time.getTime());
     }
 
-    private plainEventItemDecorator(skyEvent: ISkyEvent, name: string): PlainEventItem[] {
+    private eventItemDecorator(skyEvent: ISkyEvent, name: string): EventItem[] {
         return skyEvent.events
             .filter((i) => i.event == name)
             .map((x) => {
-                return new PlainEventItem(skyEvent.name, x);
+                return new EventItem(skyEvent.name, x);
             });
     }
 }

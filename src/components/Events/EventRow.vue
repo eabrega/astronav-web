@@ -11,21 +11,21 @@
 </template>
 
 <script lang="ts">
-import { PlainEventItem } from "@/components/Events/PlainEventItem";
+import { EventItem } from "@/components/Events/EventItem";
 import { Component, Vue, Prop } from "vue-property-decorator";
-import { Locale } from "@/store/constants";
+import { Constants } from "@/store/constants";
 
 @Component
 export default class EventRow extends Vue {
     @Prop()
-    skyObject!: PlainEventItem;
+    skyObject!: EventItem;
 
     constructor() {
         super();
     }
 
     get PLANET_RUS_NAME() {
-        return Locale.PLANET_RUS;
+        return Constants.PLANET_RUS;
     }
 
     get IS_COMPLETED() {

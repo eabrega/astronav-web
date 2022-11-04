@@ -12,7 +12,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import { Locale } from "@/store/constants";
+import { Constants } from "@/store/constants";
 
 @Component
 export default class EventIcon extends Vue {
@@ -30,7 +30,7 @@ export default class EventIcon extends Vue {
     }
 
     get EVENTS_ICONS() {
-        return Locale.EVENTS_ICONS;
+        return Constants.EVENTS_ICONS;
     }
 
     get EVENTS_COLOR() {
