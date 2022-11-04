@@ -1,4 +1,4 @@
-export class Locale {
+export class Constants {
     static PLANET_RUS = new Map([
         ["Mercury", "Меркурий"],
         ["Venus", "Венера"],
@@ -6,7 +6,7 @@ export class Locale {
         ["Jupiter", "Юпитер"],
         ["Saturn", "Сатурн"],
         ["Moon", "Луна"],
-        ["Sun", "Солнце"],
+        ["Sun", "Солнце"]
     ]);
 
     static EVENTS_RUS = new Map([

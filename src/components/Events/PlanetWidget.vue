@@ -7,7 +7,7 @@
         </div>
         <div class="planet" v-else>
             <div class="planet-name">
-                {{ PLANET_RUS_NAME.get(skyObject.PlanetName) }}
+                {{ PLANET_RUS_NAME.get(skyObject.Planet.Name) }}
                 <span class="status">
                     {{ STATUS }}
                 </span>
@@ -35,10 +35,10 @@
 </template>
 
 <script lang="ts">
-import { SkyEvent } from "@/store/ISkyInfo";
 import { Component, Vue, Prop } from "vue-property-decorator";
-import { Locale } from "@/store/constants";
+import { Constants } from "@/store/constants";
 import EventIcon from "@/components/Events/EventIcon.vue";
+import { SkyEvent } from "@/core/SkyEvents/SkyEvent";
 
 @Component({
     components: {
@@ -58,11 +58,11 @@ export default class PlanetWidget extends Vue {
     }
 
     get PLANET_RUS_NAME() {
-        return Locale.PLANET_RUS;
+        return Constants.PLANET_RUS;
     }
 
     get EVENT_RUS_NAME() {
-        return Locale.EVENTS_RUS;
+        return Constants.EVENTS_RUS;
     }
 
     get STATUS(): string {

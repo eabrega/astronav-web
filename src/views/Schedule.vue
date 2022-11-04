@@ -21,7 +21,8 @@ import InfoBar from "@/components/Common/InfoBar.vue";
 import PlanetWidget from "@/components/Events/PlanetWidget.vue";
 import EventsList from "@/components/Events/EventsList.vue";
 import EventIcon from "@/components/Events/EventIcon.vue";
-import { ISkyEvent, SkyEvent } from "@/store/ISkyInfo";
+import { SkyEvent } from "@/core/SkyEvents/SkyEvent";
+import { ISkyEvent } from "@/store/ISkyInfo";
 
 @Component({
     metaInfo: {
@@ -59,7 +60,7 @@ export default class Schedule extends Vue {
         return events
             .map((x) => new SkyEvent(x))
             .sort((a, b) => {
-                if (a.PlanetName > b.PlanetName) return 1;
+                if (a.Planet.SerialNumber > b.Planet.SerialNumber) return 1;
                 else return -1;
             });
     }
@@ -84,7 +85,7 @@ export default class Schedule extends Vue {
         @media print {
             flex-flow: wrap;
             margin-bottom: 0px;
-            
+
             & > :nth-child(n) {
                 margin-right: 10px;
                 margin-bottom: 10px;

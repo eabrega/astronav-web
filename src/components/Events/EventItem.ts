@@ -1,11 +1,11 @@
 import { ISkyEventItem } from "@/store/ISkyInfo";
 
-export class PlainEventItem {
+export class EventItem {
     Name: string;
     Event: string;
     Time: Date;
     A: number;
-    
+
     constructor(name: string, event: ISkyEventItem) {
         this.Name = name;
         this.Event = event.event;
