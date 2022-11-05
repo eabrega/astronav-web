@@ -1,9 +1,9 @@
-import {AxisMover} from "../AxisMover/axisMover";
-import {IPlotterSettings} from "../IPlotterSettings";
-import {AxisPoint} from "../Points/axisPoint";
-import {CanvaPoint} from "../Points/canvaPoint";
-import {Size} from "../Sizes/size";
-import {IOffset, Offset} from "./IOffset";
+import { AxisMover } from "../AxisMover/axisMover";
+import { IPlotterSettings } from "../IPlotterSettings";
+import { AxisPoint } from "../Points/axisPoint";
+import { CanvaPoint } from "../Points/canvaPoint";
+import { Size } from "../Sizes/size";
+import { IOffset, Offset } from "./IOffset";
 import * as Viewer from "./viewer"
 
 export class PixelViewer {
@@ -58,7 +58,7 @@ export class PixelViewer {
         const x = this._cellSizeRatio.Width * position.X * this._scale;
         const y = -(this._cellSizeRatio.Height * position.Y * this._scale);
 
-        return new CanvaPoint(x,y);
+        return new CanvaPoint(x, y);
     }
 
     get GridZeroPoint() {
@@ -68,8 +68,8 @@ export class PixelViewer {
     }
 
     get GridSize() {
-        const oW = this._settings.gridSize.Width / this._scale;
-        const oH = this._settings.gridSize.Height / this._scale;
+        const oW = this._settings.axisSize.Width / this._scale;
+        const oH = this._settings.axisSize.Height / this._scale;
         return new Size(oW, oH);
     }
 
@@ -81,13 +81,13 @@ export class PixelViewer {
         return new CanvaPoint(this._gridCanvaOffsetLeft, this._gridCanvaOffsetBottom);
     }
 
-    get CanvasPosition(): CanvaPoint { 
+    get CanvasPosition(): CanvaPoint {
         return this._position;
     }
 
     private get _cellSizeRatio() {
-        const cellWidth = this._gridCanvaSize.Width / this._settings.gridSize.Width;
-        const cellHeight = this._gridCanvaSize.Height / this._settings.gridSize.Height;
+        const cellWidth = this._gridCanvaSize.Width / this._settings.axisSize.Width;
+        const cellHeight = this._gridCanvaSize.Height / this._settings.axisSize.Height;
 
         return new Size(cellWidth, cellHeight);
     }

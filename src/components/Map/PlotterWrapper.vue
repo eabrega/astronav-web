@@ -7,9 +7,12 @@
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
 import { Plotter } from "@/components/Plotter/index";
-import { GridLinear, GridType, IPlotterSettings } from "../Plotter/IPlotterSettings";
+import {
+    GridLinear,
+    GridType,
+    IPlotterSettings,
+} from "../Plotter/IPlotterSettings";
 import { Size } from "../Plotter/Sizes/size";
-
 
 @Component
 export default class PlotterWrapper extends Vue {
@@ -48,11 +51,16 @@ export default class PlotterWrapper extends Vue {
             (this.$refs.select as HTMLCanvasElement).height = 400;
 
             this._settings = {
-                isDebug: false,
-                gridSize: new Size(360, 90),
+                isDebug: true,
+                axisSize: new Size(100, 90),
                 gridAccuracy: 1,
-                axisConstraint:[GridType.FixedY, GridType.LoopX],
-                gridLinears: [ GridLinear.Left, GridLinear.Top, GridLinear.Bottom, GridLinear.Right ]
+                axisConstraint: [GridType.FixedY, GridType.FixedX],
+                gridLinears: [
+                    GridLinear.Left,
+                    GridLinear.Top,
+                    GridLinear.Bottom,
+                    GridLinear.Right,
+                ],
             };
 
             this.plotter = new Plotter("canva", this._settings);

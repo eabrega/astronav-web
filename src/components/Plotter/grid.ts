@@ -26,8 +26,8 @@ export class Grid {
         this._canva = canva;
         this._settings = settings;
 
-        this.gridStepX = this._mainGridStepX / (this._canva.width / this._settings.gridSize.Width);
-        this.gridStepY = this._mainGridStepY / (this._canva.height / this._settings.gridSize.Height);
+        this.gridStepX = this._mainGridStepX / (this._canva.width / this._settings.axisSize.Width);
+        this.gridStepY = this._mainGridStepY / (this._canva.height / this._settings.axisSize.Height);
 
         this._isHasTopLinears = settings.gridLinears.includes(GridLinear.Top);
         this._isHasBottomLinears = settings.gridLinears.includes(GridLinear.Bottom);
@@ -49,8 +49,8 @@ export class Grid {
         Viewer.DrawLine(this._canva, startPositionX, startPositionY, stopPositionX, startPositionY, 2, "LightSlateGrey");
         Viewer.DrawLine(this._canva, stopPositionX, stopPositionY, stopPositionX, startPositionY, 2, "LightSlateGrey");
 
-        const constantGridStepX = (this._mainGridStepX / (this._canva.width / this._settings.gridSize.Width))
-        const deltaX = ((this._viewer.GridSize.Width / this.gridStepX) / (this._settings.gridSize.Width / constantGridStepX)) * 100;
+        const constantGridStepX = (this._mainGridStepX / (this._canva.width / this._settings.axisSize.Width))
+        const deltaX = ((this._viewer.GridSize.Width / this.gridStepX) / (this._settings.axisSize.Width / constantGridStepX)) * 100;
 
         if (deltaX < 50) {
             this.gridStepX = this.gridStepX / 2;
@@ -86,8 +86,8 @@ export class Grid {
             }
         }
 
-        const constantGridStepY = (this._mainGridStepY / (this._canva.height / this._settings.gridSize.Height))
-        const deltaY = ((this._viewer.GridSize.Height / this.gridStepY) / (this._settings.gridSize.Height / constantGridStepY)) * 100;
+        const constantGridStepY = (this._mainGridStepY / (this._canva.height / this._settings.axisSize.Height))
+        const deltaY = ((this._viewer.GridSize.Height / this.gridStepY) / (this._settings.axisSize.Height / constantGridStepY)) * 100;
 
         if (deltaY < 50) {
             this.gridStepY = this.gridStepY / 2;
