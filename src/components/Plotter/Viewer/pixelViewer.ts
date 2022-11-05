@@ -55,7 +55,7 @@ export class PixelViewer {
     }
 
     CalcCanvaPosition(position: AxisPoint): CanvaPoint {
-        const x = this._cellSizeRatio.Width * position.X * this._scale;
+        const x = -(this._cellSizeRatio.Width * position.X * this._scale);
         const y = -(this._cellSizeRatio.Height * position.Y * this._scale);
 
         return new CanvaPoint(x, y);

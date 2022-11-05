@@ -3,6 +3,8 @@ import { Size } from "./Sizes/size";
 export interface IPlotterSettings {
     isDebug?: boolean | undefined;
     axisSize: Size;
+    xExtremum?: Array<number>,
+    yExtremum?: Array<number> | undefined,
     gridAccuracy: number;
     axisConstraint: Array<GridType>;
     gridLinears: Array<GridLinear>;

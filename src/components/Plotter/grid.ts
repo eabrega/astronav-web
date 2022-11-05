@@ -5,6 +5,7 @@ import { IOffset, Offset } from "./Viewer/IOffset";
 import { AxisPoint } from "./Points/axisPoint";
 import { CanvaPoint } from "./Points/canvaPoint";
 import { IPoint } from "./Points/iPoint";
+//import Mappers from "@/helpers/mappers";
 
 export class Grid {
     private _viewer: PixelViewer;
@@ -70,7 +71,8 @@ export class Grid {
 
             if (index == 0) {
                 this.DrawOrdinatLine(p1, p2, 11, index, "red", "red", 12);
-            } else {        
+            }
+            else {
                 this.DrawOrdinatLine(p1, p2, 8, index, "gray", "Silver", 11);
             }
 
@@ -153,19 +155,19 @@ export class Grid {
         this.DrawGrid();
     }
 
-    private DrawOrdinatLine(p1: CanvaPoint, p2: CanvaPoint, pineSize: number, axis: number, colorText: string, colorLine: string, fontSize: number) {
+    private DrawOrdinatLine(p1: CanvaPoint, p2: CanvaPoint, pineSize: number, axisValue: number, colorText: string, colorLine: string, fontSize: number) {
         if (!this._viewer.IsVisible(p1) && !this._viewer.IsVisible(p2)) return
-
         Viewer.DrawLine(this._canva, p1.X, p1.Y, p2.X, p2.Y, 1, colorLine);
 
+        const roundAxisValue = this.localize(axisValue, 0, this._settings.gridAccuracy);
         if (this._isHasBottomLinears) {
             Viewer.DrawLine(this._canva, p1.X, p1.Y, p2.X, p1.Y - pineSize, 3, colorLine);
-            Viewer.DrawText(this._canva, p1.X, p1.Y - pineSize - 5, (axis).toFixed(this._settings.gridAccuracy), fontSize, colorText, "center", "top")
+            Viewer.DrawText(this._canva, p1.X, p1.Y - pineSize - 5, roundAxisValue, fontSize, colorText, "center", "top")
         }
 
         if (this._isHasTopLinears) {
             Viewer.DrawLine(this._canva, p1.X, p2.Y, p2.X, p2.Y + pineSize, 3, colorLine);
-            Viewer.DrawText(this._canva, p1.X, p2.Y + pineSize + 5, (axis).toFixed(this._settings.gridAccuracy), fontSize, colorText, "center", "bottom")
+            Viewer.DrawText(this._canva, p1.X, p2.Y + pineSize + 5, roundAxisValue, fontSize, colorText, "center", "bottom")
         }
     }
 
@@ -173,14 +175,15 @@ export class Grid {
         if (!this._viewer.IsVisible(p1) && !this._viewer.IsVisible(p2)) return
         Viewer.DrawLine(this._canva, p1.X, p1.Y, p2.X, p2.Y, 1, colorLine);
 
+        const roundAxisValue = this.localize(axis, 0, this._settings.gridAccuracy);
         if (this._isHasLeftLinears) {
             Viewer.DrawLine(this._canva, p1.X - pineSize, p1.Y, p1.X, p2.Y, 3, colorLine);
-            Viewer.DrawText(this._canva, p1.X - pineSize - 5, p1.Y, (axis).toFixed(this._settings.gridAccuracy), fontSize, colorText, "end", "middle")
+            Viewer.DrawText(this._canva, p1.X - pineSize - 5, p1.Y, roundAxisValue, fontSize, colorText, "end", "middle")
         }
 
         if (this._isHasRightLinears) {
             Viewer.DrawLine(this._canva, p2.X, p1.Y, p2.X + pineSize, p1.Y, 3, colorLine);
-            Viewer.DrawText(this._canva, p2.X + pineSize + 5, p2.Y, (axis).toFixed(this._settings.gridAccuracy), fontSize, colorText, "start", "middle")
+            Viewer.DrawText(this._canva, p2.X + pineSize + 5, p2.Y, roundAxisValue, fontSize, colorText, "start", "middle")
         }
     }
 
@@ -193,5 +196,13 @@ export class Grid {
         this._isHasRightLinears ? offsets.push({ offset: Offset.Right, size: 40 }) : null;
 
         return offsets;
+    }
+
+    public localize(value: number, min: number, max: number): string {
+        return value.toLocaleString("ru-RU", {
+            style: "decimal",
+            minimumFractionDigits: min,
+            maximumFractionDigits: max,
+        });
     }
 }

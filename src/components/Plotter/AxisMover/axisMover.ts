@@ -1,4 +1,3 @@
-import { Grid } from "../grid";
 import { IPlotterSettings } from "../IPlotterSettings";
 import { AxisPoint } from "../Points/axisPoint";
 import { CanvaPoint } from "../Points/canvaPoint";
@@ -9,11 +8,14 @@ export class AxisMover {
     private readonly _gridStartPosition: AxisPoint;
     private readonly _gridEndPosition: AxisPoint;
     constructor(
-        private _settings: IPlotterSettings,
+        _settings: IPlotterSettings,
         private _viewer: PixelViewer
     ) {
-        this._gridStartPosition = new AxisPoint(-(_settings.axisSize.Width), -(_settings.axisSize.Height))
-        this._gridEndPosition = new AxisPoint(_settings.axisSize.Width, _settings.axisSize.Height)
+        const xMinExtremum = _settings.xExtremum ? _settings.xExtremum[0] : -(_settings.axisSize.Width);
+        const xMaxExtremum = _settings.xExtremum ? _settings.xExtremum[1] : _settings.axisSize.Width;
+
+        this._gridStartPosition = new AxisPoint(xMinExtremum, -(_settings.axisSize.Height))
+        this._gridEndPosition = new AxisPoint(xMaxExtremum, _settings.axisSize.Height)
     }
 
     PositionMapper(acceleration: CanvaPoint): CanvaPoint {
@@ -46,19 +48,19 @@ export class AxisMover {
 
         if (directions.includes(MoveDirection.Down)) {
             if (this._viewer.GridZeroPoint.Y + this._viewer.GridSize.Height >= this._gridEndPosition.Y) {
-                newY = this._viewer.CalcCanvaPosition(this._gridEndPosition).Y + this._viewer.GridCanvaSize.Height ;
+                newY = this._viewer.CalcCanvaPosition(this._gridEndPosition).Y + this._viewer.GridCanvaSize.Height;
             }
         }
 
         if (directions.includes(MoveDirection.Right)) {
-            if (this._gridStartPosition.X >= this._viewer.GridZeroPoint.X) {
-                newX = this._viewer.CalcCanvaPosition(this._gridEndPosition).X 
+            if (this._viewer.GridZeroPoint.X < this._gridStartPosition.X + 0.1) {
+                newX = this._viewer.CalcCanvaPosition(this._gridStartPosition).X
             }
         }
 
         if (directions.includes(MoveDirection.Left)) {
-            if (this._viewer.GridZeroPoint.X + this._viewer.GridSize.Width >= this._gridEndPosition.X) {
-                newX = this._viewer.CalcCanvaPosition(this._gridStartPosition).X + this._viewer.GridCanvaSize.Width 
+            if (this._gridEndPosition.X < this._viewer.GridZeroPoint.X + this._viewer.GridSize.Width + 0.1) {
+                newX = this._viewer.CalcCanvaPosition(this._gridEndPosition).X + this._viewer.GridCanvaSize.Width
             }
         }
 
