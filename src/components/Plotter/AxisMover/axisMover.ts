@@ -46,19 +46,19 @@ export class AxisMover {
 
         if (directions.includes(MoveDirection.Down)) {
             if (this._viewer.GridZeroPoint.Y + this._viewer.GridSize.Height >= this._gridEndPosition.Y) {
-                newY = this._viewer.CalcCanvaPosition(this._gridEndPosition).Y + this._viewer.GridCanvaSize.Height - 1;
+                newY = this._viewer.CalcCanvaPosition(this._gridEndPosition).Y + this._viewer.GridCanvaSize.Height ;
             }
         }
 
         if (directions.includes(MoveDirection.Right)) {
             if (this._gridStartPosition.X >= this._viewer.GridZeroPoint.X) {
-                newX = this._viewer.CalcCanvaPosition(this._gridEndPosition).X + 1
+                newX = this._viewer.CalcCanvaPosition(this._gridEndPosition).X 
             }
         }
 
         if (directions.includes(MoveDirection.Left)) {
             if (this._viewer.GridZeroPoint.X + this._viewer.GridSize.Width >= this._gridEndPosition.X) {
-                newX = this._viewer.CalcCanvaPosition(this._gridStartPosition).X + this._viewer.GridCanvaSize.Width - 1
+                newX = this._viewer.CalcCanvaPosition(this._gridStartPosition).X + this._viewer.GridCanvaSize.Width 
             }
         }
 

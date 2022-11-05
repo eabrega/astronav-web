@@ -17,7 +17,7 @@ export class Grid {
     private readonly _mainGridStepX = 100;
     private readonly _extensionGridStepX = 50;
     private readonly _mainGridStepY = 100;
-    private readonly _extensionGridStepY = 45;
+    private readonly _extensionGridStepY = 50;
     private gridStepX: number;
     private gridStepY: number;
 
@@ -52,10 +52,10 @@ export class Grid {
         const constantGridStepX = (this._mainGridStepX / (this._canva.width / this._settings.axisSize.Width))
         const deltaX = ((this._viewer.GridSize.Width / this.gridStepX) / (this._settings.axisSize.Width / constantGridStepX)) * 100;
 
-        if (deltaX < 50) {
+        if (deltaX < this._extensionGridStepX) {
             this.gridStepX = this.gridStepX / 2;
         }
-        if (deltaX > 100) {
+        if (deltaX > this._mainGridStepX) {
             this.gridStepX = this.gridStepX * 2;
         }
 
@@ -70,7 +70,7 @@ export class Grid {
 
             if (index == 0) {
                 this.DrawOrdinatLine(p1, p2, 11, index, "red", "red", 12);
-            } else {
+            } else {        
                 this.DrawOrdinatLine(p1, p2, 8, index, "gray", "Silver", 11);
             }
 
@@ -89,10 +89,10 @@ export class Grid {
         const constantGridStepY = (this._mainGridStepY / (this._canva.height / this._settings.axisSize.Height))
         const deltaY = ((this._viewer.GridSize.Height / this.gridStepY) / (this._settings.axisSize.Height / constantGridStepY)) * 100;
 
-        if (deltaY < 50) {
+        if (deltaY < this._extensionGridStepY) {
             this.gridStepY = this.gridStepY / 2;
         }
-        if (deltaY > 100) {
+        if (deltaY > this._mainGridStepX) {
             this.gridStepY = this.gridStepY * 2;
         }
 
