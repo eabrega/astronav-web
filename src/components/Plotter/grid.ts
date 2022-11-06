@@ -16,9 +16,9 @@ export class Grid {
     private readonly _isHasLeftLinears: boolean;
     private readonly _isHasRightLinears: boolean;
     private readonly _mainGridStepX = 100;
-    private readonly _extensionGridStepX = 50;
-    private readonly _mainGridStepY = 100;
-    private readonly _extensionGridStepY = 50;
+    private readonly _extensionGridStepX = 60;
+    private readonly _mainGridStepY = 400/3;
+    private readonly _extensionGridStepY = 400/10;
     private gridStepX: number;
     private gridStepY: number;
 
