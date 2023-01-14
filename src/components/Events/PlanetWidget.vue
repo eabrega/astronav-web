@@ -161,30 +161,30 @@ export default class PlanetWidget extends Vue {
         }
         .info-box {
             width: 100%;
+            padding-top: 5px;
 
             .event-row {
-                margin-left: 0px;
                 display: flex;
                 flex-direction: row;
 
                 .time {
-                    width: 35%;
+                    width: 30%;
                 }
 
                 .position-leter {
-                    width: 30px;
-                    margin-right: 15px;
+                    width: 35px;
                     color: blue;
+                    font-weight: 400;
                 }
 
                 .position-value {
                     font-weight: bold;
-                    width: 75px;
+                    min-width: 80px;
                     display: flex;
                     justify-content: flex-end;
 
                     .h-symbol {
-                        padding-right: 5px;
+                        padding-right: 5px;                        
                     }
                 }
             }
