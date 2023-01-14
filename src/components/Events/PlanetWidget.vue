@@ -14,7 +14,7 @@
             </div>
             <div class="info-box">
                 <div
-                    class="event"
+                    class="event-row"
                     v-for="(event, i) in skyObject.Events"
                     :key="i"
                 >
@@ -25,8 +25,14 @@
                     <div class="position-leter">
                         {{ ANGLE_LETTERS(event.A) }}
                     </div>
-                    <div class="position">
-                        <b>{{ localize(event.A, 2, 2) }}°</b>
+                    <div class="position-value">
+                        <div v-if="event.Event !== 'Apogee'">
+                            {{ localize(event.A, 2, 2) }}°
+                        </div>
+                        <div v-else>
+                            <span class="h-symbol">h</span>
+                            {{ localize(event.H, 2, 2) }}°
+                        </div>
                     </div>
                 </div>
             </div>
@@ -156,13 +162,13 @@ export default class PlanetWidget extends Vue {
         .info-box {
             width: 100%;
 
-            .event {
+            .event-row {
                 margin-left: 0px;
                 display: flex;
                 flex-direction: row;
 
                 .time {
-                    width: 40%;
+                    width: 35%;
                 }
 
                 .position-leter {
@@ -171,9 +177,15 @@ export default class PlanetWidget extends Vue {
                     color: blue;
                 }
 
-                .position {
-                    width: 60px;
-                    text-align: right;
+                .position-value {
+                    font-weight: bold;
+                    width: 75px;
+                    display: flex;
+                    justify-content: flex-end;
+
+                    .h-symbol {
+                        padding-right: 5px;
+                    }
                 }
             }
         }

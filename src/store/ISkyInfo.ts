@@ -14,6 +14,7 @@ export interface ISkyEventItem {
     event: string;
     date: Date;
     a: number;
+    h: number;
 }
 
 export interface ISkyEvent {
