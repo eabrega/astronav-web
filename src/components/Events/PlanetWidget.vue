@@ -166,7 +166,7 @@ export default class PlanetWidget extends Vue {
             .event-row {
                 display: flex;
                 flex-direction: row;
-
+                margin: 0px;
                 .time {
                     width: 30%;
                 }
@@ -184,7 +184,7 @@ export default class PlanetWidget extends Vue {
                     justify-content: flex-end;
 
                     .h-symbol {
-                        padding-right: 5px;                        
+                        padding-right: 5px;
                     }
                 }
             }
