@@ -53,6 +53,7 @@ export default class PlotterWrapper extends Vue {
             this._settings = {
                 isDebug: false,
                 axisSize: new Size(360, 90),
+                axisStep: 20,
                 xExtremum: [0, 360],
                 gridAccuracy: 2,
                 axisConstraint: [GridType.FixedY, GridType.FixedX],

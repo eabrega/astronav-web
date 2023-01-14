@@ -16,19 +16,15 @@ export class Grid {
     private readonly _isHasLeftLinears: boolean;
     private readonly _isHasRightLinears: boolean;
     private readonly _mainGridStepX = 100;
-    private readonly _extensionGridStepX = 60;
-    private readonly _mainGridStepY = 400/3;
-    private readonly _extensionGridStepY = 400/10;
+    private readonly _extensionGridStepX = 40;
+    private readonly _mainGridStepY = 400 / 3;
+    private readonly _extensionGridStepY = 400 / 10;
     private gridStepX: number;
     private gridStepY: number;
-
 
     constructor(canva: HTMLCanvasElement, settings: IPlotterSettings) {
         this._canva = canva;
         this._settings = settings;
-
-        this.gridStepX = this._mainGridStepX / (this._canva.width / this._settings.axisSize.Width);
-        this.gridStepY = this._mainGridStepY / (this._canva.height / this._settings.axisSize.Height);
 
         this._isHasTopLinears = settings.gridLinears.includes(GridLinear.Top);
         this._isHasBottomLinears = settings.gridLinears.includes(GridLinear.Bottom);
@@ -37,6 +33,9 @@ export class Grid {
 
         const offsets = this.OffsetMapper();
         this._viewer = new PixelViewer(this._canva, settings, offsets);
+
+        this.gridStepX = this._mainGridStepX / (this._canva.width / this._settings.axisSize.Width);
+        this.gridStepY = this._mainGridStepY / (this._canva.height / this._settings.axisSize.Height);
     }
 
     DrawGrid() {
@@ -50,8 +49,11 @@ export class Grid {
         Viewer.DrawLine(this._canva, startPositionX, startPositionY, stopPositionX, startPositionY, 2, "LightSlateGrey");
         Viewer.DrawLine(this._canva, stopPositionX, stopPositionY, stopPositionX, startPositionY, 2, "LightSlateGrey");
 
-        const constantGridStepX = (this._mainGridStepX / (this._canva.width / this._settings.axisSize.Width))
-        const deltaX = ((this._viewer.GridSize.Width / this.gridStepX) / (this._settings.axisSize.Width / constantGridStepX)) * 100;
+         const constantGridStepX = (this._mainGridStepX / (this._canva.width / this._settings.axisSize.Width))
+         const deltaX = ((this._viewer.GridSize.Width / this.gridStepX) / (this._settings.axisSize.Width / constantGridStepX)) * 100;
+
+        //const constantGridStepX = (this.gridStepX / (this._viewer.GridCanvaSize.Width / this._settings.axisSize.Width))
+        //const deltaX = ((this._viewer.GridSize.Width / this.gridStepX) / (this._settings.axisSize.Width / constantGridStepX)) * 100;
 
         if (deltaX < this._extensionGridStepX) {
             this.gridStepX = this.gridStepX / 2;
@@ -59,6 +61,8 @@ export class Grid {
         if (deltaX > this._mainGridStepX) {
             this.gridStepX = this.gridStepX * 2;
         }
+
+        console.log(this.gridStepX, deltaX)
 
         const startX = Math.round(this._viewer.GridZeroPoint.X / this.gridStepX) * this.gridStepX
         const stopX = startX + this._viewer.GridSize.Width;
@@ -76,52 +80,54 @@ export class Grid {
                 this.DrawOrdinatLine(p1, p2, 8, index, "gray", "Silver", 11);
             }
 
-            const dX2 = this._viewer.GetCanvaPosition(new AxisPoint(index + this.gridStepX, 0)).X
-            const t1 = Math.round((dX2 - x) / this._extensionGridStepX);
-            const t = (dX2 - x) / t1;
+            if (this._extensionGridStepX > 0) {
+                const dX2 = this._viewer.GetCanvaPosition(new AxisPoint(index + this.gridStepX, 0)).X
+                const t1 = Math.round((dX2 - x) / this._extensionGridStepX);
+                const t = (dX2 - x) / t1;
 
-            for (let i = x + t; i < dX2; i += t) {
-                const number = this._viewer.GetGridPosition(new CanvaPoint(i, 0)).X;
-                const p1 = new CanvaPoint(i, startPositionY);
-                const p2 = new CanvaPoint(i, stopPositionY);
-                this.DrawOrdinatLine(p1, p2, 8, number, "Gainsboro", "Gainsboro", 11);
+                for (let i = x + t; i < dX2; i += t) {
+                    const number = this._viewer.GetGridPosition(new CanvaPoint(i, 0)).X;
+                    const p1 = new CanvaPoint(i, startPositionY);
+                    const p2 = new CanvaPoint(i, stopPositionY);
+                    this.DrawOrdinatLine(p1, p2, 8, number, "Gainsboro", "Gainsboro", 11);
+                }
             }
         }
 
-        const constantGridStepY = (this._mainGridStepY / (this._canva.height / this._settings.axisSize.Height))
-        const deltaY = ((this._viewer.GridSize.Height / this.gridStepY) / (this._settings.axisSize.Height / constantGridStepY)) * 100;
+        // const constantGridStepY = (this._mainGridStepY / (this._canva.height / this._settings.axisSize.Height))
+        // const deltaY = ((this._viewer.GridSize.Height / this.gridStepY) / (this._settings.axisSize.Height / constantGridStepY)) * 100;
 
-        if (deltaY < this._extensionGridStepY) {
-            this.gridStepY = this.gridStepY / 2;
-        }
-        if (deltaY > this._mainGridStepX) {
-            this.gridStepY = this.gridStepY * 2;
-        }
+        // if (deltaY < this._extensionGridStepY) {
+        //     this.gridStepY = this.gridStepY / 2;
+        // }
+        // if (deltaY > this._mainGridStepX) {
+        //     this.gridStepY = this.gridStepY * 2;
+        // }
 
-        const startY = Math.round(this._viewer.GridZeroPoint.Y / this.gridStepY) * this.gridStepY
-        const stopY = startY + this._viewer.GridSize.Height;
+        // const startY = Math.round(this._viewer.GridZeroPoint.Y / this.gridStepY) * this.gridStepY
+        // const stopY = startY + this._viewer.GridSize.Height;
 
-        for (let index = startY - this.gridStepY; index <= stopY + this.gridStepY; index += this.gridStepY) {
-            const y = this._viewer.GetCanvaPosition(new AxisPoint(0, index)).Y
+        // for (let index = startY - this.gridStepY; index <= stopY + this.gridStepY; index += this.gridStepY) {
+        //     const y = this._viewer.GetCanvaPosition(new AxisPoint(0, index)).Y
 
-            const p1 = new CanvaPoint(startPositionX, y)
-            const p2 = new CanvaPoint(stopPositionX, y)
-            if (index == 0) {
-                this.DrawAbscissaLine(p1, p2, 11, index, "red", "red", 11);
-            } else {
-                this.DrawAbscissaLine(p1, p2, 8, index, "gray", "Silver", 11);
-            }
-            const dY2 = this._viewer.GetCanvaPosition(new AxisPoint(0, index + this.gridStepY)).Y
-            const t1 = Math.round((y - dY2) / this._extensionGridStepY);
-            const t = (y - dY2) / t1
+        //     const p1 = new CanvaPoint(startPositionX, y)
+        //     const p2 = new CanvaPoint(stopPositionX, y)
+        //     if (index == 0) {
+        //         this.DrawAbscissaLine(p1, p2, 11, index, "red", "red", 11);
+        //     } else {
+        //         this.DrawAbscissaLine(p1, p2, 8, index, "gray", "Silver", 11);
+        //     }
+        //     const dY2 = this._viewer.GetCanvaPosition(new AxisPoint(0, index + this.gridStepY)).Y
+        //     const t1 = Math.round((y - dY2) / this._extensionGridStepY);
+        //     const t = (y - dY2) / t1
 
-            for (let i = y + t; i < dY2; i += t) {
-                const p1 = new CanvaPoint(startPositionX, i)
-                const p2 = new CanvaPoint(stopPositionX, i)
-                const number = this._viewer.GetGridPosition(new CanvaPoint(0, this._canva.height - i)).Y;
-                this.DrawAbscissaLine(p1, p2, 8, number, "Gainsboro", "Gainsboro", 11);
-            }
-        }
+        //     for (let i = y + t; i < dY2; i += t) {
+        //         const p1 = new CanvaPoint(startPositionX, i)
+        //         const p2 = new CanvaPoint(stopPositionX, i)
+        //         const number = this._viewer.GetGridPosition(new CanvaPoint(0, this._canva.height - i)).Y;
+        //         this.DrawAbscissaLine(p1, p2, 8, number, "Gainsboro", "Gainsboro", 11);
+        //     }
+        // }
     }
 
     DrawGridObject(p: AxisPoint, label: string) {
