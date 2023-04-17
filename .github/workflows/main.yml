@@ -6,7 +6,7 @@ on:
     branches: [ master ]
 env:
   NAME: astronav-web
-
+  DOCKER_PORT: 7101
 jobs:
    build:
     runs-on: ubuntu-latest
@@ -28,11 +28,11 @@ jobs:
         env:
           TAG: '${{ github.run_number }}'
         with:
-          envs: TAG, NAME
+          envs: TAG, NAME, DOCKER_PORT
           host: ${{ secrets.DEPLOY_SERVER_IP }}
           port: ${{ secrets.DEPLOY_SERVER_PORT }}
           username: ${{ secrets.USER_NAME }}
           key: ${{ secrets.KEY }}
           script: |
             docker rm -f $NAME-1
-            docker run -id -p 7010:80 --name $NAME-1 eabrega/$NAME:$TAG
+            docker run -id -p 127.0.0.1:$DOCKER_PORT:80 --name $NAME-1 eabrega/$NAME:$TAG
