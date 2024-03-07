@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import { IDrawObjects } from "canvas-chart-ts/dist/drawObjectsFrame";
-import { ISkyEvent, ISkyInfo, ISkyInfoItem } from "@/store/ISkyInfo"
+import { ILocalTimeZone, ISkyEvent, ISkyInfo, ISkyInfoItem } from "@/store/ISkyInfo"
 import DateParser from "@/components/SideBar/DateParser";
 import IUserSettings from "@/store/userSettings";
 import Geo from '@/components/Common/Geolocation'
@@ -17,6 +17,7 @@ export interface IState {
     condition: Array<IDrawObjects>;
     events: Array<ISkyEvent>;
     info: Array<ISkyInfoItem>;
+    locationTimeZone?: ILocalTimeZone;
     currentFrameIndex: number,
     lon: number,
     lat: number,
@@ -31,6 +32,7 @@ export default new Vuex.Store({
         condition: Array<IDrawObjects>(),
         events: Array<ISkyEvent>(),
         info: Array<ISkyInfoItem>(),
+        locationTimeZone: { location: "Moscow" },
         currentFrameIndex: 0,
         lon: getLocalStoredParam()?.lon ?? 37.6,
         lat: getLocalStoredParam()?.lat ?? 55.7,
@@ -55,6 +57,9 @@ export default new Vuex.Store({
         SET_LON(state, val) {
             state.lon = val;
         },
+        SET_LOCAL_TIME_ZONE(state, val) {
+            state.locationTimeZone = val;
+        },
         SET_DATE(state, val) {
             state.date = val;
         },
@@ -70,6 +75,8 @@ export default new Vuex.Store({
             commit("SET_IS_LOADING", true);
             const objects = await Load(new DateParser(state.date).toString(), state.lat, state.lon, state.date.getTimezoneOffset()).then();
             const info = await LoadInfo(new DateParser(state.date).toString(), state.lat, state.lon).then();
+            const timeZone = await LoadLocalTimeZone(state.lat, state.lon);
+            commit("SET_LOCAL_TIME_ZONE", timeZone)
             commit("SET_CONDITIONS", objects);
             commit("SET_INFO", info.objects);
             const id = state.condition
@@ -82,11 +89,17 @@ export default new Vuex.Store({
             const events = await LoadEvents(new DateParser(state.date).toString(), state.lat, state.lon, state.date.getTimezoneOffset()).then();
             commit("SET_EVENTS", events);
         },
+        getLocationTimeZone: async ({ state, commit }) => {
+            const timeZone = await LoadLocalTimeZone(state.lat, state.lon);
+            commit("SET_LOCAL_TIME_ZONE", timeZone);
+        },
         setCurrentFrameId: ({ commit }, val) => {
             commit("SET_CURRENT_FRAME_ID", val);
         },
-        setLat: ({ commit }, val) => {
+        setLat: async ({ state, commit }, val) => {
             commit("SET_LAT", val);
+            const timeZone = await LoadLocalTimeZone(state.lat, state.lon);
+            commit("SET_LOCAL_TIME_ZONE", timeZone)
         },
         setLon: ({ commit }, val) => {
             commit("SET_LON", val);
@@ -112,7 +125,6 @@ export default new Vuex.Store({
             commit("SET_INFO", info.objects);
             commit("SET_CURRENT_FRAME_ID", state.currentFrameIndex);
             commit("SET_EVENTS", events);
-
             commit("SET_IS_LOADING", false);
         },
         setIsShowHelpMessage: ({ commit, state }, val: boolean) => {
@@ -127,6 +139,7 @@ export default new Vuex.Store({
             state.date.getTimezoneOffset() < 0
                 ? '+' + state.date.getTimezoneOffset() / -60
                 : '-' + state.date.getTimezoneOffset() / 60,
+        localTimeZone: (state) => state.locationTimeZone,
         currentFrameId: (state) => state.currentFrameIndex,
         condition: (state) => state.condition ?? null,
         isLoading: (state) => state.isLoading,
@@ -179,6 +192,14 @@ async function LoadEvents(date: string, lat: number, lon: number, gmtCorrector: 
     let resp = await fetch(
         `https://api.astronav.ru/sky/event/date/${dateAsString}/gmt/${gmtCorrector}/latitude/${lat}/longitude/${lon}`
     );
+    return resp.json();
+}
+
+async function LoadLocalTimeZone(lat: number, lon: number): Promise<ILocalTimeZone> {
+    let resp = await fetch(
+        `http://192.168.1.20:5180/sky/timezone/latitude/${lat}/longitude/${lon}`
+    );
+    console.log("pizda");
     return resp.json();
 }
 

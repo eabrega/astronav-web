@@ -21,3 +21,9 @@ export interface ISkyEvent {
     events: Array<ISkyEventItem>;
     name: string;
 }
+
+export interface ILocalTimeZone {
+    location: string
+    localTime: Date
+    offset: number
+}
