@@ -20,7 +20,7 @@
                 >
                     <EventIcon :name="event.Event" />
                     <div class="time">
-                        {{ event.Date.toLocaleTimeString().substr(0, 5) }}
+                        {{ event.Date.toLocaleTimeString().substring(0, 5) }}
                     </div>
                     <div class="position-leter">
                         {{ ANGLE_LETTERS(event.A) }}

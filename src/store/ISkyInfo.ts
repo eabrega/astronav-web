@@ -1,3 +1,5 @@
+import { DateTime } from "luxon";
+
 export interface ISkyInfoItem {
     name: string;
     d: number;
@@ -24,6 +26,5 @@ export interface ISkyEvent {
 
 export interface ILocalTimeZone {
     location: string
-    localTime: Date
     offset: number
 }

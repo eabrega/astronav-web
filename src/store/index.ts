@@ -58,7 +58,10 @@ export default new Vuex.Store({
             state.lon = val;
         },
         SET_LOCAL_TIME_ZONE(state, val) {
-            state.locationTimeZone = val;
+            state.locationTimeZone = <ILocalTimeZone>{
+                location: val.location,
+                offset: val.offset
+            }
         },
         SET_DATE(state, val) {
             state.date = val;
@@ -89,8 +92,8 @@ export default new Vuex.Store({
             const events = await LoadEvents(new DateParser(state.date).toString(), state.lat, state.lon, state.date.getTimezoneOffset()).then();
             commit("SET_EVENTS", events);
         },
-        getLocationTimeZone: async ({ state, commit }) => {
-            const timeZone = await LoadLocalTimeZone(state.lat, state.lon);
+        getLocationTimeZone: async ({ commit }, val) => {
+            const timeZone = await LoadLocalTimeZone(val.lat, val.lon);
             commit("SET_LOCAL_TIME_ZONE", timeZone);
         },
         setCurrentFrameId: ({ commit }, val) => {
@@ -199,7 +202,6 @@ async function LoadLocalTimeZone(lat: number, lon: number): Promise<ILocalTimeZo
     let resp = await fetch(
         `http://192.168.1.20:5180/sky/timezone/latitude/${lat}/longitude/${lon}`
     );
-    console.log("pizda");
     return resp.json();
 }
 

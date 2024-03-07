@@ -21,6 +21,7 @@
                 <b-input-group prepend="Дата" class="mt-3">
                     <b-form-input v-model="CurrentDate" type="date" debounce="500" class="input-date"></b-form-input>
                 </b-input-group>
+                <LocalTimeZone :value="{ lat: Lat, lon: Lon }" />
                 <b-button class="mt-4" v-on:click="saveButtonHendler" v-b-toggle.app-settings-sidebar variant="success">
                     Cохранить
                 </b-button>
@@ -47,9 +48,11 @@ import store from "@/store";
 import Geo from "./Geolocation";
 import OpenStreetMapWrapper from "./OpenStreetMapWrapper.vue"
 import { ICoords } from "@/components/Common/ICoords";
+import LocalTimeZone from "../Common/LocalTimeZone.vue";
 @Component({
     components: {
-        OpenStreetMapWrapper
+        OpenStreetMapWrapper,
+        LocalTimeZone
     },
 })
 export default class AppSettingsSidebar extends Vue {
@@ -60,8 +63,11 @@ export default class AppSettingsSidebar extends Vue {
     private mapWrapper!: OpenStreetMapWrapper;
 
     mapClickHendler(i: ICoords) {
+        let dLon = (Math.round(i.lon / 360)) * 360 - i.lon
+        dLon = i.lon <= -180 || i.lon >= 180 ? dLon * -1 : i.lon;
         this.lat = i.lat;
-        this.lon = i.lon;
+        this.lon = dLon;
+        LocalTimeZone.version
     }
 
     get COORDS() {
@@ -96,7 +102,12 @@ export default class AppSettingsSidebar extends Vue {
     }
 
     set Lon(val: number) {
-        this.lon = val;
+        if (val >= 180 || val <= -180) {
+            this.lon *= -1;
+        }
+        else {
+            this.lon = val;
+        }
     }
 
     get Lon() {
@@ -109,6 +120,10 @@ export default class AppSettingsSidebar extends Vue {
 
     set isChacked(val: boolean) {
         store.dispatch("setIsShowHelpMessage", !val);
+    }
+
+    get localTimeZone() {
+        return store.state.locationTimeZone
     }
 
     saveButtonHendler() {
