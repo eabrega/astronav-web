@@ -6,6 +6,7 @@ import DateParser from "@/components/SideBar/DateParser";
 import IUserSettings from "@/store/userSettings";
 import Geo from '@/components/Common/Geolocation'
 import GeolocationApiWrapper from "@/components/Common/Geolocation";
+import { OffsetMapToUtc } from "@/helpers/mappers";
 
 Vue.use(Vuex);
 
@@ -138,10 +139,7 @@ export default new Vuex.Store({
     modules: {},
     getters: {
         date: (state) => state.date,
-        timeZone: (state) =>
-            state.date.getTimezoneOffset() < 0
-                ? '+' + state.date.getTimezoneOffset() / -60
-                : '-' + state.date.getTimezoneOffset() / 60,
+        timeZone: (state) => OffsetMapToUtc(state.date.getTimezoneOffset()),
         localTimeZone: (state) => state.locationTimeZone,
         currentFrameId: (state) => state.currentFrameIndex,
         condition: (state) => state.condition ?? null,

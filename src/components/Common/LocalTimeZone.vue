@@ -1,9 +1,12 @@
 <template>
     <div class="local-time">
-        <span class="time"><b>Локальное время:</b> {{ CURRENT_TIME }}</span>
-        <span v-if="IS_SHOW_DATE">{{ CURRENT_DATE }}</span>
-        <span><b>UTC</b> {{ getTime().offset / 60 }}</span>
-        <span>{{ getTime().location }}</span>
+        <b class="header">Локальное время в точке</b>
+        <div class="info">
+            <span><b>UTC{{ vr() }}</b></span>
+            <span class="time"> {{ CURRENT_TIME }}</span>
+            <span v-if="IS_SHOW_DATE"><b>{{ CURRENT_DATE }}</b></span>
+            <span>{{ getTime().location }}</span>
+        </div>
     </div>
 </template>
 
@@ -12,10 +15,12 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import { ICoords } from "./ICoords";
 import store from "@/store";
 import { ILocalTimeZone } from "@/store/ISkyInfo";
+import { OffsetMapToUtc } from "@/helpers/mappers";
 
 @Component
 export default class LocalTimeZone extends Vue {
     date: Date;
+
     @Prop()
     value!: ICoords;
 
@@ -24,8 +29,13 @@ export default class LocalTimeZone extends Vue {
         this.date = this.addMinutes(new Date(), this.getTime().offset);
     }
 
+    vr() {
+        return OffsetMapToUtc(this.getTime().offset)
+    }
+
     mounted() {
         this.runTimeUpdate();
+        store.dispatch("getLocationTimeZone", { lat: this.value.lat, lon: this.value.lon });
     }
 
     @Watch("value")
@@ -75,14 +85,20 @@ export default class LocalTimeZone extends Vue {
 
 <style lang="scss" scoped>
 .local-time {
-    padding: 7px;
-    padding-left: 10px;
-    margin-top: 20px;
+
     margin-bottom: 0px;
-    border: 1px solid #ced4da;
-    border-radius: 5px;
-    display: flex;
-    justify-content: space-between;
+    margin-top: 15px;
+
+    .info {
+        padding: 7px;
+        margin-top: 5px;
+        padding-left: 10px;
+
+        border: 1px solid #ced4da;
+        border-radius: 5px;
+        display: flex;
+        justify-content: space-between;
+    }
 
     p {
         padding: 0px;

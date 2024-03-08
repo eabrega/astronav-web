@@ -10,3 +10,9 @@ export default class Mappers extends Vue {
         });
     }
 }
+
+export function OffsetMapToUtc(offset: number): string {
+    return offset < 0
+        ? '+' + offset / -60
+        : '-' + offset / 60;
+}

@@ -17,11 +17,13 @@
                 </b-button>
 
                 <OpenStreetMapWrapper ref="map" v-on:mapClick="mapClickHendler" :Coordinates="{ lat: Lat, lon: Lon }" />
-
+                
+                <LocalTimeZone :value="{ lat: Lat, lon: Lon }" />
+                
                 <b-input-group prepend="Дата" class="mt-3">
                     <b-form-input v-model="CurrentDate" type="date" debounce="500" class="input-date"></b-form-input>
                 </b-input-group>
-                <LocalTimeZone :value="{ lat: Lat, lon: Lon }" />
+
                 <b-button class="mt-4" v-on:click="saveButtonHendler" v-b-toggle.app-settings-sidebar variant="success">
                     Cохранить
                 </b-button>
@@ -67,7 +69,7 @@ export default class AppSettingsSidebar extends Vue {
         dLon = i.lon <= -180 || i.lon >= 180 ? dLon * -1 : i.lon;
         this.lat = i.lat;
         this.lon = dLon;
-        LocalTimeZone.version
+        //        LocalTimeZone.version
     }
 
     get COORDS() {
@@ -156,6 +158,8 @@ export default class AppSettingsSidebar extends Vue {
 
     mounted() {
         this.mapWrapper = (this.$refs.map as OpenStreetMapWrapper);
+        this.lat = store.state.lat;
+        this.lon = store.state.lon;
     }
 }
 </script>
