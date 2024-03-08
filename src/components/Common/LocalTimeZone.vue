@@ -2,10 +2,10 @@
     <div class="local-time">
         <b class="header">Локальное время в точке</b>
         <div class="info">
-            <span><b>UTC{{ vr() }}</b></span>
+            <span><b>UTC{{ UTC }}</b></span>
             <span class="time"> {{ CURRENT_TIME }}</span>
             <span v-if="IS_SHOW_DATE"><b>{{ CURRENT_DATE }}</b></span>
-            <span>{{ getTime().location }}</span>
+            <span>{{ TIME.location }}</span>
         </div>
     </div>
 </template>
@@ -21,16 +21,9 @@ import { OffsetMapToUtc } from "@/helpers/mappers";
 export default class LocalTimeZone extends Vue {
     date: Date;
 
-    @Prop()
-    value!: ICoords;
-
     constructor() {
         super();
-        this.date = this.addMinutes(new Date(), this.getTime().offset);
-    }
-
-    vr() {
-        return OffsetMapToUtc(this.getTime().offset)
+        this.date = this.addMinutes(new Date(), this.TIME.offset);
     }
 
     mounted() {
@@ -38,17 +31,24 @@ export default class LocalTimeZone extends Vue {
         store.dispatch("getLocationTimeZone", { lat: this.value.lat, lon: this.value.lon });
     }
 
+    @Prop()
+    value!: ICoords;
+
     @Watch("value")
     updateCoordinates(val: ICoords) {
         store.dispatch("getLocationTimeZone", { lat: val.lat, lon: val.lon });
     }
 
-    getTime(): ILocalTimeZone {
+    get UTC() {
+        return OffsetMapToUtc(this.TIME.offset)
+    }
+
+    get TIME(): ILocalTimeZone {
         return store.getters.localTimeZone;
     }
 
-    getDate() {
-        return this.addMinutes(new Date(), this.getTime().offset);
+    get DATE() {
+        return this.addMinutes(new Date(), this.TIME.offset);
     }
 
     get CURRENT_TIME() {
@@ -65,12 +65,12 @@ export default class LocalTimeZone extends Vue {
 
     @Watch("forceRenderKey")
     force(val: ICoords) {
-        this.date = this.getDate();
+        this.date = this.DATE;
     }
 
     private runTimeUpdate() {
         setInterval(() => {
-            this.date = this.getDate();
+            this.date = this.DATE;
         }, 1000);
     }
 
