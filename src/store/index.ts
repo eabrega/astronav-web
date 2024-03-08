@@ -198,7 +198,7 @@ async function LoadEvents(date: string, lat: number, lon: number, gmtCorrector: 
 
 async function LoadLocalTimeZone(lat: number, lon: number): Promise<ILocalTimeZone> {
     let resp = await fetch(
-        `http://192.168.1.20:5180/sky/timezone/latitude/${lat}/longitude/${lon}`
+        `https://api.astronav.ru/sky/timezone/latitude/${lat}/longitude/${lon}`
     );
     return resp.json();
 }

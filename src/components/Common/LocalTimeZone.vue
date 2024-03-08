@@ -71,7 +71,7 @@ export default class LocalTimeZone extends Vue {
     private runTimeUpdate() {
         setInterval(() => {
             this.date = this.DATE;
-        }, 1000);
+        }, 30000);
     }
 
     addMinutes(date: Date, minutes: number) {
@@ -107,10 +107,6 @@ export default class LocalTimeZone extends Vue {
 
     span {
         margin-right: 10px;
-
-        .time {
-            background-color: red;
-        }
     }
 
     .input-group-text {
