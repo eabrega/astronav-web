@@ -21,6 +21,9 @@ import { OffsetMapToUtc } from "@/helpers/mappers";
 export default class LocalTimeZone extends Vue {
     date: Date;
 
+    @Prop()
+    Value!: ICoords;
+
     constructor() {
         super();
         this.date = this.addMinutes(new Date(), this.TIME.offset);
@@ -28,13 +31,15 @@ export default class LocalTimeZone extends Vue {
 
     mounted() {
         this.runTimeUpdate();
-        store.dispatch("getLocationTimeZone", { lat: this.value.lat, lon: this.value.lon });
+        store.dispatch("getLocationTimeZone", { lat: this.Value.lat, lon: this.Value.lon });
     }
 
-    @Prop()
-    value!: ICoords;
+    @Watch("TIME")
+    timeZoneIsLoaded() {
+        this.date = this.addMinutes(new Date(), this.TIME.offset);
+    }
 
-    @Watch("value")
+    @Watch("Value")
     updateCoordinates(val: ICoords) {
         store.dispatch("getLocationTimeZone", { lat: val.lat, lon: val.lon });
     }
@@ -61,11 +66,6 @@ export default class LocalTimeZone extends Vue {
 
     get IS_SHOW_DATE() {
         return this.CURRENT_DATE != store.state.date.toLocaleDateString();
-    }
-
-    @Watch("forceRenderKey")
-    force(val: ICoords) {
-        this.date = this.DATE;
     }
 
     private runTimeUpdate() {

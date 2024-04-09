@@ -18,7 +18,7 @@
 
                 <OpenStreetMapWrapper ref="map" v-on:mapClick="mapClickHendler" :Coordinates="{ lat: Lat, lon: Lon }" />
                 
-                <LocalTimeZone :value="{ lat: Lat, lon: Lon }" />
+                <LocalTimeZone :Value="{ lat: Lat, lon: Lon }" />
                 
                 <b-input-group prepend="Дата" class="mt-3">
                     <b-form-input v-model="CurrentDate" type="date" debounce="500" class="input-date"></b-form-input>

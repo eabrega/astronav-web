@@ -36,14 +36,14 @@ const router = new VueRouter({
 })
 
 Vue.use(VueRouter)
-Vue.use(VueYandexMetrika, {
-    id: 78309397,
-    router: router,
-    env: process.env.NODE_ENV,
-    options: {
-        clickmap: true,
-        webvisor: true
-    }
-})
+// Vue.use(VueYandexMetrika, {
+//     id: 78309397,
+//     router: router,
+//     env: process.env.NODE_ENV,
+//     options: {
+//         clickmap: true,
+//         webvisor: true
+//     }
+// })
 
 export default router
