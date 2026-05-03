@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(Copy-Item -Path \"d:\\\\Development\\\\WEB\\\\astronav\\\\astronav-web\\\\src\\\\components\\\\Plotter\" -Destination \"d:\\\\Development\\\\WEB\\\\astronav\\\\astronav-web\\\\app\\\\components\\\\Plotter\" -Recurse -Force)"
+    ]
+  }
+}

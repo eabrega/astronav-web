@@ -1,38 +1,25 @@
 {
   "name": "astronav",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve --mode development",
-    "build": "vue-cli-service build"
+    "dev": "nuxt dev",
+    "build": "nuxt build",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview"
   },
   "dependencies": {
-    "bootstrap": "4.6.1",
-    "bootstrap-vue": "2.23.1",
+    "@pinia/nuxt": "^0.11.3",
+    "@vue-leaflet/vue-leaflet": "^0.10.0",
+    "bootstrap": "^5.3.3",
+    "bootstrap-icons": "^1.11.3",
+    "bootstrap-vue-next": "^0.23.0",
     "canvas-chart-ts": "0.0.5",
-    "core-js": "^3.13.1",
-    "vue-leaflet": "0.1.0",
-    "vue": "^2.7.13",
-    "vue-class-component": "^7.2.6",
-    "vue-meta": "^2.4.0",
-    "vue-property-decorator": "^9.1.2",
-    "vue-router": "^3.6.5",
-    "vue-yandex-metrika-ts": "^1.0.6",
-    "vue2-leaflet": "^2.7.1",
-    "vuex": "^3.6.2"
+    "leaflet": "^1.9.4",
+    "nuxt": "4.4.2",
+    "pinia": "3.0.4"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "~4.5.19",
-    "@vue/cli-plugin-router": "~4.5.19",
-    "@vue/cli-plugin-typescript": "~4.5.19",
-    "@vue/cli-plugin-vuex": "~4.5.19",
-    "@vue/cli-service": "~4.5.19",
-    "prerender-spa-plugin": "^3.4.0",
-    "robotstxt-webpack-plugin": "^7.0.0",
-    "sass": "^1.29.0",
-    "sass-loader": "^10.3.1",
-    "typescript": "~4.8.4",
-    "vue-cli-plugin-sitemap": "~2.3.0",
-    "vue-template-compiler": "^2.7.13"
+    "sass": "^1.77.0"
   }
 }
