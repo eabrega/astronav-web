@@ -1,4 +1,5 @@
-import { IDrawObject, DrawObject } from './drawObject'
+import type { IDrawObject } from './drawObject'
+import { DrawObject } from './drawObject'
 
 export interface IDrawObjects {
     time: string;

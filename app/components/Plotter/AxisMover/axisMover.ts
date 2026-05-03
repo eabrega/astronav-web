@@ -1,4 +1,4 @@
-import { IPlotterSettings } from "../IPlotterSettings";
+import type { IPlotterSettings } from "../IPlotterSettings";
 import { AxisPoint } from "../Points/axisPoint";
 import { CanvaPoint } from "../Points/canvaPoint";
 import { PixelViewer } from "../Viewer/pixelViewer";

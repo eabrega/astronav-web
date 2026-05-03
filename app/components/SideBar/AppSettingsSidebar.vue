@@ -4,7 +4,7 @@
             v-model="visible"
             placement="end"
             title="Настройки"
-            backdrop
+            lazy
             @shown="onShown"
         >
             <div class="px-3 py-2">
@@ -39,13 +39,11 @@
                     Определить местоположение
                 </BButton>
 
-                <ClientOnly>
-                    <OpenStreetMapWrapper
-                        ref="mapWrapper"
-                        :coordinates="{ lat, lon }"
-                        @map-click="onMapClick"
-                    />
-                </ClientOnly>
+                <OpenStreetMapWrapper
+                    ref="mapWrapper"
+                    :coordinates="{ lat, lon }"
+                    @map-click="onMapClick"
+                />
 
                 <BInputGroup prepend="Дата" class="mt-3">
                     <BFormInput

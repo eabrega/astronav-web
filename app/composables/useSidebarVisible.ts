@@ -1,8 +1,5 @@
-import { ref } from 'vue'
-
-const visible = ref(false)
-
 export function useSidebarVisible() {
+    const visible = useState('sidebarVisible', () => false)
     function toggle() {
         visible.value = !visible.value
     }

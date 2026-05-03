@@ -55,11 +55,10 @@ defineExpose({ mapReRender })
 
 <style lang="scss">
 .osm-wrapper {
-    #map {
-        margin-top: 15px;
-        height: 290px;
-        border-radius: 5px;
-    }
+    margin-top: 15px;
+    height: 290px;
+    border-radius: 5px;
+    overflow: hidden;
 
     .leaflet-control-attribution {
         & > a:nth-of-type(1) {

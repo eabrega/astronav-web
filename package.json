@@ -20,6 +20,7 @@
     "pinia": "3.0.4"
   },
   "devDependencies": {
-    "sass": "^1.77.0"
+    "sass": "^1.77.0",
+    "unplugin-vue-components": "^32.0.0"
   }
 }

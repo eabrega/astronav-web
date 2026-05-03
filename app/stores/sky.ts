@@ -71,7 +71,7 @@ export const useSkyStore = defineStore('sky', () => {
     })
 
     const currentCondition = computed(
-        () => condition.value[currentFrameIndex.value]?.objects ?? null
+        () => condition.value[currentFrameIndex.value]?.objects ?? []
     )
 
     const displayTime = computed(() => {

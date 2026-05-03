@@ -1,7 +1,8 @@
 import { Grid } from './grid'
-import { DrawObjectFrame, IDrawObjects } from './drawObjectsFrame'
+import type { IDrawObjects } from './drawObjectsFrame'
+import { DrawObjectFrame } from './drawObjectsFrame'
 import { DrawObject } from "./drawObject";
-import { IPlotterSettings } from './IPlotterSettings';
+import type { IPlotterSettings } from './IPlotterSettings';
 import { CanvaPoint } from './Points/canvaPoint';
 import { AxisPoint } from './Points/axisPoint';
 

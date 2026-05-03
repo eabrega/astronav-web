@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(Select-String -Path \"d:\\\\Development\\\\WEB\\\\astronav\\\\astronav-web\\\\node_modules\\\\@vue-leaflet\\\\vue-leaflet\\\\dist\\\\vue-leaflet.es.js\" -Pattern \"io =\" | Select-Object -First 3 | ForEach-Object { $_.LineNumber.ToString\\(\\) + \": \" + $_.Line.Substring\\(0, [Math]::Min\\(200, $_.Line.Length\\)\\) })",
+      "PowerShell(Select-String -Path \"d:\\\\Development\\\\WEB\\\\astronav\\\\astronav-web\\\\node_modules\\\\bootstrap-vue-next\\\\dist\\\\bootstrap-vue-next.mjs\" -Pattern \"BTable[^a-zA-Z]|as BTable[^a-zA-Z]\" | Select-Object -First 10 | ForEach-Object { $_.LineNumber.ToString\\(\\) + \": \" + $_.Line.Substring\\(0, [Math]::Min\\(200, $_.Line.Length\\)\\) })",
+      "PowerShell(Select-String -Path \"d:\\\\Development\\\\WEB\\\\astronav\\\\astronav-web\\\\node_modules\\\\bootstrap-vue-next\\\\dist\\\\bootstrap-vue-next.mjs\" -Pattern \"Gc =\" | Select-Object -First 3 | ForEach-Object { $_.LineNumber.ToString\\(\\) + \": \" + $_.Line.Substring\\(0, [Math]::Min\\(200, $_.Line.Length\\)\\) })"
+    ]
+  }
+}

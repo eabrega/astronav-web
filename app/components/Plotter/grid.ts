@@ -1,10 +1,12 @@
-import { GridLinear, IPlotterSettings } from "./IPlotterSettings";
+import { GridLinear } from "./IPlotterSettings";
+import type { IPlotterSettings } from "./IPlotterSettings";
 import { PixelViewer } from "./Viewer/pixelViewer";
 import * as Viewer from "./Viewer/viewer"
-import { IOffset, Offset } from "./Viewer/IOffset";
+import type { IOffset } from "./Viewer/IOffset";
+import { Offset } from "./Viewer/IOffset";
 import { AxisPoint } from "./Points/axisPoint";
 import { CanvaPoint } from "./Points/canvaPoint";
-import { IPoint } from "./Points/iPoint";
+import type { IPoint } from "./Points/iPoint";
 //import Mappers from "@/helpers/mappers";
 
 export class Grid {
@@ -94,40 +96,40 @@ export class Grid {
             }
         }
 
-        // const constantGridStepY = (this._mainGridStepY / (this._canva.height / this._settings.axisSize.Height))
-        // const deltaY = ((this._viewer.GridSize.Height / this.gridStepY) / (this._settings.axisSize.Height / constantGridStepY)) * 100;
+        const constantGridStepY = (this._mainGridStepY / (this._canva.height / this._settings.axisSize.Height))
+        const deltaY = ((this._viewer.GridSize.Height / this.gridStepY) / (this._settings.axisSize.Height / constantGridStepY)) * 100;
 
-        // if (deltaY < this._extensionGridStepY) {
-        //     this.gridStepY = this.gridStepY / 2;
-        // }
-        // if (deltaY > this._mainGridStepX) {
-        //     this.gridStepY = this.gridStepY * 2;
-        // }
+        if (deltaY < this._extensionGridStepY) {
+            this.gridStepY = this.gridStepY / 2;
+        }
+        if (deltaY > this._mainGridStepX) {
+            this.gridStepY = this.gridStepY * 2;
+        }
 
-        // const startY = Math.round(this._viewer.GridZeroPoint.Y / this.gridStepY) * this.gridStepY
-        // const stopY = startY + this._viewer.GridSize.Height;
+        const startY = Math.round(this._viewer.GridZeroPoint.Y / this.gridStepY) * this.gridStepY
+        const stopY = startY + this._viewer.GridSize.Height;
 
-        // for (let index = startY - this.gridStepY; index <= stopY + this.gridStepY; index += this.gridStepY) {
-        //     const y = this._viewer.GetCanvaPosition(new AxisPoint(0, index)).Y
+        for (let index = startY - this.gridStepY; index <= stopY + this.gridStepY; index += this.gridStepY) {
+            const y = this._viewer.GetCanvaPosition(new AxisPoint(0, index)).Y
 
-        //     const p1 = new CanvaPoint(startPositionX, y)
-        //     const p2 = new CanvaPoint(stopPositionX, y)
-        //     if (index == 0) {
-        //         this.DrawAbscissaLine(p1, p2, 11, index, "red", "red", 11);
-        //     } else {
-        //         this.DrawAbscissaLine(p1, p2, 8, index, "gray", "Silver", 11);
-        //     }
-        //     const dY2 = this._viewer.GetCanvaPosition(new AxisPoint(0, index + this.gridStepY)).Y
-        //     const t1 = Math.round((y - dY2) / this._extensionGridStepY);
-        //     const t = (y - dY2) / t1
+            const p1 = new CanvaPoint(startPositionX, y)
+            const p2 = new CanvaPoint(stopPositionX, y)
+            if (index == 0) {
+                this.DrawAbscissaLine(p1, p2, 11, index, "red", "red", 11);
+            } else {
+                this.DrawAbscissaLine(p1, p2, 8, index, "gray", "Silver", 11);
+            }
+            const dY2 = this._viewer.GetCanvaPosition(new AxisPoint(0, index + this.gridStepY)).Y
+            const t1 = Math.round((y - dY2) / this._extensionGridStepY);
+            const t = (y - dY2) / t1
 
-        //     for (let i = y + t; i < dY2; i += t) {
-        //         const p1 = new CanvaPoint(startPositionX, i)
-        //         const p2 = new CanvaPoint(stopPositionX, i)
-        //         const number = this._viewer.GetGridPosition(new CanvaPoint(0, this._canva.height - i)).Y;
-        //         this.DrawAbscissaLine(p1, p2, 8, number, "Gainsboro", "Gainsboro", 11);
-        //     }
-        // }
+            for (let i = y + t; i < dY2; i += t) {
+                const p1 = new CanvaPoint(startPositionX, i)
+                const p2 = new CanvaPoint(stopPositionX, i)
+                const number = this._viewer.GetGridPosition(new CanvaPoint(0, this._canva.height - i)).Y;
+                this.DrawAbscissaLine(p1, p2, 8, number, "Gainsboro", "Gainsboro", 11);
+            }
+        }
     }
 
     DrawGridObject(p: AxisPoint, label: string) {

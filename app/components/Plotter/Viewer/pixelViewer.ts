@@ -1,9 +1,10 @@
 import { AxisMover } from "../AxisMover/axisMover";
-import { IPlotterSettings } from "../IPlotterSettings";
+import type { IPlotterSettings } from "../IPlotterSettings";
 import { AxisPoint } from "../Points/axisPoint";
 import { CanvaPoint } from "../Points/canvaPoint";
 import { Size } from "../Sizes/size";
-import { IOffset, Offset } from "./IOffset";
+import type { IOffset } from "./IOffset";
+import { Offset } from "./IOffset";
 import * as Viewer from "./viewer"
 
 export class PixelViewer {

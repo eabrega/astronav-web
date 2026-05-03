@@ -1,13 +1,18 @@
+import Components from 'unplugin-vue-components/vite'
+import { BootstrapVueNextResolver } from 'bootstrap-vue-next'
+
 export default defineNuxtConfig({
     compatibilityDate: '2024-11-01',
-
-    future: {
-        compatibilityVersion: 4,
-    },
 
     ssr: false,
 
     modules: ['@pinia/nuxt'],
+
+    components: {
+        dirs: [
+            { path: '~/components', pathPrefix: false },
+        ],
+    },
 
     css: [
         'bootstrap/dist/css/bootstrap.min.css',
@@ -36,12 +41,11 @@ export default defineNuxtConfig({
     },
 
     vite: {
-        css: {
-            preprocessorOptions: {
-                scss: {
-                    api: 'modern-compiler',
-                },
-            },
+        plugins: [
+            Components({ resolvers: [BootstrapVueNextResolver()] }),
+        ],
+        optimizeDeps: {
+            include: ['leaflet'],
         },
     },
 
